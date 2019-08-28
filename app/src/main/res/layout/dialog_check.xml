@@ -8,14 +8,47 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/description_border"
             tools:context=".dialog.CheckDialog">
 
         <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="999"/>
+                android:text="@string/check_content_tool"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/check_content"
+                android:textSize="18sp"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="40dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        <ImageView
+                android:id="@+id/image_save"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginBottom="30dp"
+                android:layout_marginTop="23dp"
+                android:layout_marginEnd="30dp"
+                app:layout_constraintTop_toBottomOf="@+id/check_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/add_event"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <ImageView
+                android:id="@+id/image_cancel"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="23dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginBottom="30dp"
+                app:srcCompat="@drawable/add_event"
+                app:layout_constraintTop_toBottomOf="@+id/check_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

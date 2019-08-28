@@ -6,12 +6,20 @@
     <string name="date">2019.08.24 (六)</string>
     <string name="hint_description">描述</string>
     <string name="price_tool_text">-$80</string>
+    <string name="check_content_tool">XXXXXXXXXXXXXXXXXXXXXXXXXX</string>
 
     //title
     <string name="expand_title">支出金額</string>
-    <string name="detail_page_title">費用明細</string>
+    <string name="budget_range_title">預算金額</string>
     <string name="title_price">金額</string>
     <string name="title_date">日期</string>
+    <string name="budget_edit_title">修改預算</string>
+    <string name="farm_edit_title">農場更換</string>
+    <string name="detail_page_title">費用明細</string>
+    <string name="budget_page_title">預算編制</string>
+    <string name="qrcode_page_title">發票掃描</string>
+    <string name="statistic_page_title">明細統計</string>
+
 
     //tag
     <string name="tag_breakfast">早餐</string>
@@ -24,10 +32,6 @@
     <string name="tag_traffic">交通</string>
     <string name="tag_fun">娛樂</string>
     <string name="tag_lottery">中獎</string>
-    <string name="budget_page_title">預算編制</string>
-    <string name="budget_edit_title">修改預算</string>
-    <string name="farm_edit_title">農場更換</string>
-    <string name="qrcode_page_title">發票掃描</string>
-    <string name="statistic_page_title">明細統計</string>
+
 
 </resources>
