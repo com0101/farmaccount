@@ -8,14 +8,14 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="260dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/description_border"
             tools:context=".dialog.CheckDialog">
 
         <TextView
                 android:text="@string/check_content_tool"
-                android:layout_width="0dp"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/check_content"
                 android:textSize="18sp"
@@ -27,7 +27,7 @@
                 app:layout_constraintEnd_toEndOf="parent"/>
 
         <ImageView
-                android:id="@+id/image_save"
+                android:id="@+id/image_cancel"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginBottom="30dp"
@@ -39,7 +39,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
         <ImageView
-                android:id="@+id/image_cancel"
+                android:id="@+id/image_save"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginTop="23dp"

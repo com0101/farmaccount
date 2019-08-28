@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.navigation.fragment.findNavController
 
 import com.snc.farmaccount.R
 import com.snc.farmaccount.databinding.DialogAmountInputBinding
@@ -22,6 +23,15 @@ class AmountInputDialog : DialogFragment() {
 
         binding = DialogAmountInputBinding.inflate(inflater)
         binding.lifecycleOwner = this
+
+        binding.imageSave.setOnClickListener {
+            findNavController()
+                .navigate(AmountInputDialogDirections.actionGlobalHomeFragment())
+        }
+
+        binding.imageCancel.setOnClickListener {
+            dismiss()
+        }
 
         // Inflate the layout for this fragment
         return binding.root

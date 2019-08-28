@@ -8,14 +8,14 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="260"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/description_border"
             tools:context=".dialog.AmountInputDialog">
 
         <TextView
                 android:text="@string/budget_range_title"
-                android:layout_width="0dp"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/check_content"
                 android:textSize="18sp"
@@ -27,33 +27,37 @@
                 app:layout_constraintEnd_toEndOf="parent"/>
 
         <ImageView
-                android:id="@+id/image_save"
+                android:id="@+id/image_cancel"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginEnd="30dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:srcCompat="@drawable/add_event"
-                app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="30dp"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="30dp"/>
 
         <ImageView
-                android:id="@+id/image_cancel"
+                android:id="@+id/image_save"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="30dp"
                 app:srcCompat="@drawable/add_event"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="30dp"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="30dp"/>
+
         <EditText
                 android:id="@+id/edit_budget_range"
-                android:layout_width="0dp"
+                android:layout_width="250dp"
                 android:layout_height="40dp"
                 android:inputType="textPersonName"
                 android:background="@drawable/radius_border"
                 android:ems="10"
+                android:paddingStart="16sp"
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="20dp"
                 app:layout_constraintTop_toBottomOf="@+id/check_content"
-                app:layout_constraintBottom_toTopOf="@+id/image_cancel"
+                app:layout_constraintBottom_toTopOf="@+id/image_save"
                 app:layout_constraintVertical_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/check_content"
                 app:layout_constraintEnd_toEndOf="@+id/check_content"/>

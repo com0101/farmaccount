@@ -157,20 +157,20 @@
                 app:layout_constraintTop_toBottomOf="@+id/date"/>
 
         <ImageView
-                android:id="@+id/image_edit"
+                android:id="@+id/image_delete"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginEnd="20dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 app:srcCompat="@drawable/add_event"
                 app:layout_constraintEnd_toEndOf="@+id/edit_description"
                 app:layout_constraintTop_toBottomOf="@+id/edit_description"/>
 
         <ImageView
-                android:id="@+id/image_delete"
+                android:id="@+id/image_edit"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 app:srcCompat="@drawable/add_event"
                 app:layout_constraintTop_toBottomOf="@+id/edit_description"
                 app:layout_constraintStart_toStartOf="@+id/edit_description" android:layout_marginStart="20dp"/>

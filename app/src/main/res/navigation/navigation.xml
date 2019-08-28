@@ -3,10 +3,78 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/navigation"
-            app:startDestination="@id/homeFragment">
+            app:startDestination="@id/chooseFragment">
 
     <fragment android:id="@+id/homeFragment"
               android:name="com.snc.farmaccount.home.HomeFragment"
               android:label="HomeFragment"
               tools:layout="@layout/fragment_home"/>
+    <action android:id="@+id/action_global_homeFragment"
+            app:destination="@id/homeFragment"
+    />
+
+    <fragment android:id="@+id/addEventFragment"
+              android:name="com.snc.farmaccount.event.AddEventFragment"
+              android:label="AddEventFragment"
+              tools:layout="@layout/fragment_add_event"/>
+    <action android:id="@+id/action_global_addEventFragment"
+            app:destination="@id/addEventFragment"/>
+
+    <fragment android:id="@+id/chooseFragment"
+              android:name="com.snc.farmaccount.choose.ChooseFragment"
+              android:label="ChooseFragment"
+              tools:layout="@layout/fragment_choose"/>
+    <action android:id="@+id/action_global_chooseFragment"
+            app:destination="@id/chooseFragment"
+    />
+
+    <fragment android:id="@+id/budgetFragment"
+              android:name="com.snc.farmaccount.budget.BudgetFragment"
+              android:label="BudgetFragment"
+              tools:layout="@layout/fragment_budget"/>
+    <action android:id="@+id/action_global_budgetFragment"
+            app:destination="@id/budgetFragment"/>
+
+    <fragment android:id="@+id/detailFragment"
+              android:name="com.snc.farmaccount.detail.DetailFragment"
+              android:label="DetailFragment"
+              tools:layout="@layout/fragment_detail"/>
+    <action android:id="@+id/action_global_detailFragment"
+            app:destination="@id/detailFragment"/>
+
+    <fragment android:id="@+id/qrCodeFragment"
+              android:name="com.snc.farmaccount.qrcode.QrCodeFragment"
+              android:label="QrCodeFragment"
+              tools:layout="@layout/fragment_qr_code"/>
+    <action android:id="@+id/action_global_qrCodeFragment"
+            app:destination="@id/qrCodeFragment"/>
+
+    <fragment android:id="@+id/statisticFragment"
+              android:name="com.snc.farmaccount.statistic.StatisticFragment"
+              android:label="StatisticFragment"
+              tools:layout="@layout/fragment_statistic"/>
+    <action android:id="@+id/action_global_statisticFragment"
+            app:destination="@id/statisticFragment"/>
+
+    <dialog android:id="@+id/datePickerDialog"
+            android:name="com.snc.farmaccount.dialog.DatePickerDialog"
+            android:label="DatePickerDialog"
+            tools:layout="@layout/dialog_date_picker"/>
+    <action android:id="@+id/action_global_datePickerDialog"
+            app:destination="@id/datePickerDialog"/>
+
+    <dialog android:id="@+id/checkDialog"
+            android:name="com.snc.farmaccount.dialog.CheckDialog"
+            android:label="CheckDialog"
+            tools:layout="@layout/dialog_check"/>
+    <action android:id="@+id/action_global_checkDialog"
+            app:destination="@id/checkDialog"/>
+
+    <dialog android:id="@+id/amountInputDialog"
+            android:name="com.snc.farmaccount.dialog.AmountInputDialog"
+            android:label="AmountInputDialog"
+            tools:layout="@layout/dialog_amount_input"/>
+    <action android:id="@+id/action_global_amountInputDialog"
+            app:destination="@id/amountInputDialog"/>
+
 </navigation>

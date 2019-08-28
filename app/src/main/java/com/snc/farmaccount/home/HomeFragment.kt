@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentTabHost
+import androidx.navigation.fragment.findNavController
 import com.snc.farmaccount.DataBinderMapperImpl
 
 import com.snc.farmaccount.R
@@ -23,6 +24,36 @@ class HomeFragment : Fragment() {
 
         binding = FragmentHomeBinding.inflate(inflater)
         binding.lifecycleOwner = this
+
+        binding.buttonDatePicker.setOnClickListener {
+            findNavController()
+                .navigate(HomeFragmentDirections.actionGlobalDatePickerDialog())
+        }
+
+        binding.buttonBudget.setOnClickListener {
+            findNavController()
+                .navigate(HomeFragmentDirections.actionGlobalBudgetFragment())
+        }
+
+        binding.buttonStatistic.setOnClickListener {
+            findNavController()
+                .navigate(HomeFragmentDirections.actionGlobalStatisticFragment())
+        }
+
+        binding.buttonScan.setOnClickListener {
+            findNavController()
+                .navigate(HomeFragmentDirections.actionGlobalQrCodeFragment())
+        }
+
+        binding.imageAddEvent.setOnClickListener {
+            findNavController()
+                .navigate(HomeFragmentDirections.actionGlobalAddEventFragment())
+        }
+
+        binding.textBudgetEdit.setOnClickListener{
+            findNavController()
+                .navigate(HomeFragmentDirections.actionGlobalDetailFragment())
+        }
 
         // Inflate the layout for this fragment
         return binding.root

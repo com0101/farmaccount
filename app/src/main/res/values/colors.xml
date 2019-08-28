@@ -7,4 +7,6 @@
     //radius bar
     <color name="gray_green">#97C197</color>
     <color name="white">#FFFFFF</color>
+
+    <color name="translate_40">#66000000</color>
 </resources>
