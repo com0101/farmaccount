@@ -27,5 +27,7 @@
     <string name="budget_page_title">預算編制</string>
     <string name="budget_edit_title">修改預算</string>
     <string name="farm_edit_title">農場更換</string>
+    <string name="qrcode_page_title">發票掃描</string>
+    <string name="statistic_page_title">明細統計</string>
 
 </resources>

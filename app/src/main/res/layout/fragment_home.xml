@@ -34,7 +34,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/radius_border"
@@ -61,8 +61,8 @@
 
             <com.mikhaellopez.circularimageview.CircularImageView
                     android:id="@+id/image_coin"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:layout_marginStart="4dp"
                     android:layout_marginBottom="2dp"
                     android:layout_marginTop="2dp"
