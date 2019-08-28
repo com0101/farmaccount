@@ -17,4 +17,8 @@
     <string name="tag_fun">娛樂</string>
     <string name="tag_lottery">中獎</string>
     <string name="hint_description">描述</string>
+    <string name="detail_page_title">費用明細</string>
+    <string name="title_price">金額</string>
+    <string name="price_tool_text">-$80</string>
+    <string name="title_date">日期</string>
 </resources>

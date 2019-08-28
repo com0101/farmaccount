@@ -42,7 +42,7 @@
                 app:layout_constraintTop_toTopOf="@+id/button_date_picker"
                 app:layout_constraintBottom_toBottomOf="@+id/button_date_picker"
                 app:layout_constraintEnd_toStartOf="@+id/button_date_today"
-                android:id="@+id/constraintLayout">
+                android:id="@+id/price">
 
             <TextView
                     android:id="@+id/text_budget"
