@@ -20,7 +20,7 @@ class DetailFragment : Fragment() {
     ): View? {
 
         binding = FragmentDetailBinding.inflate(inflater)
-
+        binding.lifecycleOwner = this
 
         // Inflate the layout for this fragment
         return binding.root

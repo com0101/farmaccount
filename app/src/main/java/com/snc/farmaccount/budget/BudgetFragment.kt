@@ -20,6 +20,8 @@ class BudgetFragment : Fragment() {
     ): View? {
 
         binding = FragmentBudgetBinding.inflate(inflater)
+        binding.lifecycleOwner = this
+
         // Inflate the layout for this fragment
         return binding.root
     }

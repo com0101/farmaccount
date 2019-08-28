@@ -20,7 +20,7 @@ class QrCodeFragment : Fragment() {
     ): View? {
 
         binding = FragmentQrCodeBinding.inflate(inflater)
-
+        binding.lifecycleOwner = this
 
         // Inflate the layout for this fragment
         return binding.root

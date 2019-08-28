@@ -21,6 +21,9 @@ class CheckDialog : DialogFragment() {
     ): View? {
 
         binding = DialogCheckBinding.inflate(inflater)
+        binding.lifecycleOwner = this
+
+
         // Inflate the layout for this fragment
         return binding.root
     }

@@ -21,6 +21,7 @@ class DatePickerDialog : DialogFragment() {
     ): View? {
 
         binding = DialogDatePickerBinding.inflate(inflater)
+        binding.lifecycleOwner = this
         // Inflate the layout for this fragment
         return binding.root
     }

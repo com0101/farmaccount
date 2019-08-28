@@ -21,6 +21,8 @@ class AmountInputDialog : DialogFragment() {
     ): View? {
 
         binding = DialogAmountInputBinding.inflate(inflater)
+        binding.lifecycleOwner = this
+
         // Inflate the layout for this fragment
         return binding.root
     }
