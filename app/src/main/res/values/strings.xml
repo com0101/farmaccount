@@ -5,4 +5,16 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="budget_number">20000/18000</string>
     <string name="date">2019.08.24 (六)</string>
+    <string name="expand_title">支出金額</string>
+    <string name="tag_breakfast">早餐</string>
+    <string name="tag_lunch">午餐</string>
+    <string name="tag_dinner">晚餐</string>
+    <string name="tag_payment">薪水</string>
+    <string name="tag_dessert">點心</string>
+    <string name="tag_cloth">衣服</string>
+    <string name="tag_live">住</string>
+    <string name="tag_traffic">交通</string>
+    <string name="tag_fun">娛樂</string>
+    <string name="tag_lottery">中獎</string>
+    <string name="hint_description">描述</string>
 </resources>
