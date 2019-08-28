@@ -125,7 +125,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"/>
 
             <TextView
-                    android:id="@+id/text_date"
+                    android:id="@+id/text__budget_edit"
                     android:text="@string/date"
                     android:layout_width="0dp"
                     android:layout_height="30dp"

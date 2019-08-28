@@ -24,5 +24,8 @@
     <string name="tag_traffic">交通</string>
     <string name="tag_fun">娛樂</string>
     <string name="tag_lottery">中獎</string>
+    <string name="budget_page_title">預算編制</string>
+    <string name="budget_edit_title">修改預算</string>
+    <string name="farm_edit_title">農場更換</string>
 
 </resources>
