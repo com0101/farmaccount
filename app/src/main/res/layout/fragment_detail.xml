@@ -29,7 +29,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:layout_marginBottom="8dp"
                 android:gravity="center"
                 android:layout_marginStart="8dp"
@@ -45,7 +45,7 @@
                 android:layout_height="40dp"
                 android:layout_marginStart="53dp"
                 android:layout_marginTop="22dp"
-                app:srcCompat="@color/colorAccent"
+                app:srcCompat="@drawable/tag_dinner"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_detail"/>
 
@@ -162,7 +162,7 @@
                 android:layout_height="48dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginTop="20dp"
-                app:srcCompat="@drawable/add_event"
+                app:srcCompat="@drawable/delete"
                 app:layout_constraintEnd_toEndOf="@+id/edit_description"
                 app:layout_constraintTop_toBottomOf="@+id/edit_description"/>
 
@@ -171,7 +171,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginTop="20dp"
-                app:srcCompat="@drawable/add_event"
+                app:srcCompat="@drawable/edit"
                 app:layout_constraintTop_toBottomOf="@+id/edit_description"
                 app:layout_constraintStart_toStartOf="@+id/edit_description" android:layout_marginStart="20dp"/>
 
