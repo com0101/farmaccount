@@ -1,11 +1,19 @@
 <resources>
     <string name="app_name">Farmaccount</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="budget_number">20000/18000</string>
     <string name="date">2019.08.24 (六)</string>
+    <string name="hint_description">描述</string>
+    <string name="price_tool_text">-$80</string>
+
+    //title
     <string name="expand_title">支出金額</string>
+    <string name="detail_page_title">費用明細</string>
+    <string name="title_price">金額</string>
+    <string name="title_date">日期</string>
+
+    //tag
     <string name="tag_breakfast">早餐</string>
     <string name="tag_lunch">午餐</string>
     <string name="tag_dinner">晚餐</string>
@@ -16,9 +24,5 @@
     <string name="tag_traffic">交通</string>
     <string name="tag_fun">娛樂</string>
     <string name="tag_lottery">中獎</string>
-    <string name="hint_description">描述</string>
-    <string name="detail_page_title">費用明細</string>
-    <string name="title_price">金額</string>
-    <string name="price_tool_text">-$80</string>
-    <string name="title_date">日期</string>
+
 </resources>

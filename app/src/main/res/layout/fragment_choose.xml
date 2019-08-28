@@ -12,10 +12,30 @@
             android:layout_height="match_parent"
             tools:context=".choose.ChooseFragment">
 
-        <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="222"/>
 
+        <ImageView
+                android:layout_width="300dp"
+                android:layout_height="300dp" app:srcCompat="@color/gray_green"
+                android:id="@+id/image_farm_catalog"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="215dp" app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="216dp"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="55dp"/>
+        <ImageView
+                android:layout_width="60dp"
+                android:layout_height="55dp" app:srcCompat="@android:drawable/ic_media_play"
+                android:id="@+id/image_arrow_right" android:layout_marginEnd="24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"/>
+        <ImageView
+                android:layout_width="60dp"
+                android:layout_height="65dp" app:srcCompat="@android:drawable/ic_media_play"
+                android:id="@+id/image_arrow_left" android:rotation="@dimen/arrow_rotate_180"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="24dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginBottom="8dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
