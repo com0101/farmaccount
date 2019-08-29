@@ -14,7 +14,6 @@ class DayViewModel: ViewModel() {
     private var weekName = ""
     var date = MutableLiveData<String>()
 
-
     var DATE_MODE = ""
 
     init {
@@ -29,28 +28,28 @@ class DayViewModel: ViewModel() {
         week = c.get(Calendar.DAY_OF_WEEK)
 
         if(week==1) {
-            weekName = "日"
+            weekName = "星期日"
         }
         if(week==2) {
-            weekName = "一"
+            weekName = "星期一"
         }
         if(week==3) {
-            weekName = "二"
+            weekName = "星期二"
         }
         if(week==4) {
-            weekName = "三"
+            weekName = "星期三"
         }
         if(week==5) {
-            weekName = "四"
+            weekName = "星期四"
         }
         if(week==6) {
-            weekName = "五"
+            weekName = "星期五"
         }
         if(week==7) {
-            weekName = "六"
+            weekName = "星期六"
         }
 
-        DATE_MODE = "$year/${month+1}/$day"
+        DATE_MODE = "$year.${month+1}.$day ($weekName)"
     }
 
 }

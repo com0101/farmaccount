@@ -11,7 +11,7 @@ import org.joda.time.format.DateTimeFormat
 
 
 object Format {
-    const val DAYCODE_PATTERN = "yyyy/MM/dd"
+    const val DAYCODE_PATTERN = "yyyy.MM.dd (EEEE)"
     const val YEAR_PATTERN = "YYYY"
     const val TIME_PATTERN = "HHmmss"
     private const val DAY_PATTERN = "d"

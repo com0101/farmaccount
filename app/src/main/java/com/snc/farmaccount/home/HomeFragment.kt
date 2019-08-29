@@ -68,10 +68,6 @@ class HomeFragment : Fragment(),NavigationListener{
         setViewPager()
         refreshEvents()
 
-        viewModel.date.observe(this, Observer {
-            Log.i("Sophie_bundle","${viewModel.date.value}")
-        })
-
 
         return binding.root
     }

@@ -37,7 +37,6 @@ class DayCalendarFragment : Fragment() {
         binding.viewModel = viewModel
         binding.textDate.text = title
         arrowButtons()
-        Log.i("Sophie_date_observe","${viewModel.date.value}")
         return binding.root
     }
 
@@ -45,17 +44,11 @@ class DayCalendarFragment : Fragment() {
 
         binding.imageArrowRight.setOnClickListener {
             navListener?.goRight()
-            Toast.makeText(context, "right", Toast.LENGTH_SHORT).show()
         }
 
         binding.imageArrowLeft.setOnClickListener {
             navListener?.goLeft()
-            Toast.makeText(context, "left", Toast.LENGTH_SHORT).show()
-
         }
-
-//        val day = Format.getDayTitle(context!!, date)
-//        binding.textDate.text = viewModel.date.value
 
     }
 
