@@ -25,8 +25,7 @@
               android:label="ChooseFragment"
               tools:layout="@layout/fragment_choose"/>
     <action android:id="@+id/action_global_chooseFragment"
-            app:destination="@id/chooseFragment"
-    />
+            app:destination="@id/chooseFragment"/>
 
     <fragment android:id="@+id/budgetFragment"
               android:name="com.snc.farmaccount.budget.BudgetFragment"
