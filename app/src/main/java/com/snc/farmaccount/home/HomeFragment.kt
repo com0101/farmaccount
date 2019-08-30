@@ -1,13 +1,15 @@
 package com.snc.farmaccount.home
 
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
+import android.view.Window
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
@@ -15,8 +17,11 @@ import com.snc.farmaccount.NavigationListener
 import com.snc.farmaccount.R
 import com.snc.farmaccount.databinding.FragmentHomeBinding
 import com.snc.farmaccount.helper.Format
-import org.joda.time.DateTime
-import java.util.ArrayList
+import java.text.SimpleDateFormat
+import java.util.*
+import android.app.DatePickerDialog
+import android.widget.Toast
+
 
 class HomeFragment : Fragment(),NavigationListener{
 
@@ -25,12 +30,12 @@ class HomeFragment : Fragment(),NavigationListener{
     private var defaultDailyPage = 0
     private var todayDayCode = ""
     private var currentDayCode = ""
-    private var isGoToTodayVisible = false
+
+
 
     private val viewModel: DayViewModel by lazy {
         ViewModelProviders.of(this).get(DayViewModel::class.java)
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,18 +43,15 @@ class HomeFragment : Fragment(),NavigationListener{
     ): View? {
 
         binding = FragmentHomeBinding.inflate(inflater)
+
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-
-        currentDayCode=  viewModel.DATE_MODE
+        currentDayCode= viewModel.DATE_MODE
         todayDayCode = viewModel.DATE_MODE
 
         binding.dayViewpager.id = (System.currentTimeMillis() % 100000).toInt()
-
-        binding.buttonDatePicker.setOnClickListener {
-            findNavController()
-                .navigate(R.id.action_global_datePickerDialog)
-        }
+        setViewPager()
+        refreshEvents()
 
         binding.buttonBudget.setOnClickListener {
             findNavController()
@@ -65,13 +67,17 @@ class HomeFragment : Fragment(),NavigationListener{
             findNavController()
                 .navigate(R.id.action_global_qrCodeFragment)
         }
-        setViewPager()
-        refreshEvents()
 
+        binding.buttonDatePicker.setOnClickListener {
+            showDialog()
+        }
+
+        binding.buttonDateToday.setOnClickListener {
+            goToToday()
+        }
 
         return binding.root
     }
-
 
     private fun setViewPager() {
         val codes = getDays(currentDayCode)
@@ -91,11 +97,6 @@ class HomeFragment : Fragment(),NavigationListener{
                     currentDayCode = codes[position]
                     viewModel.date.value = currentDayCode
                     Log.i("Sophie_position","${viewModel.date.value}")
-//                    val shouldGoToTodayBeVisible = shouldGoToTodayBeVisible()
-//                    if (isGoToTodayVisible != shouldGoToTodayBeVisible) {
-//                        (activity as? MainActivity)?.toggleGoToTodayVisibility(shouldGoToTodayBeVisible)
-//                        isGoToTodayVisible = shouldGoToTodayBeVisible
-//                    }
                 }
             })
             currentItem = defaultDailyPage
@@ -119,24 +120,32 @@ class HomeFragment : Fragment(),NavigationListener{
         binding.dayViewpager.currentItem = binding.dayViewpager.currentItem + 1
     }
 
-    override fun goToDateTime(dateTime: DateTime) {
-        currentDayCode = Format.getDayCodeFromDateTime(dateTime)
+    private fun goToToday() {
+        currentDayCode = todayDayCode
         setViewPager()
     }
 
-//    override fun goToToday() {
-//        currentDayCode = todayDayCode
-//        setViewPager()
-//    }
+    private fun showDialog() {
+        val calendar = Calendar.getInstance()
+        val simpledateformat = SimpleDateFormat("EEEE")
+        val datePickdialog = DatePickerDialog(
+            this.context!!, AlertDialog.THEME_HOLO_LIGHT,
+            DatePickerDialog.OnDateSetListener { _, year, month, day ->
+                // Display Selected date in Toast
+                val date = Date(year, month, day+3)
+                val dayOfWeek = simpledateformat.format(date)
+                currentDayCode = "$year.${month+1}.$day ($dayOfWeek)"
+                setViewPager()
+                Log.i("Sophie_date","$year.$month.$day ($dayOfWeek)")
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH))
+        datePickdialog.show()
+    }
 
     private fun refreshEvents() {
         (binding.dayViewpager.adapter as? DayViewPagerAdapter)?.updateCalendars(binding.dayViewpager.currentItem)
     }
-
-
-//    override fun shouldGoToTodayBeVisible() = currentDayCode != todayDayCode
-
-
-
 
 }

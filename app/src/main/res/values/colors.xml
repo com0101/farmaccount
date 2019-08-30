@@ -9,4 +9,5 @@
     <color name="white">#FFFFFF</color>
 
     <color name="translate_40">#66000000</color>
+    <color name="translate_100">#00000000</color>
 </resources>

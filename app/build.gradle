@@ -75,4 +75,7 @@ dependencies {
     implementation 'joda-time:joda-time:2.10.1'
     implementation 'androidx.multidex:multidex:2.0.1'
 
+    // Floating Action Bar
+    implementation 'com.github.clans:fab:1.6.4'
+
 }

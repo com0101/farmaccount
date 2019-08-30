@@ -32,6 +32,7 @@
     <string name="tag_traffic">交通</string>
     <string name="tag_fun">娛樂</string>
     <string name="tag_lottery">中獎</string>
+    <string name="sure_btn">OK</string>
 
 
 </resources>

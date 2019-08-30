@@ -1,8 +1,6 @@
 package com.snc.farmaccount.home
 
-
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import java.util.*
 
 class DayViewModel: ViewModel() {
@@ -13,10 +11,12 @@ class DayViewModel: ViewModel() {
     private var week:Int = 0
     private var weekName = ""
     var date = MutableLiveData<String>()
+    var pickDate = MutableLiveData<String>()
 
     var DATE_MODE = ""
 
     init {
+        pickDate
         week()
     }
 
