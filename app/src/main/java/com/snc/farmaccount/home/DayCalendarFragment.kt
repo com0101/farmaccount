@@ -36,7 +36,13 @@ class DayCalendarFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         binding.textDate.text = title
+
+        binding.eventList.adapter = DayEventAdapter(DayEventAdapter.OnClickListener {
+
+        }, viewModel)
+
         arrowButtons()
+        viewModel.getEvent()
         return binding.root
     }
 
@@ -49,6 +55,10 @@ class DayCalendarFragment : Fragment() {
         binding.imageArrowLeft.setOnClickListener {
             navListener?.goLeft()
         }
+
+    }
+
+    fun addEvent() {
 
     }
 

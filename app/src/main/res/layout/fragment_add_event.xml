@@ -4,6 +4,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <variable name="viewModel" type="com.snc.farmaccount.event.AddEventViewModel"/>
 
     </data>
 
@@ -66,223 +67,20 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/tag"
-                android:layout_width="wrap_content"
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/tag_list"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="21dp"
+                tools:listitem="@layout/item_event_tag"
+                tools:itemCount="2"
+                app:spanCount="5"
+                app:listTag="@{viewModel.tag}"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layout_constraintStart_toStartOf="@+id/edit_expand"
+                app:layout_constraintEnd_toEndOf="@+id/edit_expand"
                 app:layout_constraintTop_toBottomOf="@+id/edit_expand"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
-
-            <ImageView
-                    android:id="@+id/tag_breakfast"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="63dp"
-                    app:srcCompat="@drawable/tag_breakfast"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
-
-            <ImageView
-                    android:id="@+id/tag_lunch"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="20dp"
-                    app:srcCompat="@drawable/tag_lunch"
-                    app:layout_constraintStart_toEndOf="@+id/tag_breakfast"
-                    app:layout_constraintTop_toTopOf="@+id/tag_breakfast"
-                    app:layout_constraintBottom_toBottomOf="@+id/tag_breakfast"
-                    app:layout_constraintVertical_bias="1.0"/>
-
-            <ImageView
-                    android:id="@+id/tag_dinner"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="20dp"
-                    app:srcCompat="@drawable/tag_dinner"
-                    app:layout_constraintTop_toTopOf="@+id/tag_lunch"
-                    app:layout_constraintBottom_toBottomOf="@+id/tag_lunch"
-                    app:layout_constraintVertical_bias="1.0"
-                    app:layout_constraintStart_toEndOf="@+id/tag_lunch"/>
-
-            <ImageView
-                    android:id="@+id/tag_dessert"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="20dp"
-                    app:srcCompat="@drawable/tag_dessert"
-                    app:layout_constraintTop_toTopOf="@+id/tag_dinner"
-                    app:layout_constraintBottom_toBottomOf="@+id/tag_dinner"
-                    app:layout_constraintStart_toEndOf="@+id/tag_dinner"
-                    app:layout_constraintVertical_bias="1.0"/>
-
-            <ImageView
-                    android:id="@+id/tag_payment"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="63dp"
-                    app:srcCompat="@drawable/tag_payment"
-                    app:layout_constraintTop_toTopOf="@+id/tag_dessert"
-                    app:layout_constraintBottom_toBottomOf="@+id/tag_dessert"
-                    app:layout_constraintStart_toEndOf="@+id/tag_dessert"
-                    app:layout_constraintVertical_bias="1.0"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-
-            <ImageView
-                    android:id="@+id/tag_cloth"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="9dp"
-                    app:srcCompat="@drawable/tag_cloth"
-                    app:layout_constraintStart_toStartOf="@+id/tag_breakfast"
-                    app:layout_constraintEnd_toEndOf="@+id/tag_breakfast"
-                    app:layout_constraintTop_toBottomOf="@+id/text_breakfast"/>
-
-            <ImageView
-                    android:id="@+id/tag_live"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="20dp"
-                    app:srcCompat="@drawable/tag_live"
-                    app:layout_constraintTop_toTopOf="@+id/tag_cloth"
-                    app:layout_constraintBottom_toBottomOf="@+id/tag_cloth"
-                    app:layout_constraintStart_toEndOf="@+id/tag_cloth"/>
-
-            <ImageView
-                    android:id="@+id/tag_traffic"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="20dp"
-                    app:srcCompat="@drawable/tag_traffic"
-                    app:layout_constraintTop_toTopOf="@+id/tag_live"
-                    app:layout_constraintBottom_toBottomOf="@+id/tag_live"
-                    app:layout_constraintStart_toEndOf="@+id/tag_live"/>
-
-            <ImageView
-                    android:id="@+id/tag_fun"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="20dp"
-                    app:srcCompat="@drawable/tag_fun"
-                    app:layout_constraintTop_toTopOf="@+id/tag_traffic"
-                    app:layout_constraintBottom_toBottomOf="@+id/tag_traffic"
-                    app:layout_constraintStart_toEndOf="@+id/tag_traffic"/>
-
-            <ImageView
-                    android:id="@+id/tag_lottery"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="20dp"
-                    app:srcCompat="@drawable/tag_lottery"
-                    app:layout_constraintTop_toTopOf="@+id/tag_fun"
-                    app:layout_constraintStart_toEndOf="@+id/tag_fun"
-                    app:layout_constraintBottom_toBottomOf="@+id/tag_fun"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="63dp"/>
-
-            <TextView
-                    android:id="@+id/text_breakfast"
-                    android:text="@string/tag_breakfast"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    app:layout_constraintStart_toStartOf="@+id/tag_breakfast"
-                    app:layout_constraintEnd_toEndOf="@+id/tag_breakfast"
-                    app:layout_constraintTop_toBottomOf="@+id/tag_breakfast"/>
-
-            <TextView
-                    android:id="@+id/text_lunch"
-                    android:text="@string/tag_lunch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    app:layout_constraintEnd_toEndOf="@+id/tag_live"
-                    app:layout_constraintStart_toStartOf="@+id/tag_live"
-                    app:layout_constraintTop_toBottomOf="@+id/tag_lunch"/>
-
-            <TextView
-                    android:id="@+id/text_dinner"
-                    android:text="@string/tag_dinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    app:layout_constraintStart_toStartOf="@+id/tag_dinner"
-                    app:layout_constraintEnd_toEndOf="@+id/tag_dinner"
-                    app:layout_constraintTop_toBottomOf="@+id/tag_dinner"/>
-
-            <TextView
-                    android:id="@+id/text_dessert"
-                    android:text="@string/tag_dessert"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    app:layout_constraintStart_toStartOf="@+id/tag_dessert"
-                    app:layout_constraintEnd_toEndOf="@+id/tag_dessert"
-                    app:layout_constraintTop_toBottomOf="@+id/tag_dessert"/>
-
-            <TextView
-                    android:id="@+id/text_payment"
-                    android:text="@string/tag_payment"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    app:layout_constraintStart_toStartOf="@+id/tag_payment"
-                    app:layout_constraintEnd_toEndOf="@+id/tag_payment"
-                    app:layout_constraintTop_toBottomOf="@+id/tag_payment"/>
-
-            <TextView
-                    android:id="@+id/text_cloth"
-                    android:text="@string/tag_cloth"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    app:layout_constraintStart_toStartOf="@+id/tag_cloth"
-                    app:layout_constraintEnd_toEndOf="@+id/tag_cloth"
-                    app:layout_constraintTop_toBottomOf="@+id/tag_cloth"/>
-
-            <TextView
-                    android:id="@+id/text_live"
-                    android:text="@string/tag_live"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    app:layout_constraintEnd_toEndOf="@+id/tag_live"
-                    app:layout_constraintStart_toStartOf="@+id/tag_live"
-                    app:layout_constraintTop_toBottomOf="@+id/tag_live"/>
-
-            <TextView
-                    android:id="@+id/text_traffic"
-                    android:text="@string/tag_traffic"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    app:layout_constraintStart_toStartOf="@+id/tag_traffic"
-                    app:layout_constraintEnd_toEndOf="@+id/tag_traffic"
-                    app:layout_constraintTop_toBottomOf="@+id/tag_traffic"/>
-
-            <TextView
-                    android:id="@+id/text_fun"
-                    android:text="@string/tag_fun"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    app:layout_constraintStart_toStartOf="@+id/tag_fun"
-                    app:layout_constraintEnd_toEndOf="@+id/tag_fun"
-                    app:layout_constraintTop_toBottomOf="@+id/tag_fun"/>
-
-            <TextView
-                    android:id="@+id/text_lottery"
-                    android:text="@string/tag_lottery"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    app:layout_constraintStart_toStartOf="@+id/tag_lottery"
-                    app:layout_constraintEnd_toEndOf="@+id/tag_lottery"
-                    app:layout_constraintTop_toBottomOf="@+id/tag_lottery"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_marginTop="16dp">
+        </androidx.recyclerview.widget.RecyclerView>
 
         <EditText
                 android:id="@+id/edit_description"
@@ -293,13 +91,14 @@
                 android:ems="10"
                 android:textSize="15sp"
                 android:hint="@string/hint_description"
-                android:layout_marginTop="21dp"
                 android:paddingStart="16dp"
                 android:paddingTop="16dp"
                 android:gravity="top"
                 app:layout_constraintStart_toStartOf="@+id/edit_expand"
                 app:layout_constraintEnd_toEndOf="@+id/edit_expand"
-                app:layout_constraintTop_toBottomOf="@+id/tag"/>
+                app:layout_constraintHorizontal_bias="1.0"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/tag_list"/>
 
         <ImageView
                 android:id="@+id/image_save"

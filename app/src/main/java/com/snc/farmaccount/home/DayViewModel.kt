@@ -1,6 +1,7 @@
 package com.snc.farmaccount.home
 
 import androidx.lifecycle.*
+import com.snc.farmaccount.`object`.Event
 import java.util.*
 
 class DayViewModel: ViewModel() {
@@ -12,12 +13,21 @@ class DayViewModel: ViewModel() {
     private var weekName = ""
     var date = MutableLiveData<String>()
     var pickDate = MutableLiveData<String>()
+    var eventList = MutableLiveData<List<Event>>()
+
+    private val _event = MutableLiveData<List<Event>>()
+    val event: LiveData<List<Event>>
+        get() = _event
 
     var DATE_MODE = ""
 
     init {
         pickDate
         week()
+    }
+
+    fun getEvent() {
+        _event.value = eventList.value
     }
 
     private fun week() {
