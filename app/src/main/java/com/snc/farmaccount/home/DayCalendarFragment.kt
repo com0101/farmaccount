@@ -7,15 +7,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import com.snc.farmaccount.NavigationListener
 import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.Event
-
 import com.snc.farmaccount.databinding.FragmentDayCalendarBinding
-import com.snc.farmaccount.helper.Format
 import java.util.*
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreSettings
 
 class DayCalendarFragment : Fragment() {
 
@@ -38,7 +37,6 @@ class DayCalendarFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         binding.textDate.text = title
-
         binding.eventList.adapter = DayEventAdapter(DayEventAdapter.OnClickListener {
 
         }, viewModel)
@@ -46,6 +44,7 @@ class DayCalendarFragment : Fragment() {
         arrowButtons()
         addEvent()
         viewModel.getEvent()
+        getEvent()
         return binding.root
     }
 
@@ -69,6 +68,34 @@ class DayCalendarFragment : Fragment() {
         eventList.add(Event(2,"66",getString(R.string.tag_breakfast),"i am hungry", date,false))
         eventList.add(Event(3,"80",getString(R.string.tag_breakfast),"i am hungry", date,false))
         viewModel.eventList.value = eventList
+    }
+
+    fun getEvent() {
+        val db = FirebaseFirestore.getInstance()
+        val settings = FirebaseFirestoreSettings.Builder()
+            .setTimestampsInSnapshotsEnabled(true)
+            .build()
+        db.firestoreSettings = settings
+        db.collection("User")
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    for (document in task.result!!) {
+                        val sub = FirebaseFirestore.getInstance()
+                        sub.collection("User/${document.id}/Event")
+                            .get()
+                            .addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    for (document in task.result!!) {
+                                        Log.d("Sophie_db", document.id + " => " + document.data)
+                                    }
+                                } else {
+                                    Log.w("Sophie_db_fail", "Error getting documents.", task.exception)
+                                }
+                            }
+                    }
+                }
+            }
     }
 
     fun updateCalendar() {

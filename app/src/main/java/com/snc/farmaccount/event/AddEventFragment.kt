@@ -74,5 +74,5 @@ class AddEventFragment : Fragment() {
             getString(R.string.tag_lottery),true))
         viewModel.mark.value = tag
     }
-    
+
 }
