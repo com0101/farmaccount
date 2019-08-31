@@ -68,6 +68,11 @@ class HomeFragment : Fragment(),NavigationListener{
                 .navigate(R.id.action_global_qrCodeFragment)
         }
 
+        binding.imageAddEvent.setOnClickListener {
+            findNavController()
+                .navigate(R.id.action_global_addEventFragment)
+        }
+
         binding.buttonDatePicker.setOnClickListener {
             showDialog()
         }

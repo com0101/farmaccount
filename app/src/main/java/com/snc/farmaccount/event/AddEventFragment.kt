@@ -29,7 +29,10 @@ class AddEventFragment : Fragment() {
 
         binding = FragmentAddEventBinding.inflate(inflater)
         binding.lifecycleOwner = this
-        binding.viewModel
+        binding.viewModel = viewModel
+        binding.tagList.adapter = TagAdapter(TagAdapter.OnClickListener {
+
+        })
 
         binding.imageSave.setOnClickListener {
             findNavController()
@@ -71,7 +74,5 @@ class AddEventFragment : Fragment() {
             getString(R.string.tag_lottery),true))
         viewModel.mark.value = tag
     }
-
-
-
+    
 }

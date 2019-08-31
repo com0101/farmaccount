@@ -155,7 +155,7 @@
             </com.google.android.material.appbar.AppBarLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
         <ImageView
-                android:id="@+id/menu_item"
+                android:id="@+id/image_add_event"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:src="@drawable/add_event"
