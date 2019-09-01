@@ -137,7 +137,7 @@ class HomeFragment : Fragment(),NavigationListener{
             this.context!!, AlertDialog.THEME_HOLO_LIGHT,
             DatePickerDialog.OnDateSetListener { _, year, month, day ->
                 // Display Selected date in Toast
-                val date = Date(year, month, day+3)
+                val date = Date(year, month, day-1)
                 val dayOfWeek = simpledateformat.format(date)
                 currentDayCode = "$year.${month+1}.$day ($dayOfWeek)"
                 setViewPager()

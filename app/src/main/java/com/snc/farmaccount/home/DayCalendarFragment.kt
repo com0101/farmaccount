@@ -15,12 +15,12 @@ import com.snc.farmaccount.databinding.FragmentDayCalendarBinding
 import java.util.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
+import kotlin.collections.ArrayList
 
 class DayCalendarFragment : Fragment() {
 
     private lateinit var binding: FragmentDayCalendarBinding
     var navListener: NavigationListener?= null
-    private var hash = 0
     var date = ""
     var title = ""
 
@@ -42,9 +42,8 @@ class DayCalendarFragment : Fragment() {
         }, viewModel)
 
         arrowButtons()
-        addEvent()
-        viewModel.getEvent()
-        getEvent()
+        viewModel.getFirebase()
+
         return binding.root
     }
 
@@ -60,43 +59,16 @@ class DayCalendarFragment : Fragment() {
 
     }
 
-    private fun addEvent() {
-        var date = Date()
-        val eventList = ArrayList<Event>()
-        eventList.add(Event(0,"12",getString(R.string.tag_breakfast),"i am hungry", date,true))
-        eventList.add(Event(1,"45",getString(R.string.tag_breakfast),"i am hungry", date,true))
-        eventList.add(Event(2,"66",getString(R.string.tag_breakfast),"i am hungry", date,false))
-        eventList.add(Event(3,"80",getString(R.string.tag_breakfast),"i am hungry", date,false))
-        viewModel.eventList.value = eventList
-    }
+//    private fun addEvent() {
+//        var date = Date()
+//        val eventList = ArrayList<Event>()
+//        eventList.add(Event(0,"12",getString(R.string.tag_breakfast),"i am hungry", date,true))
+//        eventList.add(Event(1,"45",getString(R.string.tag_breakfast),"i am hungry", date,true))
+//        eventList.add(Event(2,"66",getString(R.string.tag_breakfast),"i am hungry", date,false))
+//        eventList.add(Event(3,"80",getString(R.string.tag_breakfast),"i am hungry", date,false))
+//        viewModel.eventList.value = eventList
+//    }
 
-    fun getEvent() {
-        val db = FirebaseFirestore.getInstance()
-        val settings = FirebaseFirestoreSettings.Builder()
-            .setTimestampsInSnapshotsEnabled(true)
-            .build()
-        db.firestoreSettings = settings
-        db.collection("User")
-            .get()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    for (document in task.result!!) {
-                        val sub = FirebaseFirestore.getInstance()
-                        sub.collection("User/${document.id}/Event")
-                            .get()
-                            .addOnCompleteListener { task ->
-                                if (task.isSuccessful) {
-                                    for (document in task.result!!) {
-                                        Log.d("Sophie_db", document.id + " => " + document.data)
-                                    }
-                                } else {
-                                    Log.w("Sophie_db_fail", "Error getting documents.", task.exception)
-                                }
-                            }
-                    }
-                }
-            }
-    }
 
     fun updateCalendar() {
 //        val startTimes = Format.getDayStartTS(date)
