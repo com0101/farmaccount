@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.snc.farmaccount.R
 
 import com.snc.farmaccount.`object`.Event
 import com.snc.farmaccount.databinding.ItemAddEventBinding
@@ -51,6 +52,11 @@ class DayEventAdapter(var onClickListener: OnClickListener,var viewModel: DayVie
 
         fun bind(event: Event, selectedPosition: Int) {
             binding.event = event
+            if(event.status!!) {
+                binding.imageTag.setImageResource(R.drawable.tag_payment)
+            } else {
+                binding.imageTag.setImageResource(R.drawable.tag_breakfast)
+            }
 
             binding.executePendingBindings()
         }
