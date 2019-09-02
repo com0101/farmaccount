@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.snc.farmaccount.NavigationListener
 import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.Event
@@ -42,10 +43,18 @@ class DayCalendarFragment : Fragment() {
         viewModel.getFirebase()
 
         binding.eventList.adapter = DayEventAdapter(DayEventAdapter.OnClickListener {
-
+            viewModel.displayPropertyDetails(it)
+            Log.i("Sophie_event","$it")
         }, viewModel)
 
-        Log.i("Sophie_title","$title")
+        viewModel.navigateToDetail.observe(this, androidx.lifecycle.Observer { it ->
+            it?.let {
+                this.findNavController()
+                    .navigate(DayCalendarFragmentDirections.actionGlobalDetailFragment(it))
+                viewModel.displayPropertyDetailsComplete()
+            }
+        })
+
         arrowButtons()
         return binding.root
     }

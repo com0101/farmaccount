@@ -31,6 +31,10 @@ class DayViewModel: ViewModel() {
     val event: LiveData<List<Event>>
         get() = _event
 
+    private val _navigateToDetail = MutableLiveData<Event>()
+    val navigateToDetail: LiveData<Event>
+        get() = _navigateToDetail
+
     init {
         pickDate
         week()
@@ -110,6 +114,15 @@ class DayViewModel: ViewModel() {
             weekName = "星期六"
         }
         DATE_MODE = "$year.${month+1}.$day ($weekName)"
+
+    }
+
+    fun displayPropertyDetails(product: Event) {
+        _navigateToDetail.value = product
+    }
+
+    fun displayPropertyDetailsComplete() {
+        _navigateToDetail.value = null
     }
 
 }

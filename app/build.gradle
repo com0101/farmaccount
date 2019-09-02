@@ -9,6 +9,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs"
 
 apply plugin: 'de.timfreiheit.resourceplaceholders'
+
 apply plugin: 'com.google.gms.google-services'
 
 android {

@@ -7,6 +7,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.snc.farmaccount.`object`.Tag
+import com.snc.farmaccount.helper.Format
+import org.joda.time.DateTime
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -17,11 +20,11 @@ class AddEventViewModel: ViewModel() {
     private var day:Int = 0
     private var week:Int = 0
     private var weekName = ""
-    private var pickDate = MutableLiveData<String>()
     var mark = MutableLiveData<List<Tag>>()
-    var eventInput = MutableLiveData<String>()
+    var priceInput = MutableLiveData<String>()
+    var infoInput = MutableLiveData<String>()
     var chooseTag = MutableLiveData<Tag>()
-    var DATE_MODE = ""
+    var today = MutableLiveData<String>()
 
     private val _tag = MutableLiveData<List<Tag>>()
 
@@ -43,11 +46,11 @@ class AddEventViewModel: ViewModel() {
 
         // Create a new user with a first and last name
         val event = HashMap<String,Any>()
-        event["price"] = "Ada"
-        event["tag"] = "Lovelace"
-        event["description"] = 1815
-        event["date"] = 1815
-        event["status"] = true
+        event["price"] = priceInput.value!!
+        event["tag"] = chooseTag.value!!.tag_name
+        event["description"] = infoInput.value!!
+        event["date"] = today.value!!
+        event["status"] = chooseTag.value!!.tag_status
 
         // Add a new document with a generated ID
         db.collection("User").document("LAkilE0ErjYqmncg1cVq").collection("Event")
@@ -90,7 +93,11 @@ class AddEventViewModel: ViewModel() {
         if(week==7) {
             weekName = "星期六"
         }
-        DATE_MODE = "$year.${month+1}.$day ($weekName)"
+        val getDate = Date(year-1900, month, day)
+        val simpledateformat = SimpleDateFormat("yyyy.MM.dd (EEEE)")
+        today.value = simpledateformat.format(getDate)
+        Log.i("Sophie_date_mode", "$today")
+
     }
 
 }

@@ -39,6 +39,7 @@ class AddEventFragment : Fragment() {
         binding.imageSave.setOnClickListener {
             findNavController()
                 .navigate(AddEventFragmentDirections.actionGlobalHomeFragment())
+            viewModel.addFirebase()
         }
 
         binding.imageBackState.setOnClickListener {
