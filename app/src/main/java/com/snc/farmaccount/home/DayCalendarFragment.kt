@@ -44,7 +44,6 @@ class DayCalendarFragment : Fragment() {
 
         binding.eventList.adapter = DayEventAdapter(DayEventAdapter.OnClickListener {
             viewModel.displayPropertyDetails(it)
-            Log.i("Sophie_event","$it")
         }, viewModel)
 
         viewModel.navigateToDetail.observe(this, androidx.lifecycle.Observer { it ->
@@ -70,17 +69,6 @@ class DayCalendarFragment : Fragment() {
         }
 
     }
-
-//    private fun addEvent() {
-//        var date = Date()
-//        val eventList = ArrayList<Event>()
-//        eventList.add(Event(0,"12",getString(R.string.tag_breakfast),"i am hungry", date,true))
-//        eventList.add(Event(1,"45",getString(R.string.tag_breakfast),"i am hungry", date,true))
-//        eventList.add(Event(2,"66",getString(R.string.tag_breakfast),"i am hungry", date,false))
-//        eventList.add(Event(3,"80",getString(R.string.tag_breakfast),"i am hungry", date,false))
-//        viewModel.eventList.value = eventList
-//    }
-
 
     fun updateCalendar() {
 //        val startTimes = Format.getDayStartTS(date)

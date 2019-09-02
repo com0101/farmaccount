@@ -38,7 +38,6 @@ class DayViewModel: ViewModel() {
     init {
         pickDate
         week()
-
     }
 
     fun getFirebase() {

@@ -1,11 +1,14 @@
 package com.snc.farmaccount.event
 
 
+import android.app.Application
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
+import com.snc.farmaccount.`object`.Event
 import com.snc.farmaccount.`object`.Tag
 import com.snc.farmaccount.helper.Format
 import org.joda.time.DateTime
@@ -13,7 +16,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class AddEventViewModel: ViewModel() {
+class AddEventViewModel : ViewModel() {
 
     private var year: Int = 0
     private var month:Int = 0
@@ -27,7 +30,6 @@ class AddEventViewModel: ViewModel() {
     var today = MutableLiveData<String>()
 
     private val _tag = MutableLiveData<List<Tag>>()
-
     val tag: LiveData<List<Tag>>
         get() = _tag
 
@@ -39,8 +41,6 @@ class AddEventViewModel: ViewModel() {
         _tag.value = mark.value
     }
 
-
-
     fun addFirebase() {
         val db = FirebaseFirestore.getInstance()
 
@@ -51,7 +51,7 @@ class AddEventViewModel: ViewModel() {
         event["description"] = infoInput.value!!
         event["date"] = today.value!!
         event["status"] = chooseTag.value!!.tag_status
-
+        event["month"] = (month+1).toString()
         // Add a new document with a generated ID
         db.collection("User").document("LAkilE0ErjYqmncg1cVq").collection("Event")
             .add(event)

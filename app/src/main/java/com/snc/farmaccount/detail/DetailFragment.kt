@@ -37,10 +37,11 @@ class DetailFragment : Fragment() {
 
         binding.imageEdit.setOnClickListener {
             findNavController()
-                .navigate(DetailFragmentDirections.actionGlobalAddEventFragment())
+                .navigate(DetailFragmentDirections.actionGlobalEditEventFragment(product))
         }
 
         binding.imageDelete.setOnClickListener {
+            viewModel.deleteEvent()
             findNavController()
                 .navigate(DetailFragmentDirections.actionGlobalHomeFragment())
         }

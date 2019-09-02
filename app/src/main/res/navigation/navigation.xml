@@ -16,6 +16,7 @@
               android:name="com.snc.farmaccount.event.AddEventFragment"
               android:label="AddEventFragment"
               tools:layout="@layout/fragment_add_event"/>
+
     <action android:id="@+id/action_global_addEventFragment"
             app:destination="@id/addEventFragment"/>
 
@@ -77,5 +78,16 @@
               tools:layout="@layout/fragment_day_calendar"/>
     <action android:id="@+id/action_global_dayCalendarFragment"
             app:destination="@id/dayCalendarFragment"/>
+
+    <fragment android:id="@+id/editEventFragment"
+              android:name="com.snc.farmaccount.event.EditEventFragment"
+              android:label="EditEventFragment"
+              tools:layout="@layout/fragment_edit_event">
+        <argument android:name="edit"
+                  app:argType="com.snc.farmaccount.object.Event"/>
+    </fragment>
+    <action
+        android:id="@+id/action_global_editEventFragment"
+        app:destination="@id/editEventFragment"/>
 
 </navigation>
