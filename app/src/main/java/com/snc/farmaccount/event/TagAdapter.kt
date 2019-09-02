@@ -20,7 +20,6 @@ class TagAdapter(private var onClickListener: OnClickListener):
         return EventTagViewHolder (
             ItemEventTagBinding
                 .inflate(LayoutInflater.from(parent.context ), parent, false))
-
     }
 
     companion object DiffCallback : DiffUtil.ItemCallback<Tag>() {
@@ -35,18 +34,13 @@ class TagAdapter(private var onClickListener: OnClickListener):
 
     override fun onBindViewHolder(holder: EventTagViewHolder, position: Int) {
         val event : Tag = getItem(position)
-
-
         holder.itemView.setOnClickListener {
             selectedPosition = position
             onClickListener.onClick(event)
             notifyDataSetChanged()
-
         }
-
         holder.bind(event,selectedPosition)
     }
-
 
     class EventTagViewHolder(private var binding: ItemEventTagBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -66,8 +60,6 @@ class TagAdapter(private var onClickListener: OnClickListener):
 
     class OnClickListener(val clickListener: (event : Tag) -> Unit) {
         fun onClick(event : Tag) = clickListener(event)
-
-
     }
 
 }

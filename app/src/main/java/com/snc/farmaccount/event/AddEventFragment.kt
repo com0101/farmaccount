@@ -32,6 +32,7 @@ class AddEventFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         binding.tagList.adapter = TagAdapter(TagAdapter.OnClickListener {
+            viewModel.chooseTag.value = it
             Log.i("Sophie_tag","$it")
         })
 

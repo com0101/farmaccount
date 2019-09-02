@@ -25,12 +25,11 @@ class DayViewModel: ViewModel() {
     var currentDate = MutableLiveData<String>()
     var date = MutableLiveData<String>()
     var dataList = ArrayList<Event>()
+    var DATE_MODE = ""
 
     private val _event = MutableLiveData<List<Event>>()
     val event: LiveData<List<Event>>
         get() = _event
-
-    var DATE_MODE = ""
 
     init {
         pickDate
@@ -40,10 +39,6 @@ class DayViewModel: ViewModel() {
 
     fun getFirebase() {
         val db = FirebaseFirestore.getInstance()
-        val settings = FirebaseFirestoreSettings.Builder()
-            .setTimestampsInSnapshotsEnabled(true)
-            .build()
-        db.firestoreSettings = settings
         db.collection("User").document("LAkilE0ErjYqmncg1cVq").collection("Event")
             .whereEqualTo("date","${pickDate.value}")
             .get()
@@ -51,9 +46,6 @@ class DayViewModel: ViewModel() {
                 if (task.isSuccessful) {
                     for (document in task.result!!) {
                         Log.d("Sophie_db", "${document.id} => ${document.data}")
-//                        val timestamp = document["date"] as String
-//                        val df = DateFormat.getDateTimeInstance()
-//                        df.timeZone = TimeZone.getTimeZone("UTC")
                         firebaseEvent = document.toObject(Event::class.java)
                         dataList.add(firebaseEvent)
 

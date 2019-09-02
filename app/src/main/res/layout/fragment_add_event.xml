@@ -54,6 +54,7 @@
 
         <EditText
                 android:id="@+id/edit_expand"
+                android:text="@={viewModel.eventInput}"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:inputType="textPersonName"
