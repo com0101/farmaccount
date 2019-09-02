@@ -37,13 +37,16 @@ class DayCalendarFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         binding.textDate.text = title
+        viewModel.currentDate.value = title
+        viewModel.getCurrentDate()
+        viewModel.getFirebase()
+
         binding.eventList.adapter = DayEventAdapter(DayEventAdapter.OnClickListener {
 
         }, viewModel)
 
+        Log.i("Sophie_title","$title")
         arrowButtons()
-        viewModel.getFirebase()
-
         return binding.root
     }
 

@@ -1,13 +1,11 @@
 package com.snc.farmaccount.home
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.snc.farmaccount.R
-
 import com.snc.farmaccount.`object`.Event
 import com.snc.farmaccount.databinding.ItemAddEventBinding
 
@@ -15,7 +13,6 @@ class DayEventAdapter(var onClickListener: OnClickListener,var viewModel: DayVie
     ListAdapter<Event, DayEventAdapter.ColorViewHolder>(DiffCallback){
 
     var selectedPosition = -1
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ColorViewHolder {
         return ColorViewHolder (ItemAddEventBinding

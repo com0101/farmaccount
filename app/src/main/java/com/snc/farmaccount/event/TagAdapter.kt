@@ -42,7 +42,6 @@ class TagAdapter(private var onClickListener: OnClickListener):
             onClickListener.onClick(event)
             notifyDataSetChanged()
 
-            Log.i("Sophie_tag","$event")
         }
 
         holder.bind(event,selectedPosition)

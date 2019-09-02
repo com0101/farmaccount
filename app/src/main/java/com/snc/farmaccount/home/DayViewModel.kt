@@ -5,9 +5,13 @@ import androidx.lifecycle.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.snc.farmaccount.`object`.Event
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+
+
+
 
 class DayViewModel: ViewModel() {
 
@@ -16,9 +20,10 @@ class DayViewModel: ViewModel() {
     private var day:Int = 0
     private var week:Int = 0
     private var weekName = ""
-    var date = MutableLiveData<String>()
     private var pickDate = MutableLiveData<String>()
     lateinit var firebaseEvent : Event
+    var currentDate = MutableLiveData<String>()
+    var date = MutableLiveData<String>()
     var dataList = ArrayList<Event>()
 
     private val _event = MutableLiveData<List<Event>>()
@@ -30,6 +35,7 @@ class DayViewModel: ViewModel() {
     init {
         pickDate
         week()
+
     }
 
     fun getFirebase() {
@@ -38,35 +44,49 @@ class DayViewModel: ViewModel() {
             .setTimestampsInSnapshotsEnabled(true)
             .build()
         db.firestoreSettings = settings
-        db.collection("User")
+        db.collection("User").document("LAkilE0ErjYqmncg1cVq").collection("Event")
+            .whereEqualTo("date","${pickDate.value}")
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     for (document in task.result!!) {
-                        val sub = FirebaseFirestore.getInstance()
-                        sub.collection("User/${document.id}/Event")
-                            .get()
-                            .addOnCompleteListener { task ->
-                                if (task.isSuccessful) {
-                                    for (document in task.result!!) {
-                                        val timestamp = document["date"] as com.google.firebase.Timestamp
-                                        val milliseconds = timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000
-                                        val sdf = SimpleDateFormat("yyyy.MM.dd (EEEE)")
-                                        val netDate = Date(milliseconds)
-                                        val date = sdf.format(netDate).toString()
-                                        firebaseEvent = document.toObject(Event::class.java)
-                                        dataList.add(firebaseEvent)
-                                    }
+                        Log.d("Sophie_db", "${document.id} => ${document.data}")
+//                        val timestamp = document["date"] as String
+//                        val df = DateFormat.getDateTimeInstance()
+//                        df.timeZone = TimeZone.getTimeZone("UTC")
+                        firebaseEvent = document.toObject(Event::class.java)
+                        dataList.add(firebaseEvent)
 
-                                } else {
-                                    Log.w("Sophie_db_fail", "Error getting documents.", task.exception)
-                                }
-                                _event.value = dataList
-                                Log.w("Sophie_db_list", "$dataList")
-                            }
+//                        val sub = FirebaseFirestore.getInstance()
+//                        sub.collection("User/${document.id}/Event")
+//                            .get()
+//                            .addOnCompleteListener { task ->
+//                                if (task.isSuccessful) {
+//                                    for (document in task.result!!) {
+//                                        val timestamp = document["date"] as com.google.firebase.Timestamp
+//                                        val milliseconds = timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000
+//                                        val sdf = SimpleDateFormat("yyyy.MM.dd (EEEE)")
+//                                        val netDate = Date(milliseconds)
+//                                        val date = sdf.format(netDate).toString()
+//                                        firebaseEvent = document.toObject(Event::class.java)
+//                                        dataList.add(firebaseEvent)
+//                                    }
+//
+//                                } else {
+//                                    Log.w("Sophie_db_fail", "Error getting documents.", task.exception)
+//                                }
+//                                _event.value = dataList
+//                                Log.w("Sophie_db_list", "$dataList")
+//                            }
                     }
                 }
+                _event.value = dataList
+                Log.w("Sophie_db_list", "$dataList")
             }
+    }
+
+    fun getCurrentDate() {
+        pickDate.value = currentDate.value
     }
 
     private fun week() {
@@ -97,7 +117,6 @@ class DayViewModel: ViewModel() {
         if(week==7) {
             weekName = "星期六"
         }
-
         DATE_MODE = "$year.${month+1}.$day ($weekName)"
     }
 

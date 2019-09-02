@@ -52,6 +52,7 @@ class HomeFragment : Fragment(),NavigationListener{
         binding.dayViewpager.id = (System.currentTimeMillis() % 100000).toInt()
         setViewPager()
         refreshEvents()
+//        viewModel.currentDate.value = currentDayCode
 
         binding.buttonBudget.setOnClickListener {
             findNavController()
@@ -81,6 +82,9 @@ class HomeFragment : Fragment(),NavigationListener{
             goToToday()
         }
 
+        viewModel.date.observe(this, androidx.lifecycle.Observer {
+
+        })
         return binding.root
     }
 
