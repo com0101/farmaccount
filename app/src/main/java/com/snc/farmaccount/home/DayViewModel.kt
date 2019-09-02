@@ -51,9 +51,6 @@ class DayViewModel: ViewModel() {
                 if (task.isSuccessful) {
                     for (document in task.result!!) {
                         Log.d("Sophie_db", "${document.id} => ${document.data}")
-//                        val timestamp = document["date"] as String
-//                        val df = DateFormat.getDateTimeInstance()
-//                        df.timeZone = TimeZone.getTimeZone("UTC")
                         firebaseEvent = document.toObject(Event::class.java)
                         dataList.add(firebaseEvent)
 
