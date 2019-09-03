@@ -121,17 +121,15 @@ class LogInFragment : Fragment() {
                         editor.putString("Name", user.displayName ).apply()
                         editor.putString("email", user.email ).apply()
                         viewModel.getProfile()
+                        findNavController()
+                            .navigate(R.id.action_global_loadingFragment)
                         GlobalScope.launch(context = Dispatchers.Main) {
-                            findNavController()
-                                .navigate(R.id.action_global_loadingFragment)
                             delay(2500)
                             Log.i("Sophie_profile", "${viewModel.checkFirst.value}")
                             if(viewModel.checkFirst.value == false) {
-
                                 findNavController()
                                     .navigate(R.id.action_global_homeFragment)
                             } else {
-
                                 findNavController()
                                     .navigate(R.id.action_global_chooseFragment)
                             }

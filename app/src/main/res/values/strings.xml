@@ -35,6 +35,12 @@
     <string name="tag_traffic">交通</string>
     <string name="tag_fun">娛樂</string>
     <string name="tag_lottery">中獎</string>
+    <string name="catalog_eat">食</string>
+    <string name="catalog_cloth">衣</string>
+    <string name="catalog_live">住</string>
+    <string name="catalog_traffic">行</string>
+    <string name="catalog_fun">樂</string>
+    <string name="catalog_income">收入</string>
     <string name="sure_btn">OK</string>
 
 

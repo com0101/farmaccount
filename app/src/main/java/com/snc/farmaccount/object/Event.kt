@@ -10,5 +10,6 @@ data class Event (
     var description: String ?= null,
     var date: String ?= null,
     var status: Boolean ?= null,
-    var month: String ?= null
+    var month: String ?= null,
+    var catalog: String ?= null
 ): Parcelable

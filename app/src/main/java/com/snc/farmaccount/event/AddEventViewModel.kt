@@ -53,6 +53,7 @@ class AddEventViewModel : ViewModel() {
         event["date"] = today.value!!
         event["status"] = chooseTag.value!!.tag_status
         event["month"] = (month+1).toString()
+        event["catalog"] = chooseTag.value!!.tag_catalog
         // Add a new document with a generated ID
         db.collection("User").document("${UserManager.userToken}").collection("Event")
             .add(event)
