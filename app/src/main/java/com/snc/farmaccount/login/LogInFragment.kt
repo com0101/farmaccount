@@ -1,6 +1,7 @@
 package com.snc.farmaccount.login
 
 
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation.findNavController
@@ -94,11 +96,11 @@ class LogInFragment : Fragment() {
     }
 
     private fun updateUI(account: FirebaseUser?) {
-        binding.buttonLogOut.setOnClickListener {
-            googleSignInClient.signOut().addOnCompleteListener {
-                Log.i("Sophie_click", "click")
-            }
-        }
+//        binding.buttonLogOut.setOnClickListener {
+//            googleSignInClient.signOut().addOnCompleteListener {
+//                Log.i("Sophie_click", "click")
+//            }
+//        }
     }
 
     private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
@@ -120,12 +122,16 @@ class LogInFragment : Fragment() {
                         editor.putString("email", user.email ).apply()
                         viewModel.getProfile()
                         GlobalScope.launch(context = Dispatchers.Main) {
+                            findNavController()
+                                .navigate(R.id.action_global_loadingFragment)
                             delay(2500)
                             Log.i("Sophie_profile", "${viewModel.checkFirst.value}")
                             if(viewModel.checkFirst.value == false) {
+
                                 findNavController()
                                     .navigate(R.id.action_global_homeFragment)
                             } else {
+
                                 findNavController()
                                     .navigate(R.id.action_global_chooseFragment)
                             }

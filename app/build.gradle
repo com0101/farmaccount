@@ -87,4 +87,7 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-auth:4.2.1'
     implementation 'com.google.firebase:firebase-core:16.0.6'
 
+    //GIF
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.17'
+
 }

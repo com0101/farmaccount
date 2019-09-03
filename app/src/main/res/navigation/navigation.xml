@@ -93,6 +93,15 @@
     <fragment android:id="@+id/logInFragment"
               android:name="com.snc.farmaccount.login.LogInFragment"
               android:label="LogInFragment"
-              tools:layout="@layout/fragment_log_in"/><action android:id="@+id/action_global_logInFragment" app:destination="@id/logInFragment"/>
+              tools:layout="@layout/fragment_log_in"/>
+    <action android:id="@+id/action_global_logInFragment"
+            app:destination="@id/logInFragment"/>
+
+    <fragment android:id="@+id/loadingFragment"
+              android:name="com.snc.farmaccount.login.LoadingFragment"
+              android:label="LoadingFragment"
+              tools:layout="@layout/dialog_loading"/>
+    <action android:id="@+id/action_global_loadingFragment"
+            app:destination="@id/loadingFragment"/>
 
 </navigation>

@@ -7,6 +7,9 @@
     <string name="hint_description">描述</string>
     <string name="price_tool_text">-$80</string>
     <string name="check_content_tool">XXXXXXXXXXXXXXXXXXXXXXXXXX</string>
+    <string name="GOOGLE_LOG_IN">GOOGLE 登入</string>
+    <string name="logo">FARM account</string>
+    <string name="loading">LOADING......</string>
 
     //title
     <string name="expand_title">支出金額</string>
