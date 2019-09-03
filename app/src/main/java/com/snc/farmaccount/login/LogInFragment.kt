@@ -28,6 +28,10 @@ import com.snc.farmaccount.MainActivity
 
 import com.snc.farmaccount.R
 import com.snc.farmaccount.databinding.FragmentLogInBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class LogInFragment : Fragment() {
@@ -56,9 +60,8 @@ class LogInFragment : Fragment() {
             .requestEmail()
             .build()
         googleSignInClient = GoogleSignIn.getClient(ApplicationContext.applicationContext(), googleSignInOptions)
-        navigationToHome()
         logIn()
-
+        navigationToHome()
         return binding.root
     }
 
@@ -66,6 +69,7 @@ class LogInFragment : Fragment() {
         binding.signInButton.setOnClickListener {
             Log.i("Sophie_click", "click")
             signInGoogle()
+
         }
     }
 
@@ -82,10 +86,9 @@ class LogInFragment : Fragment() {
                 // Google Sign In was successful, authenticate with Firebase
                 val account = task.getResult(ApiException::class.java)
                 firebaseAuthWithGoogle(account!!)
+
             } catch (e: ApiException) {
-                // Google Sign In failed, update UI appropriately
                 Log.w("Sophie_fire_google", "Google sign in failed", e)
-                // ...
             }
         }
     }
@@ -109,21 +112,35 @@ class LogInFragment : Fragment() {
                     Log.d("Sophie_fire_google", "signInWithCredential:success")
                     val user = firebaseAuth.currentUser
                     if (user != null) {
-                        updateUI(user)
                         val usersToken = this.context?.
                             getSharedPreferences("Token", Context.MODE_PRIVATE)
                         val editor = usersToken!!.edit()
                         editor.putString("Token", user.uid ).apply()
-                        Log.i("Sophie_fire_google", "UID:" + user.uid)
+                        editor.putString("Name", user.displayName ).apply()
+                        editor.putString("email", user.email ).apply()
+                        viewModel.getProfile()
+                        GlobalScope.launch(context = Dispatchers.Main) {
+                            delay(2500)
+                            Log.i("Sophie_profile", "${viewModel.checkFirst.value}")
+                            if(viewModel.checkFirst.value == false) {
+                                findNavController()
+                                    .navigate(R.id.action_global_homeFragment)
+                            } else {
+                                findNavController()
+                                    .navigate(R.id.action_global_chooseFragment)
+                            }
+                        }
+
                     }
+
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w("Sophie_fire_google", "signInWithCredential:failure", task.exception)
-                    Toast.makeText(this.context, "Authentication Failed.", Toast.LENGTH_SHORT).show()
                     updateUI(null)
                 }
 
             }
+
     }
 
     override fun onStart() {
@@ -134,11 +151,14 @@ class LogInFragment : Fragment() {
     }
 
     private fun navigationToHome() {
-        if (viewModel.checkLogIn.value!!) {
-           findNavController()
-               .navigate(R.id.action_global_homeFragment)
+        if (viewModel.checkLogIn.value == true) {
+            findNavController()
+                .navigate(R.id.action_global_homeFragment)
         }
-
+//        if (viewModel.checkFirst.value == null) {
+//            findNavController()
+//                .navigate(R.id.action_global_chooseFragment)
+//        }
     }
 
 }

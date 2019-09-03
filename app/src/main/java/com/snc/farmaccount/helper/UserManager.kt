@@ -1,7 +1,8 @@
-package com.snc.farmaccount
+package com.snc.farmaccount.helper
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.snc.farmaccount.ApplicationContext
 
 object UserManager {
 
@@ -23,5 +24,23 @@ object UserManager {
 
         set(value) {
             field = preferences?.edit()?.putString("Token", value)?.apply().toString()
+        }
+    var userName: String? = null
+
+        get() {
+            return preferences?.getString("Name", null)
+        }
+
+        set(value) {
+            field = preferences?.edit()?.putString("Name", value)?.apply().toString()
+        }
+    var userEmail: String? = null
+
+        get() {
+            return preferences?.getString("email", null)
+        }
+
+        set(value) {
+            field = preferences?.edit()?.putString("email", value)?.apply().toString()
         }
 }

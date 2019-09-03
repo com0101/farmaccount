@@ -2,21 +2,14 @@ package com.snc.farmaccount.home
 
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import com.snc.farmaccount.NavigationListener
-import com.snc.farmaccount.R
-import com.snc.farmaccount.`object`.Event
+import com.snc.farmaccount.helper.NavigationListener
 import com.snc.farmaccount.databinding.FragmentDayCalendarBinding
-import java.util.*
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreSettings
-import kotlin.collections.ArrayList
 
 class DayCalendarFragment : Fragment() {
 

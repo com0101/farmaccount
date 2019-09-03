@@ -1,12 +1,11 @@
 package com.snc.farmaccount.home
 
 import android.os.Bundle
-import android.util.Log
 import android.util.SparseArray
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
-import com.snc.farmaccount.NavigationListener
+import com.snc.farmaccount.helper.NavigationListener
 import com.snc.farmaccount.helper.DAY_CODE
 
 

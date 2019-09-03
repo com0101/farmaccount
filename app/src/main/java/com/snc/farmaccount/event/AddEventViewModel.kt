@@ -11,6 +11,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.snc.farmaccount.`object`.Event
 import com.snc.farmaccount.`object`.Tag
 import com.snc.farmaccount.helper.Format
+import com.snc.farmaccount.helper.UserManager
 import org.joda.time.DateTime
 import java.text.SimpleDateFormat
 import java.util.*
@@ -53,7 +54,7 @@ class AddEventViewModel : ViewModel() {
         event["status"] = chooseTag.value!!.tag_status
         event["month"] = (month+1).toString()
         // Add a new document with a generated ID
-        db.collection("User").document("LAkilE0ErjYqmncg1cVq").collection("Event")
+        db.collection("User").document("${UserManager.userToken}").collection("Event")
             .add(event)
             .addOnSuccessListener { documentReference ->
                 Log.d(

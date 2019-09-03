@@ -5,6 +5,7 @@ import androidx.lifecycle.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.snc.farmaccount.`object`.Event
+import com.snc.farmaccount.helper.UserManager
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -42,16 +43,19 @@ class DayViewModel: ViewModel() {
 
     fun getFirebase() {
         val db = FirebaseFirestore.getInstance()
-        db.collection("User").document("LAkilE0ErjYqmncg1cVq").collection("Event")
+        db.collection("User").document("${UserManager.userToken}").collection("Event")
             .whereEqualTo("date","${pickDate.value}")
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     for (document in task.result!!) {
                         Log.d("Sophie_db", "${document.id} => ${document.data}")
-                        firebaseEvent = document.toObject(Event::class.java)
-                        dataList.add(firebaseEvent)
-
+                        if(document.data != null) {
+                            firebaseEvent = document.toObject(Event::class.java)
+                            dataList.add(firebaseEvent)
+                        } else {
+                            Log.d("Sophie_db", "no data")
+                        }
 //                        val sub = FirebaseFirestore.getInstance()
 //                        sub.collection("User/${document.id}/Event")
 //                            .get()
@@ -92,7 +96,7 @@ class DayViewModel: ViewModel() {
         week = c.get(Calendar.DAY_OF_WEEK)
 
         if(week==1) {
-            weekName = "星期日"
+            weekName = "星期六"
         }
         if(week==2) {
             weekName = "星期一"
@@ -112,6 +116,7 @@ class DayViewModel: ViewModel() {
         if(week==7) {
             weekName = "星期六"
         }
+
         DATE_MODE = "$year.${month+1}.$day ($weekName)"
 
     }

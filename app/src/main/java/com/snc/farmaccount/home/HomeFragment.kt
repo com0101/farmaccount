@@ -2,28 +2,25 @@ package com.snc.farmaccount.home
 
 
 import android.app.AlertDialog
-import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
-import com.snc.farmaccount.NavigationListener
+import com.snc.farmaccount.helper.NavigationListener
 import com.snc.farmaccount.R
 import com.snc.farmaccount.databinding.FragmentHomeBinding
 import com.snc.farmaccount.helper.Format
 import java.text.SimpleDateFormat
 import java.util.*
 import android.app.DatePickerDialog
-import android.widget.Toast
 
 
-class HomeFragment : Fragment(),NavigationListener{
+class HomeFragment : Fragment(), NavigationListener {
 
     private lateinit var binding: FragmentHomeBinding
     private val PREFILLED_DAYS = 251

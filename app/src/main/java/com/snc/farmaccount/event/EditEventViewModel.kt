@@ -9,6 +9,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.simplemobiletools.commons.extensions.toBoolean
 import com.snc.farmaccount.`object`.Event
 import com.snc.farmaccount.`object`.Tag
+import com.snc.farmaccount.helper.UserManager
 import java.util.HashMap
 
 class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(app) {
@@ -50,14 +51,14 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
         event["status"] = detail.value!!.status!!.toBoolean()
         event["month"] = month.toString()
         // Add a new document with a generated ID
-        db.collection("User").document("LAkilE0ErjYqmncg1cVq").collection("Event")
+        db.collection("User").document("${UserManager.userToken}").collection("Event")
             .whereEqualTo("description","${detail.value?.description}")
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     for (document in task.result!!) {
                         Log.d("Sophie_db", "${document.id} => ${document.data}")
-                        db.collection("User").document("LAkilE0ErjYqmncg1cVq").collection("Event")
+                        db.collection("User").document("${UserManager.userToken}").collection("Event")
                             .document("${document.id}")
                             .update(event)
                             .addOnSuccessListener { documentReference ->
