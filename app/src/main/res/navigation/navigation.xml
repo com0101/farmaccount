@@ -93,6 +93,6 @@
     <fragment android:id="@+id/logInFragment"
               android:name="com.snc.farmaccount.login.LogInFragment"
               android:label="LogInFragment"
-              tools:layout="@layout/fragment_log_in"/>
+              tools:layout="@layout/fragment_log_in"/><action android:id="@+id/action_global_logInFragment" app:destination="@id/logInFragment"/>
 
 </navigation>
