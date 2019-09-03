@@ -51,7 +51,7 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
         event["month"] = month.toString()
         // Add a new document with a generated ID
         db.collection("User").document("LAkilE0ErjYqmncg1cVq").collection("Event")
-            .whereEqualTo("description","${infoInput.value}")
+            .whereEqualTo("description","${detail.value?.description}")
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {

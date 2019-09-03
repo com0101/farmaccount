@@ -81,4 +81,10 @@ dependencies {
     // Floating Action Bar
     implementation 'com.github.clans:fab:1.6.4'
 
+    // Firebase google log in
+    implementation 'com.google.firebase:firebase-auth:19.0.0'
+    implementation 'com.google.android.gms:play-services-auth:17.0.0'
+    implementation 'com.firebaseui:firebase-ui-auth:4.2.1'
+    implementation 'com.google.firebase:firebase-core:16.0.6'
+
 }

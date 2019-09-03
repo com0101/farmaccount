@@ -41,9 +41,9 @@ class DetailFragment : Fragment() {
         }
 
         binding.imageDelete.setOnClickListener {
-            viewModel.deleteEvent()
+//            viewModel.deleteEvent()
             findNavController()
-                .navigate(DetailFragmentDirections.actionGlobalHomeFragment())
+                .navigate(DetailFragmentDirections.actionGlobalCheckDialog())
         }
 
         binding.imageBackState.setOnClickListener {

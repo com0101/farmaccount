@@ -3,7 +3,7 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/navigation"
-            app:startDestination="@id/chooseFragment">
+            app:startDestination="@id/logInFragment">
 
     <fragment android:id="@+id/homeFragment"
               android:name="com.snc.farmaccount.home.HomeFragment"
@@ -89,5 +89,10 @@
     <action
         android:id="@+id/action_global_editEventFragment"
         app:destination="@id/editEventFragment"/>
+
+    <fragment android:id="@+id/logInFragment"
+              android:name="com.snc.farmaccount.login.LogInFragment"
+              android:label="LogInFragment"
+              tools:layout="@layout/fragment_log_in"/>
 
 </navigation>
