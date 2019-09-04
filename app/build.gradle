@@ -96,5 +96,8 @@ dependencies {
 
     // ScrollingPagerIndicator
     implementation "ru.tinkoff.scrollingpagerindicator:scrollingpagerindicator:1.0.6"
+    implementation "androidx.viewpager2:viewpager2:1.0.0-alpha04"
+
+
 
 }

@@ -12,6 +12,7 @@ class BudgetViewModel : ViewModel() {
         get() = _budget
 
     var budgetType = MutableLiveData<List<Budget>>()
+    var selectPosition =  MutableLiveData<Int>()
 
     init {
 

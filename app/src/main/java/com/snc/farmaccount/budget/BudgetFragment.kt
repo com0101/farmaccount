@@ -1,24 +1,21 @@
 package com.snc.farmaccount.budget
 
-import android.content.Context
-import android.net.Uri
+
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import androidx.viewpager.widget.PagerAdapter
-import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.Budget
 import com.snc.farmaccount.choose.ChooseFragmentDirections
 import com.snc.farmaccount.databinding.FragmentBudgetBinding
-import com.snc.farmaccount.databinding.ItemFarmTypeBinding
+
 
 class BudgetFragment : Fragment() {
 
@@ -37,35 +34,62 @@ class BudgetFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-        binding.farmList.adapter = BudgetAdapter(BudgetAdapter.OnClickListener {
+        binding.farmList.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
-        }, viewModel)
+        binding.imageArrowRight.setOnClickListener {
+            binding.farmList.currentItem = binding.farmList.currentItem + 1
+            if (binding.farmList.currentItem == 2) {
+                binding.imageArrowRight.visibility = View.INVISIBLE
+            } else {
+                binding.imageArrowLeft.visibility = View.VISIBLE
+            }
+        }
 
-//        binding.slideViewPager.setOnClickListener {
-//            findNavController()
-//                .navigate(ChooseFragmentDirections.actionGlobalAmountInputDialog())
-//        }
-
-//        binding.imageArrowRight.setOnClickListener {
-//            binding.slideViewPager.currentItem = binding.slideViewPager.currentItem + 1
-//            if (binding.slideViewPager.currentItem == 2) {
-//                binding.imageArrowRight.visibility = View.INVISIBLE
-//            } else {
-//                binding.imageArrowLeft.visibility = View.VISIBLE
-//            }
-//        }
-//
-//        binding.imageArrowLeft.setOnClickListener {
-//            binding.slideViewPager.currentItem = binding.slideViewPager.currentItem - 1
-//            if (binding.slideViewPager.currentItem == 0) {
-//                binding.imageArrowLeft.visibility = View.INVISIBLE
-//            } else {
-//                binding.imageArrowRight.visibility = View.VISIBLE
-//            }
-//        }
+        binding.imageArrowLeft.setOnClickListener {
+            binding.farmList.currentItem = binding.farmList.currentItem - 1
+            if (binding.farmList.currentItem == 0) {
+                binding.imageArrowLeft.visibility = View.INVISIBLE
+            } else {
+                binding.imageArrowRight.visibility = View.VISIBLE
+            }
+        }
         addBudget()
         viewModel.getBudget()
+        binding.farmList.adapter = BudgetAdapter(budget,BudgetAdapter.OnClickListener {
+            Log.i("Sophie","$it")
+
+        })
+        getPager2()
+        changeArrow()
         return binding.root
+    }
+
+    private fun getPager2() {
+        binding.farmList.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                viewModel.selectPosition.value = position
+                Log.i("Sophie","${viewModel.selectPosition.value}")
+                // No boilerplate, only useful
+            }
+        })
+    }
+
+    private fun changeArrow() {
+        viewModel.selectPosition.observe(this, Observer {
+            Log.i("Sophie2","$it")
+            if(it == 0) {
+                binding.imageArrowLeft.visibility = View.GONE
+            } else {
+                binding.imageArrowRight.visibility = View.VISIBLE
+            }
+            if (it == 2) {
+                binding.imageArrowRight.visibility = View.INVISIBLE
+            } else {
+                binding.imageArrowLeft.visibility = View.VISIBLE
+            }
+        })
+
     }
 
     private fun addBudget() {

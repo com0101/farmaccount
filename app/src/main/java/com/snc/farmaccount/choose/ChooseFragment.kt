@@ -7,9 +7,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-
+import androidx.viewpager2.widget.ViewPager2
 import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.Budget
 import com.snc.farmaccount.budget.BudgetAdapter
@@ -34,35 +35,63 @@ class ChooseFragment : Fragment() {
         binding = FragmentChooseBinding.inflate(inflater)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-
-        binding.farmList.adapter = BudgetAdapter(BudgetAdapter.OnClickListener {
-            findNavController()
-                .navigate(ChooseFragmentDirections.actionGlobalAmountInputDialog())
-        },viewModel)
-        binding.farmIndicator.attachToRecyclerView(binding.farmList)
+        binding.farmList.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
         binding.imageArrowRight.setOnClickListener {
-
-            Log.i("Sophie_budget","${ binding.farmList.getChildItemId(it)}")
-//            if (binding.slideViewPager.currentItem == 2) {
-//                binding.imageArrowRight.visibility = View.INVISIBLE
-//            } else {
-//                binding.imageArrowLeft.visibility = View.VISIBLE
-//            }
+            binding.farmList.currentItem = binding.farmList.currentItem + 1
+            if (binding.farmList.currentItem == 2) {
+                binding.imageArrowRight.visibility = View.INVISIBLE
+            } else {
+                binding.imageArrowLeft.visibility = View.VISIBLE
+            }
         }
 
         binding.imageArrowLeft.setOnClickListener {
-//            binding.slideViewPager.currentItem = binding.slideViewPager.currentItem - 1
-//            if (binding.slideViewPager.currentItem == 0) {
-//                binding.imageArrowLeft.visibility = View.INVISIBLE
-//            } else {
-//                binding.imageArrowRight.visibility = View.VISIBLE
-//            }
+            binding.farmList.currentItem = binding.farmList.currentItem - 1
+            if (binding.farmList.currentItem == 0) {
+                binding.imageArrowLeft.visibility = View.INVISIBLE
+            } else {
+                binding.imageArrowRight.visibility = View.VISIBLE
+            }
         }
         addBudget()
         viewModel.getBudget()
-
+        binding.farmList.adapter = ChooseAdapter(budget,ChooseAdapter.OnClickListener {
+            Log.i("Sophie","$it")
+            findNavController()
+                .navigate(ChooseFragmentDirections.actionGlobalAmountInputDialog())
+        })
+        getPager2()
+        changeArrow()
         return binding.root
+    }
+
+    private fun getPager2() {
+        binding.farmList.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                viewModel.selectPosition.value = position
+                Log.i("Sophie","${viewModel.selectPosition.value}")
+                // No boilerplate, only useful
+            }
+        })
+    }
+
+    private fun changeArrow() {
+        viewModel.selectPosition.observe(this, Observer {
+            Log.i("Sophie2","$it")
+            if(it == 0) {
+                binding.imageArrowLeft.visibility = View.GONE
+            } else {
+                binding.imageArrowRight.visibility = View.VISIBLE
+            }
+            if (it == 2) {
+                binding.imageArrowRight.visibility = View.INVISIBLE
+            } else {
+                binding.imageArrowLeft.visibility = View.VISIBLE
+            }
+        })
+
     }
 
     private fun addBudget() {
@@ -71,8 +100,5 @@ class ChooseFragment : Fragment() {
         budget.add(Budget(R.drawable.hen, R.drawable.tag_lunch_press, "10000", "25000"))
         viewModel.budgetType.value = budget
     }
-
-
-
 
 }

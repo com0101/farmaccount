@@ -1,22 +1,14 @@
-package com.snc.farmaccount.budget
-
-
+package com.snc.farmaccount.choose
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.Budget
-import com.snc.farmaccount.databinding.ItemFarmEditBinding
 import com.snc.farmaccount.databinding.ItemFarmTypeBinding
-import kotlinx.android.synthetic.main.item_farm_type.view.*
 
-class BudgetAdapter(private val budget: ArrayList<Budget>,var onClickListener: OnClickListener) : RecyclerView.Adapter<BudgetAdapter.BudgetViewHolder>() {
+class ChooseAdapter(private val budget: ArrayList<Budget>, var onClickListener: OnClickListener) : RecyclerView.Adapter<ChooseAdapter.BudgetViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BudgetViewHolder {
-        return BudgetViewHolder( ItemFarmEditBinding
+        return BudgetViewHolder( ItemFarmTypeBinding
             .inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
@@ -33,7 +25,7 @@ class BudgetAdapter(private val budget: ArrayList<Budget>,var onClickListener: O
 
     override fun getItemCount() = budget.size
 
-    class BudgetViewHolder(private var binding: ItemFarmEditBinding) :
+    class BudgetViewHolder(private var binding: ItemFarmTypeBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(budget: Budget) {
@@ -50,4 +42,3 @@ class BudgetAdapter(private val budget: ArrayList<Budget>,var onClickListener: O
         fun onClick(budget: Budget) = clickListener(budget)
     }
 }
-

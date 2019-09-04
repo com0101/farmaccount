@@ -26,10 +26,3 @@ fun bindTag(recyclerView: RecyclerView, data: List<Tag>?) {
     }
 }
 
-@BindingAdapter("listBudget")
-fun bindBudget(recyclerView: RecyclerView, data: List<Budget>?) {
-    val adapter = recyclerView.adapter as BudgetAdapter
-    data?.let {
-        adapter.submitList(data)
-    }
-}
