@@ -91,7 +91,10 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-auth:4.2.1'
     implementation 'com.google.firebase:firebase-core:16.0.6'
 
-    //GIF
+    // GIF
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.17'
+
+    // ScrollingPagerIndicator
+    implementation "ru.tinkoff.scrollingpagerindicator:scrollingpagerindicator:1.0.6"
 
 }

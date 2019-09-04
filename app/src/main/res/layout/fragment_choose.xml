@@ -4,7 +4,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable name="viewModel" type="com.snc.farmaccount.budget.BudgetViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -12,18 +12,27 @@
             android:layout_height="match_parent"
             tools:context=".choose.ChooseFragment">
 
-
-        <ImageView
-                android:layout_width="300dp"
-                android:layout_height="300dp"
-                android:id="@+id/image_farm_catalog"
-                android:layout_marginBottom="216dp"
-                android:layout_marginStart="55dp"
-                android:layout_marginTop="215dp"
-                app:srcCompat="@color/gray_green"
+        <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                app:listBudget="@{viewModel.budget}"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                android:id="@+id/farm_list">
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator
+                android:id="@+id/farm_indicator"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="16dp"/>
 
         <ImageView
                 android:layout_width="60dp"
@@ -35,7 +44,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:srcCompat="@android:drawable/ic_media_play"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" android:visibility="visible"/>
 
         <ImageView
                 android:layout_width="60dp"
@@ -48,6 +57,6 @@
                 app:srcCompat="@android:drawable/ic_media_play"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintBottom_toBottomOf="parent" android:visibility="invisible"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
