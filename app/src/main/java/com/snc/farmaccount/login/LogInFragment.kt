@@ -1,7 +1,6 @@
 package com.snc.farmaccount.login
 
 
-import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -10,30 +9,24 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
-import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.FirebaseFirestore
 import com.snc.farmaccount.ApplicationContext
 import com.snc.farmaccount.MainActivity
-
 import com.snc.farmaccount.R
 import com.snc.farmaccount.databinding.FragmentLogInBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.snc.farmaccount.helper.UserManager
+import kotlinx.coroutines.*
 
 
 class LogInFragment : Fragment() {
@@ -63,13 +56,13 @@ class LogInFragment : Fragment() {
             .build()
         googleSignInClient = GoogleSignIn.getClient(ApplicationContext.applicationContext(), googleSignInOptions)
         logIn()
+
         navigationToHome()
         return binding.root
     }
 
     private fun logIn() {
         binding.signInButton.setOnClickListener {
-            Log.i("Sophie_click", "click")
             signInGoogle()
 
         }
@@ -92,77 +85,63 @@ class LogInFragment : Fragment() {
             } catch (e: ApiException) {
                 Log.w("Sophie_fire_google", "Google sign in failed", e)
             }
+
         }
     }
-
-    private fun updateUI(account: FirebaseUser?) {
-//        binding.buttonLogOut.setOnClickListener {
-//            googleSignInClient.signOut().addOnCompleteListener {
-//                Log.i("Sophie_click", "click")
-//            }
-//        }
-    }
-
-    private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
+    fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
         Log.d("Sophie_fire_google", "firebaseAuthWithGoogle:" + account.id!!)
-
+        var firebaseAuth = FirebaseAuth.getInstance()
         val credential = GoogleAuthProvider.getCredential(account.idToken, null)
         firebaseAuth.signInWithCredential(credential)
-            .addOnCompleteListener(this.activity as MainActivity) { task ->
+            .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("Sophie_fire_google", "signInWithCredential:success")
                     val user = firebaseAuth.currentUser
                     if (user != null) {
-                        val usersToken = this.context?.
-                            getSharedPreferences("Token", Context.MODE_PRIVATE)
+                        val usersToken = ApplicationContext.applicationContext()
+                            .getSharedPreferences("Token", Context.MODE_PRIVATE)
                         val editor = usersToken!!.edit()
                         editor.putString("Token", user.uid ).apply()
                         editor.putString("Name", user.displayName ).apply()
                         editor.putString("email", user.email ).apply()
                         viewModel.getProfile()
-                        findNavController()
-                            .navigate(R.id.action_global_loadingFragment)
-                        GlobalScope.launch(context = Dispatchers.Main) {
-                            delay(2500)
-                            Log.i("Sophie_profile", "${viewModel.checkFirst.value}")
-                            if(viewModel.checkFirst.value == false) {
-                                findNavController()
-                                    .navigate(R.id.action_global_homeFragment)
-                            } else {
-                                findNavController()
-                                    .navigate(R.id.action_global_chooseFragment)
-                            }
-                        }
+                        checkUserStatus()
 
                     }
 
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w("Sophie_fire_google", "signInWithCredential:failure", task.exception)
-                    updateUI(null)
                 }
 
             }
-
     }
 
-    override fun onStart() {
-        super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = firebaseAuth.currentUser
-        updateUI(currentUser)
-    }
+
 
     private fun navigationToHome() {
         if (viewModel.checkLogIn.value == true) {
             findNavController()
                 .navigate(R.id.action_global_homeFragment)
         }
-//        if (viewModel.checkFirst.value == null) {
-//            findNavController()
-//                .navigate(R.id.action_global_chooseFragment)
-//        }
     }
+
+    private fun checkUserStatus() {
+        CoroutineScope(Dispatchers.IO).launch {
+            findNavController()
+                .navigate(R.id.action_global_loadingFragment)
+            delay(2500)
+            if(viewModel.checkFirst.value == true) {
+                findNavController()
+                    .navigate(R.id.action_global_chooseFragment)
+            } else {
+                findNavController()
+                    .navigate(R.id.action_global_homeFragment)
+            }
+        }
+
+    }
+
 
 }

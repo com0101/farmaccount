@@ -74,25 +74,25 @@ class AddEventViewModel : ViewModel() {
         day = c.get(Calendar.DAY_OF_MONTH)
         week = c.get(Calendar.DAY_OF_WEEK)
 
-        if(week==1) {
+        if (week==1) {
             weekName = "星期日"
         }
-        if(week==2) {
+        if (week==2) {
             weekName = "星期一"
         }
-        if(week==3) {
+        if (week==3) {
             weekName = "星期二"
         }
-        if(week==4) {
+        if (week==4) {
             weekName = "星期三"
         }
-        if(week==5) {
+        if (week==5) {
             weekName = "星期四"
         }
-        if(week==6) {
+        if (week==6) {
             weekName = "星期五"
         }
-        if(week==7) {
+        if (week==7) {
             weekName = "星期六"
         }
         val getDate = Date(year-1900, month, day)

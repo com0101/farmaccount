@@ -87,7 +87,7 @@
                 android:id="@+id/edit_description"
                 android:text="@={viewModel.infoInput}"
                 android:layout_width="0dp"
-                android:layout_height="280dp"
+                android:layout_height="200dp"
                 android:inputType="textPersonName"
                 android:background="@drawable/description_border"
                 android:ems="10"

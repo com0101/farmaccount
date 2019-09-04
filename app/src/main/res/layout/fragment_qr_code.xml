@@ -43,14 +43,12 @@
                 android:id="@+id/surfaceView"
                 android:layout_width="0dp"
                 android:layout_height="368dp"
-                android:layout_marginTop="60dp"
                 android:layout_marginEnd="45dp"
                 android:layout_marginStart="45dp"
-                android:layout_marginBottom="254dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_statistic"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                android:layout_marginTop="50dp" app:layout_constraintTop_toBottomOf="@+id/text_statistic"
+        />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
