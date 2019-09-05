@@ -52,7 +52,7 @@
 
             <EditText
                     android:id="@+id/text_budget"
-                    android:text="20000"
+                    android:text="@={viewModel.budgetPrice}"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:paddingStart="6dp"

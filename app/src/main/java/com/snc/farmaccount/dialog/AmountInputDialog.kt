@@ -56,14 +56,14 @@ class AmountInputDialog : DialogFragment() {
 
         viewModel.detail.observe(this, Observer{
             Log.i("Sophie_getType", "$it")
-            val usersToken = ApplicationContext.applicationContext()
-                .getSharedPreferences("Budget", Context.MODE_PRIVATE)
-            val editor = usersToken!!.edit()
-            editor.putInt("FarmImage", it.farmImage ).apply()
-            editor.putInt("Farmtype", it.farmtype ).apply()
-            editor.putString("RangeStart", it.rangeStart ).apply()
-            editor.putString("RangeEnd", it.rangeEnd ).apply()
-            editor.putString("BudgetPrice", it.budgetPrice ).apply()
+//            val usersToken = ApplicationContext.applicationContext()
+//                .getSharedPreferences("Budget", Context.MODE_PRIVATE)
+//            val editor = usersToken!!.edit()
+//            editor.putInt("FarmImage", it.farmImage ).apply()
+//            editor.putInt("Farmtype", it.farmtype ).apply()
+//            editor.putString("RangeStart", it.rangeStart ).apply()
+//            editor.putString("RangeEnd", it.rangeEnd ).apply()
+//            editor.putString("BudgetPrice", it.budgetPrice ).apply()
             viewModel.getRange(it)
         })
         // Inflate the layout for this fragment

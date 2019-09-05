@@ -20,7 +20,7 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
     var chooseTag = MutableLiveData<Tag>()
     var today = MutableLiveData<String>()
     var month :Int = 0
-    var idCheck = MutableLiveData<String>()
+
 
 
     private val _tag = MutableLiveData<List<Tag>>()
@@ -53,7 +53,6 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
         event["status"] = detail.value!!.status!!.toBoolean()
         event["month"] = month.toString()
         // Add a new document with a generated ID
-        idCheck.value = UserManager.userToken!!.substring(0,20)
 
         db.collection("User").document("${UserManager.userToken}").collection("Event")
             .whereEqualTo("description","${detail.value?.description}")

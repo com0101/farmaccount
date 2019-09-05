@@ -3,11 +3,9 @@ package com.snc.farmaccount.home
 import android.util.Log
 import androidx.lifecycle.*
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.snc.farmaccount.`object`.Event
 import com.snc.farmaccount.helper.UserManager
-import java.text.DateFormat
-import java.text.SimpleDateFormat
+import java.text.DecimalFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -25,9 +23,10 @@ class DayViewModel: ViewModel() {
     lateinit var firebaseEvent : Event
     var currentDate = MutableLiveData<String>()
     var date = MutableLiveData<String>()
+    var budgetPrice = MutableLiveData<String>()
     var dataList = ArrayList<Event>()
     var DATE_MODE = ""
-    var idCheck = MutableLiveData<String>()
+
 
     private val _event = MutableLiveData<List<Event>>()
     val event: LiveData<List<Event>>
@@ -40,11 +39,11 @@ class DayViewModel: ViewModel() {
     init {
         pickDate
         week()
+        getBudget()
     }
 
     fun getFirebase() {
         val db = FirebaseFirestore.getInstance()
-        idCheck.value = UserManager.userToken!!.substring(0,20)
         db.collection("User").document("${UserManager.userToken}").collection("Event")
             .whereEqualTo("date","${pickDate.value}")
             .get()
@@ -83,6 +82,21 @@ class DayViewModel: ViewModel() {
                 }
                 _event.value = dataList
                 Log.w("Sophie_db_list", "$dataList")
+            }
+    }
+
+    private fun getBudget() {
+        val db = FirebaseFirestore.getInstance()
+        val decimalFormat = DecimalFormat("#,###")
+        db.collection("User").document("${UserManager.userToken}").collection("Budget")
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    for (document in task.result!!) {
+                        Log.d("Sophie_db", "${document.id} => ${document.data["budgetPrice"]}")
+                        budgetPrice.value = decimalFormat.format(document.data["budgetPrice"].toString().toDouble())
+                    }
+                }
             }
     }
 

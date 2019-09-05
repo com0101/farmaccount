@@ -55,7 +55,7 @@
 
                 <TextView
                         android:id="@+id/text_budget"
-                        android:text="@string/budget_number"
+                        android:text="@{viewModel.budgetPrice}"
                         android:layout_width="0dp"
                         android:layout_height="30dp"
                         android:paddingStart="6dp"
