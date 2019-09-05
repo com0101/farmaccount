@@ -3,7 +3,7 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/navigation"
-            app:startDestination="@id/chooseFragment">
+            app:startDestination="@id/logInFragment">
 
     <fragment android:id="@+id/homeFragment"
               android:name="com.snc.farmaccount.home.HomeFragment"
@@ -68,7 +68,10 @@
     <dialog android:id="@+id/amountInputDialog"
             android:name="com.snc.farmaccount.dialog.AmountInputDialog"
             android:label="AmountInputDialog"
-            tools:layout="@layout/dialog_amount_input"/>
+            tools:layout="@layout/dialog_amount_input">
+        <argument android:name="amount"
+                  app:argType="com.snc.farmaccount.object.Budget"/>
+    </dialog>
     <action android:id="@+id/action_global_amountInputDialog"
             app:destination="@id/amountInputDialog"/>
 

@@ -21,6 +21,7 @@ import kotlinx.coroutines.*
 class LogInViewModel :  ViewModel() {
     var checkLogIn = MutableLiveData<Boolean>()
     var checkFirst = MutableLiveData<Boolean>()
+    var idCheck = MutableLiveData<String>()
     var chaneFragment = MutableLiveData<Boolean>()
 
     private var viewModelJob = Job()
@@ -44,28 +45,29 @@ class LogInViewModel :  ViewModel() {
         user["name"] = UserManager.userName!!
         user["email"] = UserManager.userEmail!!
 
+        idCheck.value = UserManager.userToken!!.substring(0,20)
         // Add a new document with a generated ID
         db.collection("User")
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
+                    Log.d("Sophie_userToken", "${UserManager.userToken}")
                     for (document in task.result!!) {
                         Log.d("Sophie_db", "${document.id} => ${document.data}")
-
-                        if (document?.id != UserManager.userToken) {
-                            checkFirst.value = true
-                            Log.i("Sophie_check","${checkFirst.value}")
+                        if (document.id == UserManager.userToken) {
+                            checkFirst.value = false
+                            break
+                        } else {
                             Log.d("Sophie_profile", "not such file: ")
                             db.collection("User").document("${UserManager.userToken}")
                                 .set(user)
                                 .addOnSuccessListener { Log.d("Sophie_profile_add", "DocumentSnapshot successfully written!") }
                                 .addOnFailureListener { e -> Log.w("Sophie_profile_add", "Error writing document", e) }
-
-                        } else {
-                           checkFirst.value = false
+                            checkFirst.value = true
+                            Log.i("Sophie_check","${checkFirst.value}")
                         }
-
                     }
+
                 }
             }
     }

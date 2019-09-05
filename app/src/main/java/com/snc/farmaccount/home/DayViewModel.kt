@@ -27,6 +27,7 @@ class DayViewModel: ViewModel() {
     var date = MutableLiveData<String>()
     var dataList = ArrayList<Event>()
     var DATE_MODE = ""
+    var idCheck = MutableLiveData<String>()
 
     private val _event = MutableLiveData<List<Event>>()
     val event: LiveData<List<Event>>
@@ -43,6 +44,7 @@ class DayViewModel: ViewModel() {
 
     fun getFirebase() {
         val db = FirebaseFirestore.getInstance()
+        idCheck.value = UserManager.userToken!!.substring(0,20)
         db.collection("User").document("${UserManager.userToken}").collection("Event")
             .whereEqualTo("date","${pickDate.value}")
             .get()

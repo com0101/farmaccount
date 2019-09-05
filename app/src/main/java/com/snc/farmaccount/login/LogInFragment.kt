@@ -107,7 +107,6 @@ class LogInFragment : Fragment() {
                         editor.putString("email", user.email ).apply()
                         viewModel.getProfile()
                         checkUserStatus()
-
                     }
 
                 } else {

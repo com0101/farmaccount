@@ -56,8 +56,7 @@ class BudgetFragment : Fragment() {
         addBudget()
         viewModel.getBudget()
         binding.farmList.adapter = BudgetAdapter(budget,BudgetAdapter.OnClickListener {
-            Log.i("Sophie","$it")
-
+            viewModel.getBudgetType.value = it
         })
         getPager2()
         changeArrow()

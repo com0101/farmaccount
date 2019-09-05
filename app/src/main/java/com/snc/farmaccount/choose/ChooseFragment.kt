@@ -13,9 +13,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.Budget
-import com.snc.farmaccount.budget.BudgetAdapter
 import com.snc.farmaccount.budget.BudgetViewModel
 import com.snc.farmaccount.databinding.FragmentChooseBinding
+import com.snc.farmaccount.dialog.AmountInputDialogArgs
 
 
 class ChooseFragment : Fragment() {
@@ -54,12 +54,13 @@ class ChooseFragment : Fragment() {
                 binding.imageArrowRight.visibility = View.VISIBLE
             }
         }
+
         addBudget()
         viewModel.getBudget()
         binding.farmList.adapter = ChooseAdapter(budget,ChooseAdapter.OnClickListener {
-            Log.i("Sophie","$it")
+            viewModel.getBudgetType.value = it
             findNavController()
-                .navigate(ChooseFragmentDirections.actionGlobalAmountInputDialog())
+                .navigate(ChooseFragmentDirections.actionGlobalAmountInputDialog(it))
         })
         getPager2()
         changeArrow()

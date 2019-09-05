@@ -29,6 +29,7 @@ class AddEventViewModel : ViewModel() {
     var infoInput = MutableLiveData<String>()
     var chooseTag = MutableLiveData<Tag>()
     var today = MutableLiveData<String>()
+    var idCheck = MutableLiveData<String>()
 
     private val _tag = MutableLiveData<List<Tag>>()
     val tag: LiveData<List<Tag>>
@@ -54,6 +55,8 @@ class AddEventViewModel : ViewModel() {
         event["status"] = chooseTag.value!!.tag_status
         event["month"] = (month+1).toString()
         event["catalog"] = chooseTag.value!!.tag_catalog
+
+        idCheck.value = UserManager.userToken!!.substring(0,20)
         // Add a new document with a generated ID
         db.collection("User").document("${UserManager.userToken}").collection("Event")
             .add(event)
