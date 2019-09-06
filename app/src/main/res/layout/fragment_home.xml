@@ -133,6 +133,15 @@
                     android:layout_marginTop="10dp"
                     app:layout_constraintTop_toBottomOf="@+id/button_statistic"/>
 
+            <ImageView
+                    android:id="@+id/image_add_event"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/add_event"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toTopOf="@+id/appBarLayout" app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="8dp"/>
             <com.google.android.material.appbar.AppBarLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
@@ -146,7 +155,7 @@
                 <androidx.viewpager.widget.ViewPager
                         android:id="@+id/dayViewpager"
                         android:layout_width="wrap_content"
-                        android:layout_height="250dp"
+                        android:layout_height="match_parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -154,15 +163,5 @@
                 </androidx.viewpager.widget.ViewPager>
             </com.google.android.material.appbar.AppBarLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
-        <ImageView
-                android:id="@+id/image_add_event"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/add_event"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginStart="8dp"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginBottom="15dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

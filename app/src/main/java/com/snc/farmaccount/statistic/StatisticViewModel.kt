@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.snc.farmaccount.`object`.Event
-import com.snc.farmaccount.`object`.StatisticCatalog
 import com.snc.farmaccount.helper.UserManager
 
 class StatisticViewModel : ViewModel() {
