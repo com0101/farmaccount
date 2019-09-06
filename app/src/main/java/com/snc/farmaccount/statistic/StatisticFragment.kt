@@ -9,11 +9,13 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 
 import com.snc.farmaccount.R
+import com.snc.farmaccount.`object`.StatisticCatalog
 import com.snc.farmaccount.databinding.FragmentStatisticBinding
 
 class StatisticFragment : Fragment() {
 
     private lateinit var binding: FragmentStatisticBinding
+    var tag = ArrayList<StatisticCatalog>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,13 +25,27 @@ class StatisticFragment : Fragment() {
         binding  = FragmentStatisticBinding.inflate(inflater)
         binding.lifecycleOwner = this
 
+        binding.tagList.adapter = StatisticTagAdapter(tag,StatisticTagAdapter.OnClickListener {
+
+        })
+
          binding.imageBackState.setOnClickListener {
             findNavController()
                 .navigate(StatisticFragmentDirections.actionGlobalHomeFragment())
         }
+        statisticTag()
         // Inflate the layout for this fragment
         return binding.root
     }
 
+    private fun statisticTag() {
+       tag.add(StatisticCatalog(getString(R.string.statistic_tag)))
+       tag.add(StatisticCatalog(getString(R.string.catalog_eat)))
+       tag.add(StatisticCatalog(getString(R.string.catalog_cloth)))
+       tag.add(StatisticCatalog(getString(R.string.catalog_live)))
+       tag.add(StatisticCatalog(getString(R.string.catalog_traffic)))
+       tag.add(StatisticCatalog(getString(R.string.catalog_fun)))
+       tag.add(StatisticCatalog(getString(R.string.catalog_income)))
+    }
 
 }

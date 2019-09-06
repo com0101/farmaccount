@@ -5,6 +5,5 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class StatisticCatalog (
-    var name: String,
-    var catalog: String
+    var name: String
 ): Parcelable
