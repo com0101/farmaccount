@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FirebaseFirestore
 import com.snc.farmaccount.`object`.Budget
 import com.snc.farmaccount.helper.UserManager
+import java.text.DecimalFormat
 import java.util.HashMap
 
 
@@ -39,7 +40,7 @@ class AmountViewModel(budget: Budget, app: Application) : AndroidViewModel(app) 
                     amountCheck.value = false
                     Log.i("Sophie_amount", "${amountCheck.value}")
                 }
-                else -> detail.value?.budgetPrice = amount.value
+                else -> detail.value?.budgetPrice = amount.value!!
             }
         Log.i("Sophie_input", "${detail.value?.budgetPrice} + $rangeEnd + $rangeStart")
     }
@@ -51,7 +52,6 @@ class AmountViewModel(budget: Budget, app: Application) : AndroidViewModel(app) 
 
     fun addBudget() {
         val db = FirebaseFirestore.getInstance()
-
         // Create a new user with a first and last name
         val budget = HashMap<String,Any>()
         budget["farmImage"] = detail.value?.farmImage!!
@@ -59,7 +59,7 @@ class AmountViewModel(budget: Budget, app: Application) : AndroidViewModel(app) 
         budget["rangeStart"] = detail.value?.rangeStart!!
         budget["rangeEnd"] = detail.value?.rangeEnd!!
         budget["budgetPrice"] = detail.value?.budgetPrice!!
-
+        budget["position"] = detail.value?.position!!
         // Add a new document with a generated ID
         db.collection("User").document("${UserManager.userToken}")
             .collection("Budget").document("${UserManager.userToken}")

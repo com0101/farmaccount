@@ -9,5 +9,6 @@ data class Budget (
     var farmtype: Int,
     var rangeStart: String,
     var rangeEnd: String,
-    var budgetPrice: String ?= null
+    var budgetPrice: String,
+    var position: Int
 ): Parcelable

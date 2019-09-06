@@ -66,6 +66,7 @@ class LogInViewModel :  ViewModel() {
                             checkFirst.value = true
                             Log.i("Sophie_check","${checkFirst.value}")
                         }
+                        Log.i("Sophie_check2","${checkFirst.value}")
                     }
 
                 }
