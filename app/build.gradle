@@ -103,5 +103,4 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v2.2.4'
 
 
-
 }

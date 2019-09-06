@@ -31,17 +31,14 @@ class StatisticFragment : Fragment() {
         binding  = FragmentStatisticBinding.inflate(inflater)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-        viewModel.getFirebase()
+
 
         binding.tagList.adapter = StatisticTagAdapter(tag,StatisticTagAdapter.OnClickListener {
 
         })
 
-        binding.detailList.adapter = StatisticEventAdapter(StatisticEventAdapter.OnClickListener {
 
-        }, viewModel)
-
-         binding.imageBackState.setOnClickListener {
+        binding.imageBackState.setOnClickListener {
             findNavController()
                 .navigate(StatisticFragmentDirections.actionGlobalHomeFragment())
         }
