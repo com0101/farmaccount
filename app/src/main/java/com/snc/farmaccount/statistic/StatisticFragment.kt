@@ -6,16 +6,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 
 import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.StatisticCatalog
 import com.snc.farmaccount.databinding.FragmentStatisticBinding
+import com.snc.farmaccount.home.DayViewModel
 
 class StatisticFragment : Fragment() {
 
     private lateinit var binding: FragmentStatisticBinding
     var tag = ArrayList<StatisticCatalog>()
+
+    private val viewModel: StatisticViewModel by lazy {
+        ViewModelProviders.of(this).get(StatisticViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,10 +30,16 @@ class StatisticFragment : Fragment() {
 
         binding  = FragmentStatisticBinding.inflate(inflater)
         binding.lifecycleOwner = this
+        binding.viewModel = viewModel
+        viewModel.getFirebase()
 
         binding.tagList.adapter = StatisticTagAdapter(tag,StatisticTagAdapter.OnClickListener {
 
         })
+
+        binding.detailList.adapter = StatisticEventAdapter(StatisticEventAdapter.OnClickListener {
+
+        }, viewModel)
 
          binding.imageBackState.setOnClickListener {
             findNavController()

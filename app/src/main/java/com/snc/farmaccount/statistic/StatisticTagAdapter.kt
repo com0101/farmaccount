@@ -17,10 +17,8 @@ class StatisticTagAdapter(private val budget: ArrayList<StatisticCatalog>, var o
     override fun onBindViewHolder(holder: TagViewHolder, position: Int) {
         var catalog: StatisticCatalog = budget[position]
         holder.itemView.setOnClickListener {
-
             onClickListener.onClick(catalog)
             notifyDataSetChanged()
-
         }
         holder.bind(catalog)
     }
