@@ -3,7 +3,8 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="event" type="com.snc.farmaccount.object.Event"/>
+        <variable name="sum" type="com.snc.farmaccount.object.SumEvent"/>
+        <variable name="viewModel" type="com.snc.farmaccount.statistic.StatisticViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

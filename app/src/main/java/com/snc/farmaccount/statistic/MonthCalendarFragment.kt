@@ -2,13 +2,14 @@ package com.snc.farmaccount.statistic
 
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 
-import com.snc.farmaccount.R
 import com.snc.farmaccount.databinding.FragmentMonthCalendarBinding
 
 class MonthCalendarFragment : Fragment() {
@@ -36,6 +37,15 @@ class MonthCalendarFragment : Fragment() {
         binding.totalList.adapter = StatisticEventAdapter(StatisticEventAdapter.OnClickListener {
 
         }, viewModel)
+
+        viewModel.eventByCatagory.observe(this, Observer { it ->
+            Log.i("Sophie_eat", "$it")
+            it?.let {
+                (binding.detailList.adapter as StatisticEventAdapter).submitList(it)
+            }
+        })
+
+
 
         return binding.root
     }
