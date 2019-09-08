@@ -112,7 +112,7 @@ class DayViewModel: ViewModel() {
         week = c.get(Calendar.DAY_OF_WEEK)
 
         if (week==1) {
-            weekName = "星期六"
+            weekName = "星期日"
         }
         if (week==2) {
             weekName = "星期一"
@@ -134,6 +134,7 @@ class DayViewModel: ViewModel() {
         }
 
         DATE_MODE = "$year.${month+1}.$day ($weekName)"
+//        Log.i("today","$DATE_MODE")
 
     }
 

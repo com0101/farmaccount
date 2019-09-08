@@ -9,6 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/gray"
             tools:context=".statistic.MonthCalendarFragment">
 
         <com.github.mikephil.charting.charts.PieChart
@@ -16,7 +17,8 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" android:id="@+id/pieChart">
+                app:layout_constraintTop_toTopOf="parent"
+                android:id="@+id/pieChart">
 
         </com.github.mikephil.charting.charts.PieChart>
 
@@ -25,7 +27,8 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:id="@+id/date" app:layout_constraintHorizontal_bias="0.0"
+                android:id="@+id/date"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintTop_toBottomOf="@+id/pieChart">
 
             <TextView
@@ -75,7 +78,7 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:id="@+id/total_list"
-                app:listStatistic="@{viewModel.eventByEat}"
+                app:listStatistic="@{viewModel.event}"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
@@ -96,7 +99,7 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/total_list">
+                app:layout_constraintTop_toBottomOf="@+id/total_list" android:visibility="gone">
         </androidx.recyclerview.widget.RecyclerView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
