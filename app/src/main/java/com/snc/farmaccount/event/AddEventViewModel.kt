@@ -30,6 +30,7 @@ class AddEventViewModel : ViewModel() {
     var chooseTag = MutableLiveData<Tag>()
     var today = MutableLiveData<String>()
     var idCheck = MutableLiveData<String>()
+    var monthFormat = MutableLiveData<String>()
 
     private val _tag = MutableLiveData<List<Tag>>()
     val tag: LiveData<List<Tag>>
@@ -53,7 +54,7 @@ class AddEventViewModel : ViewModel() {
         event["description"] = infoInput.value!!
         event["date"] = today.value!!
         event["status"] = chooseTag.value!!.tag_status
-        event["month"] = (month+1).toString()
+        event["month"] = monthFormat.value.toString()
         event["catalog"] = chooseTag.value!!.tag_catalog
 
         idCheck.value = UserManager.userToken!!.substring(0,20)
@@ -100,8 +101,10 @@ class AddEventViewModel : ViewModel() {
         }
         val getDate = Date(year-1900, month, day)
         val simpledateformat = SimpleDateFormat("yyyy.MM.dd (EEEE)")
+        val monthformat = SimpleDateFormat("MM")
+        monthFormat.value = monthformat.format(getDate)
         today.value = simpledateformat.format(getDate)
-        Log.i("Sophie_date_mode", "$today")
+        Log.i("Sophie_date_mode", "${monthFormat.value}")
 
     }
 

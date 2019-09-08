@@ -29,6 +29,8 @@ class StatisticViewModel : ViewModel() {
     private var day:Int = 0
     private var week:Int = 0
     private var weekName = ""
+    private var pickMonth = MutableLiveData<String>()
+    var currentMonth = MutableLiveData<String>()
     var date = MutableLiveData<String>()
     var DATE_MODE = ""
 
@@ -53,9 +55,14 @@ class StatisticViewModel : ViewModel() {
         week()
     }
 
+    fun getCurrentMonth() {
+        pickMonth.value = currentMonth.value
+    }
+
     fun getFirebase() {
         val db = FirebaseFirestore.getInstance()
         db.collection("User").document("${UserManager.userToken}").collection("Event")
+            .whereEqualTo("month","${pickMonth.value}")
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {

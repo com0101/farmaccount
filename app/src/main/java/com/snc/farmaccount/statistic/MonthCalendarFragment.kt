@@ -35,6 +35,8 @@ class MonthCalendarFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         binding.textMonth.text = title
+        viewModel.currentMonth.value = title.substring(5,7)
+        viewModel.getCurrentMonth()
         viewModel.getFirebase()
 
         binding.detailList.adapter = StatisticEventAdapter(StatisticEventAdapter.OnClickListener {

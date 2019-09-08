@@ -43,7 +43,7 @@
                     app:layout_constraintTop_toTopOf="@+id/image_arrow_left"
                     app:layout_constraintBottom_toBottomOf="@+id/image_arrow_left"
                     app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintVertical_bias="1.0"/>
+                    app:layout_constraintVertical_bias="0.50"/>
 
             <ImageView
                     android:id="@+id/image_arrow_right"

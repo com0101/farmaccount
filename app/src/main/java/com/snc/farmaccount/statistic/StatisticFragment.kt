@@ -55,6 +55,7 @@ class StatisticFragment : Fragment(), NavigationListener {
         statisticTag()
         setViewPager()
         refreshEvents()
+
         // Inflate the layout for this fragment
         return binding.root
     }
@@ -75,7 +76,7 @@ class StatisticFragment : Fragment(), NavigationListener {
 
                 override fun onPageSelected(position: Int) {
                     currentDayCode = codes[position]
-                    Log.i("Sophie_position","$currentDayCode")
+                    Log.i("Sophie_position","${viewModel.currentMonth.value}")
                 }
             })
             currentItem = defaultDailyPage
