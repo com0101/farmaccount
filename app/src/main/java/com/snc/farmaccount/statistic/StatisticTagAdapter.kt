@@ -4,11 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.snc.farmaccount.`object`.StatisticCatalog
-import com.snc.farmaccount.databinding.ItemFarmEditBinding
 import com.snc.farmaccount.databinding.ItemStatisticTagBinding
 
 class StatisticTagAdapter(private val budget: ArrayList<StatisticCatalog>, var onClickListener: OnClickListener)
     : RecyclerView.Adapter<StatisticTagAdapter.TagViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TagViewHolder {
         return TagViewHolder( ItemStatisticTagBinding
             .inflate(LayoutInflater.from(parent.context), parent, false))

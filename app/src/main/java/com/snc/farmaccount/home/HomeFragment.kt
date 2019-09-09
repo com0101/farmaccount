@@ -101,7 +101,7 @@ class HomeFragment : Fragment(), NavigationListener {
 
                 override fun onPageSelected(position: Int) {
                     currentDayCode = codes[position]
-                    viewModel.date.value = currentDayCode
+//                    viewModel.date.value = currentDayCode
                     Log.i("Sophie_position","${viewModel.date.value}")
                 }
             })

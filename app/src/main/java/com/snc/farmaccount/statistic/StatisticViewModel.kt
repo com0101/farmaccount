@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.snc.farmaccount.`object`.Event
 import com.snc.farmaccount.`object`.StatisticCatalog
+import com.snc.farmaccount.`object`.SumEvent
 import com.snc.farmaccount.helper.UserManager
 import java.util.*
 import kotlin.collections.ArrayList
@@ -18,10 +19,10 @@ class StatisticViewModel : ViewModel() {
     val event: LiveData<List<Event>>
         get() = _event
 
-//    private val _firebaseEvent = MutableLiveData<Event>()
-//
-//    val firebaseEvent: LiveData<Event>
-//        get() = _firebaseEvent
+    private val _sum = MutableLiveData<List<SumEvent>>()
+
+    val sum: LiveData<List<SumEvent>>
+        get() = _sum
 
     val catagory = MutableLiveData<StatisticCatalog>()
     private var year: Int = 0
@@ -31,7 +32,7 @@ class StatisticViewModel : ViewModel() {
     private var weekName = ""
     private var pickMonth = MutableLiveData<String>()
     var currentMonth = MutableLiveData<String>()
-    var date = MutableLiveData<String>()
+    var sumEvent = MutableLiveData<List<SumEvent>>()
     var DATE_MODE = ""
 
 
@@ -47,6 +48,65 @@ class StatisticViewModel : ViewModel() {
         it.sumBy { it.price!!.toInt() }
     }
 
+    val eventByEat: LiveData<List<Event>> = Transformations.map(event) { it ->
+        it.filter {
+            it.catalog == "食"
+        }
+    }
+
+    val eventByEatPrice: LiveData<Int> = Transformations.map(eventByEat) { it ->
+        it.sumBy { it.price!!.toInt() }
+    }
+
+    val eventByCloth: LiveData<List<Event>> = Transformations.map(event) { it ->
+        it.filter {
+            it.catalog == "衣"
+        }
+    }
+
+    val eventByClothPrice: LiveData<Int> = Transformations.map(eventByCloth) { it ->
+        it.sumBy { it.price!!.toInt() }
+    }
+
+    val eventByLive: LiveData<List<Event>> = Transformations.map(event) { it ->
+        it.filter {
+            it.catalog == "住"
+        }
+    }
+
+    val eventByLivePrice: LiveData<Int> = Transformations.map(eventByLive) { it ->
+        it.sumBy { it.price!!.toInt() }
+    }
+
+    val eventByTraffic: LiveData<List<Event>> = Transformations.map(event) { it ->
+        it.filter {
+            it.catalog == "行"
+        }
+    }
+
+    val eventByTrafficPrice: LiveData<Int> = Transformations.map(eventByTraffic) { it ->
+        it.sumBy { it.price!!.toInt() }
+    }
+
+    val eventByFun: LiveData<List<Event>> = Transformations.map(event) { it ->
+        it.filter {
+            it.catalog == "樂"
+        }
+    }
+
+    val eventByFunPrice: LiveData<Int> = Transformations.map(eventByFun) { it ->
+        it.sumBy { it.price!!.toInt() }
+    }
+
+    val eventByIncome: LiveData<List<Event>> = Transformations.map(event) { it ->
+        it.filter {
+            it.catalog == "收入"
+        }
+    }
+
+    val eventByIncomePrice: LiveData<Int> = Transformations.map(eventByIncome) { it ->
+        it.sumBy { it.price!!.toInt() }
+    }
 
     var dataList = ArrayList<Event>()
     lateinit var firebaseEvent : Event
@@ -57,6 +117,9 @@ class StatisticViewModel : ViewModel() {
 
     fun getCurrentMonth() {
         pickMonth.value = currentMonth.value
+    }
+    fun getSum() {
+        _sum.value = sumEvent.value
     }
 
     fun getFirebase() {
@@ -78,6 +141,7 @@ class StatisticViewModel : ViewModel() {
                     }
                 }
                 _event.value = dataList
+                getSum()
                 Log.w("Sophie_db_list", "$dataList")
             }
     }
