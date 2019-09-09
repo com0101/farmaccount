@@ -33,6 +33,7 @@ class StatisticViewModel : ViewModel() {
     private var pickMonth = MutableLiveData<String>()
     var currentMonth = MutableLiveData<String>()
     var sumEvent = MutableLiveData<List<SumEvent>>()
+    var filter = MutableLiveData<StatisticCatalog>()
     var DATE_MODE = ""
 
 
@@ -120,6 +121,11 @@ class StatisticViewModel : ViewModel() {
     }
     fun getSum() {
         _sum.value = sumEvent.value
+    }
+
+    fun getType() {
+        Log.i("Sophie_cata", "${catagory.value}")
+        filter.value = catagory.value
     }
 
     fun getFirebase() {

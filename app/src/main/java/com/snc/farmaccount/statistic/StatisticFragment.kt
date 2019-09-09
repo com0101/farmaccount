@@ -1,24 +1,25 @@
 package com.snc.farmaccount.statistic
 
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
-
 import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.StatisticCatalog
 import com.snc.farmaccount.databinding.FragmentStatisticBinding
 import com.snc.farmaccount.helper.Format
 import com.snc.farmaccount.helper.NavigationListener
-import com.snc.farmaccount.home.DayViewModel
-import com.snc.farmaccount.home.DayViewPagerAdapter
+
+
+
 
 class StatisticFragment : Fragment(), NavigationListener {
 
@@ -26,8 +27,8 @@ class StatisticFragment : Fragment(), NavigationListener {
     var tag = ArrayList<StatisticCatalog>()
     private val PREFILLED_MONTHS = 251
     private var defaultDailyPage = 0
-    private var todayDayCode = ""
     private var currentDayCode = ""
+    var RESPONSE_EVALUATE = "response_evaluate"
 
     private val viewModel: StatisticViewModel by lazy {
         ViewModelProviders.of(this).get(StatisticViewModel::class.java)
@@ -42,10 +43,13 @@ class StatisticFragment : Fragment(), NavigationListener {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         currentDayCode= viewModel.DATE_MODE
+
+
+
         binding.tagList.adapter = StatisticTagAdapter(tag,StatisticTagAdapter.OnClickListener {
-
+            viewModel.catagory.value = it
+            setResult(it)
         })
-
 
         binding.imageBackState.setOnClickListener {
             findNavController()
@@ -58,6 +62,25 @@ class StatisticFragment : Fragment(), NavigationListener {
 
         // Inflate the layout for this fragment
         return binding.root
+    }
+
+    private fun setResult(category: StatisticCatalog) {
+//        if (targetFragment == null){
+//            Log.d("Sophie_cata", "fail")
+//            return
+//        }
+//        else {
+//            val intent = Intent()
+//            intent.putExtra(RESPONSE_EVALUATE, category)
+//            targetFragment?.onActivityResult(MonthCalendarFragment().REQUEST_EVALUATE, Activity.RESULT_OK,intent)
+//            Log.d("Sophie_cata", "value = $category")
+//        }
+
+        val bundle = Bundle()
+        bundle.putParcelable("object", category)
+        val fragment = MonthCalendarFragment()
+        fragment.arguments = bundle
+        Log.d("Sophie_cata", "value = $category")
     }
 
     private fun setViewPager() {
@@ -76,7 +99,7 @@ class StatisticFragment : Fragment(), NavigationListener {
 
                 override fun onPageSelected(position: Int) {
                     currentDayCode = codes[position]
-                    Log.i("Sophie_position","${viewModel.currentMonth.value}")
+                    Log.i("Sophie_position","$currentDayCode")
                 }
             })
             currentItem = defaultDailyPage
