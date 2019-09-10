@@ -14,7 +14,6 @@ import com.snc.farmaccount.home.DayViewModel
 class MonthViewPagerAdapter
     (fragmentManager: FragmentManager,
      private val dayCodes: List<String>,
-     private val navListener: NavigationListener,
      var viewModel: StatisticViewModel
 ) :
     FragmentStatePagerAdapter(fragmentManager) {
@@ -30,7 +29,6 @@ class MonthViewPagerAdapter
 
         val fragment = MonthCalendarFragment()
         fragment.arguments = bundle
-        fragment.navListener = navListener
         fragment.title = "${bundle["day_code"]}".substring(0,7)
 //        Log.i("Sophie_bundle", "${bundle["day_code"]}")
 

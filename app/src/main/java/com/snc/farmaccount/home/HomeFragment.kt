@@ -20,7 +20,7 @@ import java.util.*
 import android.app.DatePickerDialog
 
 
-class HomeFragment : Fragment(), NavigationListener {
+class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
     private val PREFILLED_DAYS = 251
@@ -49,6 +49,7 @@ class HomeFragment : Fragment(), NavigationListener {
         binding.dayViewpager.id = (System.currentTimeMillis() % 100000).toInt()
         setViewPager()
         refreshEvents()
+        arrowButtons()
 //        viewModel.currentDate.value = currentDayCode
 
         binding.buttonBudget.setOnClickListener {
@@ -87,7 +88,7 @@ class HomeFragment : Fragment(), NavigationListener {
 
     private fun setViewPager() {
         val codes = getDays(currentDayCode)
-        val dailyAdapter = DayViewPagerAdapter(childFragmentManager, codes, this,viewModel)
+        val dailyAdapter = DayViewPagerAdapter(childFragmentManager, codes, viewModel)
         defaultDailyPage = codes.size / 2
 
         binding.dayViewpager.apply {
@@ -101,7 +102,6 @@ class HomeFragment : Fragment(), NavigationListener {
 
                 override fun onPageSelected(position: Int) {
                     currentDayCode = codes[position]
-//                    viewModel.date.value = currentDayCode
                     Log.i("Sophie_position","${viewModel.date.value}")
                 }
             })
@@ -118,13 +118,25 @@ class HomeFragment : Fragment(), NavigationListener {
         return days
     }
 
-    override fun goLeft() {
-        binding.dayViewpager.currentItem = binding.dayViewpager.currentItem - 1
+    private fun arrowButtons(){
+
+        binding.imageArrowRight.setOnClickListener {
+            binding.dayViewpager.currentItem = binding.dayViewpager.currentItem - 1
+        }
+
+        binding.imageArrowLeft.setOnClickListener {
+            binding.dayViewpager.currentItem = binding.dayViewpager.currentItem + 1
+        }
+
     }
 
-    override fun goRight() {
-        binding.dayViewpager.currentItem = binding.dayViewpager.currentItem + 1
-    }
+//    override fun goLeft() {
+//
+//    }
+//
+//    override fun goRight() {
+//
+//    }
 
     private fun goToToday() {
         currentDayCode = todayDayCode

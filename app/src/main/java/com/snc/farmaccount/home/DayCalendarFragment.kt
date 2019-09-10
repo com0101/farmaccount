@@ -47,21 +47,20 @@ class DayCalendarFragment : Fragment() {
             }
         })
 
-        arrowButtons()
         return binding.root
     }
 
-    private fun arrowButtons(){
-
-        binding.imageArrowRight.setOnClickListener {
-            navListener?.goRight()
-        }
-
-        binding.imageArrowLeft.setOnClickListener {
-            navListener?.goLeft()
-        }
-
-    }
+//    private fun arrowButtons(){
+//
+//        binding.imageArrowRight.setOnClickListener {
+//            navListener?.goRight()
+//        }
+//
+//        binding.imageArrowLeft.setOnClickListener {
+//            navListener?.goLeft()
+//        }
+//
+//    }
 
     fun updateCalendar() {
 //        val startTimes = Format.getDayStartTS(date)

@@ -120,8 +120,6 @@ class MonthCalendarFragment : Fragment() {
 
         }, viewModel)
 
-
-        arrowButtons()
         return binding.root
     }
 
@@ -138,7 +136,7 @@ class MonthCalendarFragment : Fragment() {
 //        }
 //    }
 
-    fun pieChart() {
+    private fun pieChart() {
         binding.pieChart.setUsePercentValues(true)
         val y = ArrayList<Entry>()
         y.add(Entry(viewModel.eventByEatPrice.value!!.toFloat(), 0))
@@ -177,27 +175,12 @@ class MonthCalendarFragment : Fragment() {
         binding.pieChart.transparentCircleRadius = 10f
         binding.pieChart.holeRadius = 30f
 
-//        dataSet.setColors(ColorTemplate.VORDIPLOM_COLORS)
         data.setValueTextSize(13f)
         data.setValueTextColor(DKGRAY)
 //        binding.pieChart.setOnChartValueSelectedListener(this)
 
         binding.pieChart.animateXY(1400, 1400)
     }
-
-    private fun arrowButtons(){
-
-        binding.imageArrowRight.setOnClickListener {
-            navListener?.goRight()
-        }
-
-        binding.imageArrowLeft.setOnClickListener {
-            navListener?.goLeft()
-        }
-
-    }
-
-
 
     fun updateCalendar() {
 //        val startTimes = Format.getDayStartTS(date)

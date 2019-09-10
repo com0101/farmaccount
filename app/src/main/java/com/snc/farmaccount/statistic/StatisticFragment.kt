@@ -21,7 +21,7 @@ import com.snc.farmaccount.helper.NavigationListener
 
 
 
-class StatisticFragment : Fragment(), NavigationListener {
+class StatisticFragment : Fragment() {
 
     private lateinit var binding: FragmentStatisticBinding
     var tag = ArrayList<StatisticCatalog>()
@@ -44,8 +44,6 @@ class StatisticFragment : Fragment(), NavigationListener {
         binding.viewModel = viewModel
         currentDayCode= viewModel.DATE_MODE
 
-
-
         binding.tagList.adapter = StatisticTagAdapter(tag,StatisticTagAdapter.OnClickListener {
             viewModel.catagory.value = it
             setResult(it)
@@ -59,7 +57,7 @@ class StatisticFragment : Fragment(), NavigationListener {
         statisticTag()
         setViewPager()
         refreshEvents()
-
+        arrowButtons()
         // Inflate the layout for this fragment
         return binding.root
     }
@@ -85,7 +83,7 @@ class StatisticFragment : Fragment(), NavigationListener {
 
     private fun setViewPager() {
         val codes = getMonths(currentDayCode)
-        val monthlyAdapter = MonthViewPagerAdapter(childFragmentManager, codes, this,viewModel)
+        val monthlyAdapter = MonthViewPagerAdapter(childFragmentManager, codes, viewModel)
         defaultDailyPage = codes.size / 2
 
         binding.dayViewpager.apply {
@@ -115,12 +113,17 @@ class StatisticFragment : Fragment(), NavigationListener {
         return months
     }
 
-    override fun goLeft() {
-        binding.dayViewpager.currentItem = binding.dayViewpager.currentItem - 1
-    }
 
-    override fun goRight() {
-        binding.dayViewpager.currentItem = binding.dayViewpager.currentItem + 1
+    private fun arrowButtons(){
+
+        binding.imageArrowRight.setOnClickListener {
+            binding.dayViewpager.currentItem = binding.dayViewpager.currentItem - 1
+        }
+
+        binding.imageArrowLeft.setOnClickListener {
+            binding.dayViewpager.currentItem = binding.dayViewpager.currentItem + 1
+        }
+
     }
 
     private fun refreshEvents() {

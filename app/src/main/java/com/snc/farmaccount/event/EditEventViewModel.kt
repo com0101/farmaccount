@@ -10,7 +10,8 @@ import com.simplemobiletools.commons.extensions.toBoolean
 import com.snc.farmaccount.`object`.Event
 import com.snc.farmaccount.`object`.Tag
 import com.snc.farmaccount.helper.UserManager
-import java.util.HashMap
+import java.text.SimpleDateFormat
+import java.util.*
 
 class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(app) {
 
@@ -19,7 +20,7 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
     var infoInput = MutableLiveData<String>()
     var chooseTag = MutableLiveData<Tag>()
     var today = MutableLiveData<String>()
-    var month :Int = 0
+    var month :String = ""
 
 
 
@@ -36,7 +37,7 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
         priceInput.value = detail.value?.price
         infoInput.value = detail.value?.description
         today.value = detail.value?.date
-        month = detail.value?.month!!.toInt()
+        month = detail.value?.month!!
     }
 
 
@@ -51,7 +52,7 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
         event["description"] = infoInput.value!!
         event["date"] = today.value!!
         event["status"] = detail.value!!.status!!.toBoolean()
-        event["month"] = month.toString()
+        event["month"] = month
         // Add a new document with a generated ID
 
         db.collection("User").document("${UserManager.userToken}").collection("Event")

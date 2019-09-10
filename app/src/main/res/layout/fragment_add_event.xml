@@ -5,7 +5,6 @@
 
     <data>
         <variable name="viewModel" type="com.snc.farmaccount.event.AddEventViewModel"/>
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -88,7 +87,7 @@
                 android:text="@={viewModel.infoInput}"
                 android:layout_width="0dp"
                 android:layout_height="200dp"
-                android:inputType="textPersonName"
+                android:inputType="textPersonName|textMultiLine"
                 android:background="@drawable/description_border"
                 android:ems="10"
                 android:textSize="18sp"
@@ -96,6 +95,8 @@
                 android:paddingStart="16dp"
                 android:paddingTop="16dp"
                 android:gravity="top"
+                android:singleLine="false"
+                android:maxLines="5"
                 app:layout_constraintStart_toStartOf="@+id/edit_expand"
                 app:layout_constraintEnd_toEndOf="@+id/edit_expand"
                 app:layout_constraintHorizontal_bias="1.0"

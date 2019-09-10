@@ -12,7 +12,6 @@ import com.snc.farmaccount.helper.DAY_CODE
 class DayViewPagerAdapter
     (fragmentManager: FragmentManager,
      private val dayCodes: List<String>,
-     private val navListener: NavigationListener,
      var viewModel: DayViewModel) :
     FragmentStatePagerAdapter(fragmentManager) {
     private val homeFragment = SparseArray<DayCalendarFragment>()
@@ -27,7 +26,6 @@ class DayViewPagerAdapter
 
         val fragment = DayCalendarFragment()
         fragment.arguments = bundle
-        fragment.navListener = navListener
         fragment.title = "${bundle["day_code"]}"
 
         homeFragment.put(position, fragment)

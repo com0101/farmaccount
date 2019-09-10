@@ -25,6 +25,7 @@ class DetailViewModel(product: Event, app: Application) : AndroidViewModel(app) 
     init {
         _detail.value = product
         infoInput.value = detail.value?.description
+
     }
 
     fun deleteEvent() {

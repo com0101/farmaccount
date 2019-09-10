@@ -30,41 +30,17 @@
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
                     android:gravity="center"
-                    app:layout_constraintEnd_toStartOf="@+id/image_arrow_right"
-                    app:layout_constraintStart_toEndOf="@+id/image_arrow_left"
-                    app:layout_constraintTop_toTopOf="@+id/image_arrow_left"
-                    app:layout_constraintBottom_toBottomOf="@+id/image_arrow_left"/>
-
-            <ImageView
-                    android:id="@+id/image_arrow_right"
-                    android:layout_width="33dp"
-                    android:layout_height="33dp"
-                    android:layout_marginEnd="30dp"
-                    app:srcCompat="@android:drawable/ic_media_play"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
-
-            <ImageView
-                    android:id="@+id/image_arrow_left"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:rotation="@dimen/arrow_rotate_180"
-                    android:layout_marginStart="30dp"
-                    app:srcCompat="@android:drawable/ic_media_play"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="8dp"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="0dp"
                 android:layout_height="150dp"
                 android:id="@+id/event_list"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 tools:listitem="@layout/item_add_event"
                 tools:itemCount="3"
                 app:listEvent="@{viewModel.event}"
