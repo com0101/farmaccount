@@ -21,7 +21,7 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
     var chooseTag = MutableLiveData<Tag>()
     var today = MutableLiveData<String>()
     var month :String = ""
-
+    var overagePrice = MutableLiveData<String>()
 
 
     private val _tag = MutableLiveData<List<Tag>>()
@@ -38,6 +38,7 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
         infoInput.value = detail.value?.description
         today.value = detail.value?.date
         month = detail.value?.month!!
+        getOverage()
     }
 
 
@@ -70,6 +71,18 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
                                     "Sophie_update",
                                     "DocumentSnapshot added with ID: $documentReference"
                                 )
+                                var price = priceInput.value!!.toInt() - detail.value!!.price!!.toInt()
+                                var overageInt = overagePrice.value?.toInt()
+                                if (chooseTag.value?.tag_status == true) {
+                                    overagePrice.value = (overageInt?.plus(price)).toString()
+                                } else {
+                                    overagePrice.value = (overageInt?.minus(price)).toString()
+                                }
+                                db.collection("User").document("${UserManager.userToken}").collection("Budget")
+                                    .document("${UserManager.userToken}")
+                                    .update("overage","${overagePrice.value}")
+                                    .addOnSuccessListener { Log.d("Sophie_budget_edit", "DocumentSnapshot successfully written!") }
+                                    .addOnFailureListener { e -> Log.w("Sophie_budget_edit", "Error writing document", e) }
                             }
                             .addOnFailureListener { e -> Log.w("Sophie_add_fail", "Error adding document", e) }
 
@@ -77,6 +90,20 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
                 }
             }
 
+    }
+
+    private fun getOverage() {
+        val db = FirebaseFirestore.getInstance()
+        db.collection("User").document("${UserManager.userToken}").collection("Budget")
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    for (document in task.result!!) {
+                        Log.d("Sophie_db", "${document.id} => ${document.data["overage"]}")
+                        overagePrice.value = document.data["overage"].toString()
+                    }
+                }
+            }
     }
 
 
