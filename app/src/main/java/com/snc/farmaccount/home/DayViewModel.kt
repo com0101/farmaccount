@@ -24,6 +24,7 @@ class DayViewModel: ViewModel() {
     var currentDate = MutableLiveData<String>()
     var date = MutableLiveData<String>()
     var budgetPrice = MutableLiveData<String>()
+    var overagePrice = MutableLiveData<String>()
     var dataList = ArrayList<Event>()
     var DATE_MODE = ""
 
@@ -40,6 +41,7 @@ class DayViewModel: ViewModel() {
         pickDate
         week()
         getBudget()
+        getOverage()
     }
 
     fun getFirebase() {
@@ -95,6 +97,21 @@ class DayViewModel: ViewModel() {
                     for (document in task.result!!) {
                         Log.d("Sophie_db", "${document.id} => ${document.data["budgetPrice"]}")
                         budgetPrice.value = decimalFormat.format(document.data["budgetPrice"].toString().toDouble())
+                    }
+                }
+            }
+    }
+
+    private fun getOverage() {
+        val db = FirebaseFirestore.getInstance()
+        val decimalFormat = DecimalFormat("#,###")
+        db.collection("User").document("${UserManager.userToken}").collection("Budget")
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    for (document in task.result!!) {
+                        Log.d("Sophie_db", "${document.id} => ${document.data["overage"]}")
+                        overagePrice.value = decimalFormat.format(document.data["overage"].toString().toDouble())
                     }
                 }
             }

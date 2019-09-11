@@ -13,6 +13,7 @@ import com.snc.farmaccount.`object`.Tag
 import com.snc.farmaccount.helper.Format
 import com.snc.farmaccount.helper.UserManager
 import org.joda.time.DateTime
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -31,6 +32,7 @@ class AddEventViewModel : ViewModel() {
     var today = MutableLiveData<String>()
     var idCheck = MutableLiveData<String>()
     var monthFormat = MutableLiveData<String>()
+    var overagePrice = MutableLiveData<String>()
 
     private val _tag = MutableLiveData<List<Tag>>()
     val tag: LiveData<List<Tag>>
@@ -38,6 +40,7 @@ class AddEventViewModel : ViewModel() {
 
     init {
         week()
+        getOverage()
     }
 
     fun getTag() {
@@ -66,10 +69,39 @@ class AddEventViewModel : ViewModel() {
                     "Sophie_add",
                     "DocumentSnapshot added with ID: " + documentReference.id
                 )
+                var price = priceInput.value!!.toInt()
+                var overageInt = overagePrice.value?.toInt()
+                overagePrice.value = (overageInt?.minus(price)).toString()
             }
             .addOnFailureListener { e -> Log.w("Sophie_add_fail", "Error adding document", e) }
 
+
+        db.collection("User").document("${UserManager.userToken}").collection("Budget")
+            .document("${UserManager.userToken}")
+            .update("overage","${overagePrice.value}")
+            .addOnSuccessListener { documentReference ->
+                Log.d(
+                    "Sophie_update_overage",
+                    "DocumentSnapshot added with ID: " + documentReference
+                )
+            }
+            .addOnFailureListener { e -> Log.w("Sophie_add_fail", "Error adding document", e) }
     }
+
+    private fun getOverage() {
+        val db = FirebaseFirestore.getInstance()
+        db.collection("User").document("${UserManager.userToken}").collection("Budget")
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    for (document in task.result!!) {
+                        Log.d("Sophie_db", "${document.id} => ${document.data["overage"]}")
+                        overagePrice.value = document.data["overage"].toString()
+                    }
+                }
+            }
+    }
+
 
     private fun week() {
         val c = Calendar.getInstance()

@@ -60,6 +60,7 @@ class AmountViewModel(budget: Budget, app: Application) : AndroidViewModel(app) 
         budget["rangeEnd"] = detail.value?.rangeEnd!!
         budget["budgetPrice"] = detail.value?.budgetPrice!!
         budget["position"] = detail.value?.position!!
+        budget["overage"] = detail.value?.budgetPrice!!
         // Add a new document with a generated ID
         db.collection("User").document("${UserManager.userToken}")
             .collection("Budget").document("${UserManager.userToken}")

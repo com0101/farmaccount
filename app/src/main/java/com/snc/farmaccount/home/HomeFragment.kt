@@ -130,13 +130,6 @@ class HomeFragment : Fragment() {
 
     }
 
-//    override fun goLeft() {
-//
-//    }
-//
-//    override fun goRight() {
-//
-//    }
 
     private fun goToToday() {
         currentDayCode = todayDayCode

@@ -144,16 +144,16 @@ class BudgetFragment : Fragment() {
     }
 
     private fun addBudget() {
-        budget.add(Budget(R.drawable.hen, R.drawable.tag_lottery, "10000", "15000","",0))
-        budget.add(Budget(R.drawable.hen, R.drawable.tag_breakfast, "10000", "20000","",1))
-        budget.add(Budget(R.drawable.hen, R.drawable.tag_lunch_press, "10000", "25000","",2))
+        budget.add(Budget(R.drawable.hen, R.drawable.tag_lottery, "10000", "15000","",0,""))
+        budget.add(Budget(R.drawable.hen, R.drawable.tag_breakfast, "10000", "20000","",1,""))
+        budget.add(Budget(R.drawable.hen, R.drawable.tag_lunch_press, "10000", "25000","",2,""))
         viewModel.budgetType.value = budget
     }
 
     private fun unEditBudget() {
-        budgetUnselect.add(Budget(R.drawable.hen, R.drawable.tag_lottery_press, "10000", "15000","",0))
-        budgetUnselect.add(Budget(R.drawable.hen, R.drawable.tag_breakfast_press, "10000", "20000","",1))
-        budgetUnselect.add(Budget(R.drawable.hen, R.drawable.tag_lunch, "10000", "25000","",2))
+        budgetUnselect.add(Budget(R.drawable.hen, R.drawable.tag_lottery_press, "10000", "15000","",0,""))
+        budgetUnselect.add(Budget(R.drawable.hen, R.drawable.tag_breakfast_press, "10000", "20000","",1,""))
+        budgetUnselect.add(Budget(R.drawable.hen, R.drawable.tag_lunch, "10000", "25000","",2,""))
     }
 
 

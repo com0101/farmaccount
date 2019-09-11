@@ -130,14 +130,9 @@ class StatisticViewModel : ViewModel() {
     fun getCurrentMonth() {
         pickMonth.value = currentMonth.value
     }
-    fun getSum() {
+    fun getEventSum() {
         _sum.value = sumEvent.value
     }
-
-    fun getGson(){
-
-    }
-
 
     fun getFirebase() {
         val db = FirebaseFirestore.getInstance()
@@ -158,7 +153,7 @@ class StatisticViewModel : ViewModel() {
                     }
                 }
                 _event.value = dataList
-                getSum()
+                getEventSum()
                 Log.w("Sophie_db_list", "$dataList")
             }
     }

@@ -28,13 +28,10 @@ class BudgetViewModel: ViewModel() {
     var farmtype = MutableLiveData<Int>()
     var rangeStart= MutableLiveData<String>()
     var rangeEnd= MutableLiveData<String>()
+    var overage= MutableLiveData<String>()
     var newBudget = MutableLiveData<Budget>()
     var amountCheck = MutableLiveData<Boolean>()
 
-
-    init {
-
-    }
 
     fun getBudget() {
         _budget.value = budgetType.value
@@ -55,6 +52,7 @@ class BudgetViewModel: ViewModel() {
                     farmtype.value = document.data?.get("farmtype")?.toInt()
                     rangeStart.value = document.data?.get("rangeStart").toString()
                     rangeEnd.value = document.data?.get("rangeEnd").toString()
+                    overage.value = document.data?.get("overage").toString()
                     Log.d("Sophie_db", "${position.value}")
                 } else {
                     Log.d("Sophie_db", "No such document")
@@ -79,8 +77,8 @@ class BudgetViewModel: ViewModel() {
                 rangeStart.value!!,
                 rangeEnd.value!!,
                 postPrice.value!!,
-                position.value!!)
-
+                position.value!!,
+                overage.value!!)
         }
 
         when {
@@ -115,6 +113,7 @@ class BudgetViewModel: ViewModel() {
             budget["rangeEnd"] = newBudget.value?.rangeEnd!!
             budget["budgetPrice"] = postPrice.value!!
             budget["position"] = newBudget.value?.position!!
+            budget["overage"] = postPrice.value!!
 
             // Add a new document with a generated ID
 
