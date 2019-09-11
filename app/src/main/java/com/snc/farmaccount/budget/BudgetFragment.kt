@@ -120,7 +120,7 @@ class BudgetFragment : Fragment() {
                 super.onPageSelected(position)
                 viewModel.selectPosition.value = position
                 viewModel.getBudgetType.value = budget[position]
-                Log.i("Sophie","${viewModel.selectPosition.value}")
+                Log.i("Sophie","${viewModel.getBudgetType.value}")
                 // No boilerplate, only useful
             }
         })

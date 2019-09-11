@@ -72,20 +72,14 @@ class AddEventViewModel : ViewModel() {
                 var price = priceInput.value!!.toInt()
                 var overageInt = overagePrice.value?.toInt()
                 overagePrice.value = (overageInt?.minus(price)).toString()
+                db.collection("User").document("${UserManager.userToken}").collection("Budget")
+                    .document("${UserManager.userToken}")
+                    .update("overage","${overagePrice.value}")
+                    .addOnSuccessListener { Log.d("Sophie_budget_edit", "DocumentSnapshot successfully written!") }
+                    .addOnFailureListener { e -> Log.w("Sophie_budget_edit", "Error writing document", e) }
             }
             .addOnFailureListener { e -> Log.w("Sophie_add_fail", "Error adding document", e) }
 
-
-        db.collection("User").document("${UserManager.userToken}").collection("Budget")
-            .document("${UserManager.userToken}")
-            .update("overage","${overagePrice.value}")
-            .addOnSuccessListener { documentReference ->
-                Log.d(
-                    "Sophie_update_overage",
-                    "DocumentSnapshot added with ID: " + documentReference
-                )
-            }
-            .addOnFailureListener { e -> Log.w("Sophie_add_fail", "Error adding document", e) }
     }
 
     private fun getOverage() {

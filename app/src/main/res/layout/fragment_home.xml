@@ -55,7 +55,7 @@
 
                 <TextView
                         android:id="@+id/text_budget"
-                        android:text="@{viewModel.budgetPrice}"
+                        android:text="@{viewModel.overagePrice}"
                         android:layout_width="0dp"
                         android:layout_height="30dp"
                         android:paddingStart="6dp"

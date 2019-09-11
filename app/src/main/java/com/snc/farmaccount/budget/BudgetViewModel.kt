@@ -23,6 +23,7 @@ class BudgetViewModel: ViewModel() {
     var getBudgetType = MutableLiveData<Budget>()
     var budgetPrice = MutableLiveData<String>()
     var postPrice = MutableLiveData<String>()
+    var oldBudget = MutableLiveData<String>()
     var position = MutableLiveData<Int>()
     var farmImage = MutableLiveData<Int>()
     var farmtype = MutableLiveData<Int>()
@@ -46,7 +47,7 @@ class BudgetViewModel: ViewModel() {
             .addOnSuccessListener { document ->
                 if (document != null) {
                     budgetPrice.value = decimalFormat.format(document.data?.get("budgetPrice").toString().toDouble())
-                    postPrice.value = document.data?.get("budgetPrice").toString()
+                    oldBudget.value = document.data?.get("budgetPrice").toString()
                     position.value = document.data?.get("position")?.toInt()
                     farmImage.value = document.data?.get("farmImage")?.toInt()
                     farmtype.value = document.data?.get("farmtype")?.toInt()
@@ -70,7 +71,7 @@ class BudgetViewModel: ViewModel() {
 
         if (position.value != selectPosition.value) {
             newBudget.value = getBudgetType.value
-            Log.i("Sophie_budgetType", "${newBudget.value}")
+            Log.i("Sophie_budgetType", "${getBudgetType.value}")
         } else {
             newBudget.value = Budget(farmImage.value!!,
                 farmtype.value!!,
@@ -104,6 +105,7 @@ class BudgetViewModel: ViewModel() {
         budgetType()
         Log.i("Sophie_budgetType_edit", "${newBudget.value?.position}")
         val db = FirebaseFirestore.getInstance()
+        var newOverage = postPrice.value?.toInt()?.minus((oldBudget.value?.toInt()!!))?.plus(overage.value!!.toInt())
 
         if (amountCheck.value == null) {
             val budget = HashMap<String,Any>()
@@ -113,7 +115,7 @@ class BudgetViewModel: ViewModel() {
             budget["rangeEnd"] = newBudget.value?.rangeEnd!!
             budget["budgetPrice"] = postPrice.value!!
             budget["position"] = newBudget.value?.position!!
-            budget["overage"] = postPrice.value!!
+            budget["overage"] = newOverage.toString()
 
             // Add a new document with a generated ID
 
@@ -124,7 +126,6 @@ class BudgetViewModel: ViewModel() {
                 .addOnFailureListener { e -> Log.w("Sophie_budget_edit", "Error writing document", e) }
         }
         // Create a new user with a first and last name
-
     }
 
 }
