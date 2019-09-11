@@ -71,7 +71,11 @@ class AddEventViewModel : ViewModel() {
                 )
                 var price = priceInput.value!!.toInt()
                 var overageInt = overagePrice.value?.toInt()
-                overagePrice.value = (overageInt?.minus(price)).toString()
+                if (chooseTag.value?.tag_status == true) {
+                    overagePrice.value = (overageInt?.plus(price)).toString()
+                } else {
+                    overagePrice.value = (overageInt?.minus(price)).toString()
+                }
                 db.collection("User").document("${UserManager.userToken}").collection("Budget")
                     .document("${UserManager.userToken}")
                     .update("overage","${overagePrice.value}")

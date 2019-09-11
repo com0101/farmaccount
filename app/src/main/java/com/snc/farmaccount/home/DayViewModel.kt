@@ -41,7 +41,7 @@ class DayViewModel: ViewModel() {
         pickDate
         week()
         getBudget()
-        getOverage()
+
     }
 
     fun getFirebase() {
@@ -102,7 +102,7 @@ class DayViewModel: ViewModel() {
             }
     }
 
-    private fun getOverage() {
+    fun getOverage() {
         val db = FirebaseFirestore.getInstance()
         val decimalFormat = DecimalFormat("#,###")
         db.collection("User").document("${UserManager.userToken}").collection("Budget")

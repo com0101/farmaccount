@@ -47,6 +47,8 @@ class DetailViewModel(product: Event, app: Application) : AndroidViewModel(app) 
                                     "Sophie_update",
                                     "DocumentSnapshot added with ID: $documentReference"
                                 )
+
+
                             }
                             .addOnFailureListener { e -> Log.w("Sophie_add_fail", "Error adding document", e) }
                     }

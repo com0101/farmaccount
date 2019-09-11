@@ -50,6 +50,7 @@ class HomeFragment : Fragment() {
         setViewPager()
         refreshEvents()
         arrowButtons()
+        viewModel.getOverage()
 //        viewModel.currentDate.value = currentDayCode
 
         binding.buttonBudget.setOnClickListener {
