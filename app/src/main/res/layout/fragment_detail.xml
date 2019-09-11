@@ -4,7 +4,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable name="viewModel" type="com.snc.farmaccount.detail.DetailViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -12,10 +12,167 @@
             android:layout_height="match_parent"
             tools:context=".detail.DetailFragment">
 
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/image_back_state"
+                android:rotation="@dimen/arrow_rotate_180"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="25dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@android:drawable/ic_media_play"
+                app:layout_constraintTop_toTopOf="parent"/>
+
         <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="333"/>
+                android:id="@+id/text_detail"
+                android:text="@string/detail_page_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="20sp"
+                android:layout_marginBottom="8dp"
+                android:gravity="center"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="50dp"
+                app:layout_constraintStart_toEndOf="@+id/image_back_state"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/image_back_state"
+                app:layout_constraintBottom_toBottomOf="@+id/image_back_state"/>
+
+        <ImageView
+                android:id="@+id/tag_image"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="53dp"
+                android:layout_marginTop="22dp"
+                app:srcCompat="@drawable/tag_dinner"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_detail"/>
+
+        <TextView
+                android:id="@+id/tag_text"
+                android:text="@{viewModel.detail.tag}"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                app:layout_constraintTop_toTopOf="@+id/tag_image"
+                app:layout_constraintBottom_toBottomOf="@+id/tag_image"
+                app:layout_constraintStart_toEndOf="@+id/tag_image"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:background="@drawable/radius_border"
+                android:id="@+id/price"
+                android:layout_marginEnd="53dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="53dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tag_image"
+                app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                    android:id="@+id/title_price"
+                    android:text="@string/title_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="12dp"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <TextView
+                    android:id="@+id/text_price"
+                    android:text="@{viewModel.detail.price}"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:paddingStart="6dp"
+                    android:layout_marginEnd="16dp"
+                    android:textSize="18sp"
+                    android:textColor="@color/gray_green"
+                    android:gravity="center"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/title_price"
+                    app:layout_constraintBottom_toBottomOf="@+id/title_price"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:background="@drawable/radius_border"
+                android:id="@+id/date"
+                android:layout_marginEnd="53dp"
+                android:layout_marginStart="53dp"
+                android:layout_marginTop="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintTop_toBottomOf="@+id/price">
+
+            <TextView
+                    android:id="@+id/title_date"
+                    android:text="@string/title_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="12dp"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <TextView
+                    android:id="@+id/text__budget_edit"
+                    android:text="@{viewModel.detail.date}"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:paddingStart="6dp"
+                    android:textSize="18sp"
+                    android:textColor="@color/gray_green"
+                    android:gravity="center"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+                android:id="@+id/edit_description"
+                android:text="@{viewModel.detail.description}"
+                android:layout_width="0dp"
+                android:layout_height="280dp"
+                android:background="@drawable/description_border"
+                android:textSize="18sp"
+                android:paddingStart="16dp"
+                android:paddingTop="16dp"
+                android:gravity="top"
+                android:layout_marginTop="12dp"
+                app:layout_constraintStart_toStartOf="@+id/date"
+                app:layout_constraintEnd_toEndOf="@+id/date"
+                app:layout_constraintTop_toBottomOf="@+id/date"/>
+
+        <ImageView
+                android:id="@+id/image_delete"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="20dp"
+                app:srcCompat="@drawable/delete"
+                app:layout_constraintEnd_toEndOf="@+id/edit_description"
+                app:layout_constraintTop_toBottomOf="@+id/edit_description"/>
+
+        <ImageView
+                android:id="@+id/image_edit"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="20dp"
+                app:srcCompat="@drawable/edit"
+                app:layout_constraintTop_toBottomOf="@+id/edit_description"
+                app:layout_constraintStart_toStartOf="@+id/edit_description" android:layout_marginStart="20dp"/>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

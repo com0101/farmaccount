@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/navigation"
+            app:startDestination="@id/logInFragment">
+
+    <fragment android:id="@+id/homeFragment"
+              android:name="com.snc.farmaccount.home.HomeFragment"
+              android:label="HomeFragment"
+              tools:layout="@layout/fragment_home"/>
+    <action android:id="@+id/action_global_homeFragment"
+            app:destination="@id/homeFragment"/>
+
+    <fragment android:id="@+id/addEventFragment"
+              android:name="com.snc.farmaccount.event.AddEventFragment"
+              android:label="AddEventFragment"
+              tools:layout="@layout/fragment_add_event"/>
+
+    <action android:id="@+id/action_global_addEventFragment"
+            app:destination="@id/addEventFragment"/>
+
+    <fragment android:id="@+id/chooseFragment"
+              android:name="com.snc.farmaccount.choose.ChooseFragment"
+              android:label="ChooseFragment"
+              tools:layout="@layout/fragment_choose"/>
+    <action android:id="@+id/action_global_chooseFragment"
+            app:destination="@id/chooseFragment"/>
+
+    <fragment android:id="@+id/budgetFragment"
+              android:name="com.snc.farmaccount.budget.BudgetFragment"
+              android:label="BudgetFragment"
+              tools:layout="@layout/fragment_budget"/>
+    <action android:id="@+id/action_global_budgetFragment"
+            app:destination="@id/budgetFragment"/>
+
+    <fragment android:id="@+id/detailFragment"
+              android:name="com.snc.farmaccount.detail.DetailFragment"
+              android:label="DetailFragment"
+              tools:layout="@layout/fragment_detail">
+        <argument android:name="detail"
+                  app:argType="com.snc.farmaccount.object.Event"/>
+    </fragment>
+    <action android:id="@+id/action_global_detailFragment"
+            app:destination="@id/detailFragment"/>
+
+    <fragment android:id="@+id/qrCodeFragment"
+              android:name="com.snc.farmaccount.qrcode.QrCodeFragment"
+              android:label="QrCodeFragment"
+              tools:layout="@layout/fragment_qr_code"/>
+    <action android:id="@+id/action_global_qrCodeFragment"
+            app:destination="@id/qrCodeFragment"/>
+
+    <fragment android:id="@+id/statisticFragment"
+              android:name="com.snc.farmaccount.statistic.StatisticFragment"
+              android:label="StatisticFragment"
+              tools:layout="@layout/fragment_statistic"/>
+    <action android:id="@+id/action_global_statisticFragment"
+            app:destination="@id/statisticFragment"/>
+
+    <dialog android:id="@+id/checkDialog"
+            android:name="com.snc.farmaccount.dialog.CheckDialog"
+            android:label="CheckDialog"
+            tools:layout="@layout/dialog_check"/>
+    <action android:id="@+id/action_global_checkDialog"
+            app:destination="@id/checkDialog"/>
+
+    <dialog android:id="@+id/amountInputDialog"
+            android:name="com.snc.farmaccount.dialog.AmountInputDialog"
+            android:label="AmountInputDialog"
+            tools:layout="@layout/dialog_amount_input">
+        <argument android:name="amount"
+                  app:argType="com.snc.farmaccount.object.Budget"/>
+    </dialog>
+    <action android:id="@+id/action_global_amountInputDialog"
+            app:destination="@id/amountInputDialog"/>
+
+    <fragment android:id="@+id/dayCalendarFragment"
+              android:name="com.snc.farmaccount.home.DayCalendarFragment"
+              android:label="DayCalendarFragment"
+              tools:layout="@layout/fragment_day_calendar"/>
+    <action android:id="@+id/action_global_dayCalendarFragment"
+            app:destination="@id/dayCalendarFragment"/>
+
+    <fragment android:id="@+id/editEventFragment"
+              android:name="com.snc.farmaccount.event.EditEventFragment"
+              android:label="EditEventFragment"
+              tools:layout="@layout/fragment_edit_event">
+        <argument android:name="edit"
+                  app:argType="com.snc.farmaccount.object.Event"/>
+    </fragment>
+    <action
+        android:id="@+id/action_global_editEventFragment"
+        app:destination="@id/editEventFragment"/>
+
+    <fragment android:id="@+id/logInFragment"
+              android:name="com.snc.farmaccount.login.LogInFragment"
+              android:label="LogInFragment"
+              tools:layout="@layout/fragment_log_in"/>
+    <action android:id="@+id/action_global_logInFragment"
+            app:destination="@id/logInFragment"/>
+
+    <fragment android:id="@+id/loadingFragment"
+              android:name="com.snc.farmaccount.login.LoadingFragment"
+              android:label="LoadingFragment"
+              tools:layout="@layout/dialog_loading"/>
+    <action android:id="@+id/action_global_loadingFragment"
+            app:destination="@id/loadingFragment"/>
+
+</navigation>

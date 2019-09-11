@@ -1,4 +1,4 @@
-package com.snc.farmaccount.dialog
+package com.snc.farmaccount.login
 
 
 import android.os.Bundle
@@ -6,23 +6,24 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.DialogFragment
-
 import com.snc.farmaccount.R
-import com.snc.farmaccount.databinding.DialogDatePickerBinding
+import com.snc.farmaccount.databinding.DialogLoadingBinding
 
-class DatePickerDialog : DialogFragment() {
 
-    private lateinit var binding: DialogDatePickerBinding
+class LoadingFragment : DialogFragment() {
+
+    private lateinit var binding: DialogLoadingBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+       binding = DialogLoadingBinding.inflate(inflater)
+       binding.lifecycleOwner = this
 
-        binding = DialogDatePickerBinding.inflate(inflater)
-        // Inflate the layout for this fragment
-        return binding.root
+       return binding.root
     }
 
 

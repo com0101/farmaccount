@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.navigation.fragment.findNavController
 
 import com.snc.farmaccount.R
 import com.snc.farmaccount.databinding.DialogCheckBinding
@@ -15,12 +16,20 @@ class CheckDialog : DialogFragment() {
 
     private lateinit var binding: DialogCheckBinding
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
         binding = DialogCheckBinding.inflate(inflater)
+        binding.lifecycleOwner = this
+
+        binding.imageCancel.setOnClickListener {
+         dismiss()
+        }
+
         // Inflate the layout for this fragment
         return binding.root
     }

@@ -3,4 +3,14 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    //radius bar
+    <color name="gray_green">#97C197</color>
+    <color name="white">#FFFFFF</color>
+    <color name="gray">#DDDDDD</color>
+    <color name="logo_gray">#949494</color>
+    <color name="light_gray">#B9B9B9</color>
+
+    <color name="translate_40">#66000000</color>
+    <color name="translate_100">#00000000</color>
 </resources>
