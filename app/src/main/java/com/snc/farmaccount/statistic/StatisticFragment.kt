@@ -2,6 +2,7 @@ package com.snc.farmaccount.statistic
 
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +13,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
+import com.snc.farmaccount.ApplicationContext
 import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.StatisticCatalog
 import com.snc.farmaccount.databinding.FragmentStatisticBinding
@@ -46,7 +48,11 @@ class StatisticFragment : Fragment() {
 
         binding.tagList.adapter = StatisticTagAdapter(tag,StatisticTagAdapter.OnClickListener {
             viewModel.catagory.value = it
-            setResult(it)
+            when(it.name){
+                "總覽" -> viewModel.filter.value = false
+                else -> viewModel.filter.value = true
+            }
+            Log.i("Sophie_taglist", "${viewModel.catagory.value}")
         })
 
         binding.imageBackState.setOnClickListener {
@@ -60,25 +66,6 @@ class StatisticFragment : Fragment() {
         arrowButtons()
         // Inflate the layout for this fragment
         return binding.root
-    }
-
-    private fun setResult(category: StatisticCatalog) {
-//        if (targetFragment == null){
-//            Log.d("Sophie_cata", "fail")
-//            return
-//        }
-//        else {
-//            val intent = Intent()
-//            intent.putExtra(RESPONSE_EVALUATE, category)
-//            targetFragment?.onActivityResult(MonthCalendarFragment().REQUEST_EVALUATE, Activity.RESULT_OK,intent)
-//            Log.d("Sophie_cata", "value = $category")
-//        }
-
-        val bundle = Bundle()
-        bundle.putParcelable("object", category)
-        val fragment = MonthCalendarFragment()
-        fragment.arguments = bundle
-        Log.d("Sophie_cata", "value = $category")
     }
 
     private fun setViewPager() {
@@ -117,11 +104,11 @@ class StatisticFragment : Fragment() {
     private fun arrowButtons(){
 
         binding.imageArrowRight.setOnClickListener {
-            binding.dayViewpager.currentItem = binding.dayViewpager.currentItem - 1
+            binding.dayViewpager.currentItem = binding.dayViewpager.currentItem + 1
         }
 
         binding.imageArrowLeft.setOnClickListener {
-            binding.dayViewpager.currentItem = binding.dayViewpager.currentItem + 1
+            binding.dayViewpager.currentItem = binding.dayViewpager.currentItem - 1
         }
 
     }

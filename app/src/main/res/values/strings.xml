@@ -43,6 +43,7 @@
     <string name="catalog_income">收入</string>
     <string name="sure_btn">OK</string>
     <string name="statistic_tag">總覽</string>
+    <string name="no_spend">尚無此類別的花費及收入</string>
 
 
 </resources>

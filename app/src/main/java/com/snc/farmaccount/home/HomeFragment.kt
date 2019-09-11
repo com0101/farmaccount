@@ -121,11 +121,11 @@ class HomeFragment : Fragment() {
     private fun arrowButtons(){
 
         binding.imageArrowRight.setOnClickListener {
-            binding.dayViewpager.currentItem = binding.dayViewpager.currentItem - 1
+            binding.dayViewpager.currentItem = binding.dayViewpager.currentItem + 1
         }
 
         binding.imageArrowLeft.setOnClickListener {
-            binding.dayViewpager.currentItem = binding.dayViewpager.currentItem + 1
+            binding.dayViewpager.currentItem = binding.dayViewpager.currentItem - 1
         }
 
     }

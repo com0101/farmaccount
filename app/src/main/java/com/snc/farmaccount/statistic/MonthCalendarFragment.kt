@@ -10,26 +10,26 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.Nullable
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.formatter.PercentFormatter
-import com.github.mikephil.charting.utils.ColorTemplate
 import com.snc.farmaccount.R
+import com.snc.farmaccount.`object`.StatisticCatalog
 import com.snc.farmaccount.`object`.SumEvent
 import com.snc.farmaccount.databinding.FragmentMonthCalendarBinding
 import com.snc.farmaccount.helper.NavigationListener
-import com.snc.farmaccount.`object`.StatisticCatalog
+
+
+
 
 
 class MonthCalendarFragment : Fragment() {
 
-
-
     private lateinit var binding: FragmentMonthCalendarBinding
-    var navListener: NavigationListener?= null
     var sumEvent = ArrayList<SumEvent>()
     var date = ""
     var title = ""
@@ -41,7 +41,6 @@ class MonthCalendarFragment : Fragment() {
         ViewModelProviders.of(this).get(StatisticViewModel::class.java)
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -50,24 +49,39 @@ class MonthCalendarFragment : Fragment() {
         binding = FragmentMonthCalendarBinding.inflate(inflater)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+
+        val parentViewModel = ViewModelProviders.of(this.requireParentFragment()).get(StatisticViewModel::class.java)
+
+        parentViewModel.catagory.observe(this.requireParentFragment(), Observer {
+            viewModel.catagoryMap.value = it
+        })
+
         binding.textMonth.text = title
         viewModel.currentMonth.value = title.substring(5,7)
         viewModel.getCurrentMonth()
         viewModel.getFirebase()
 
-
-
-
-
         binding.detailList.adapter = StatisticEventAdapter(StatisticEventAdapter.OnClickListener {
 
         }, viewModel)
 
+        parentViewModel.filter.observe(viewLifecycleOwner, Observer {
+            if (it == true) {
+                binding.detailList.visibility = View.VISIBLE
+                binding.totalList.visibility = View.GONE
+            } else {
+                binding.detailList.visibility = View.GONE
+                binding.totalList.visibility = View.VISIBLE
+            }
+        })
 
-        viewModel.eventByCatagory.observe(this, Observer { it ->
-            Log.i("Sophie_eat", "$it")
-            it?.let {
-                (binding.detailList.adapter as StatisticEventAdapter).submitList(it)
+        viewModel.eventByCatagory.observe(viewLifecycleOwner, Observer {
+            Log.i("Sophie_Catagory", "$it")
+            (binding.detailList.adapter as StatisticEventAdapter).submitList(it)
+            if (it.isEmpty()) {
+                binding.spendHint.visibility = View.VISIBLE
+            } else {
+                binding.spendHint.visibility = View.GONE
             }
         })
 
@@ -111,7 +125,6 @@ class MonthCalendarFragment : Fragment() {
             it?.let {
                 sumEvent.add(SumEvent(R.drawable.tag_income,getString(R.string.catalog_income),viewModel.eventByIncomePrice.value.toString()))
                 viewModel.sumEvent.value = sumEvent
-                Log.i("Sophie_sumEvent", "${viewModel.catagory.value}")
                 pieChart()
             }
         })
@@ -123,18 +136,6 @@ class MonthCalendarFragment : Fragment() {
         return binding.root
     }
 
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        if (requestCode == REQUEST_EVALUATE)
-//        {
-//            val evaluate = data?.getStringExtra(StatisticFragment().RESPONSE_EVALUATE)
-////            binding.repeatChoose.text = evaluate
-//            Log.i("Sophie_evaluate","$evaluate")
-//            val intent = Intent()
-//            intent.putExtra(RESPONSE, evaluate)
-//            activity?.setResult(Activity.RESULT_OK, intent)
-//        }
-//    }
 
     private fun pieChart() {
         binding.pieChart.setUsePercentValues(true)

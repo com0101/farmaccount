@@ -30,7 +30,8 @@ class MonthViewPagerAdapter
         val fragment = MonthCalendarFragment()
         fragment.arguments = bundle
         fragment.title = "${bundle["day_code"]}".substring(0,7)
-//        Log.i("Sophie_bundle", "${bundle["day_code"]}")
+
+        Log.i("Sophie_bundle", "${viewModel.catagory}")
 
         homeFragment.put(position, fragment)
         return fragment

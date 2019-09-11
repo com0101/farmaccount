@@ -18,7 +18,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:id="@+id/pieChart" android:layout_marginTop="8dp">
+                android:id="@+id/pieChart"
+                android:layout_marginTop="8dp" android:layout_marginStart="25dp" android:layout_marginEnd="25dp">
 
         </com.github.mikephil.charting.charts.PieChart>
 
@@ -39,9 +40,10 @@
                     android:textSize="20sp"
                     android:gravity="center"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="10dp"
-            />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginTop="10dp"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -59,12 +61,12 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintTop_toBottomOf="@+id/date"
-        >
+                android:visibility="visible">
         </androidx.recyclerview.widget.RecyclerView>
 
         <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 tools:listitem="@layout/item_statistic_event"
                 tools:itemCount="7"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -72,11 +74,26 @@
                 app:listStatistic="@{viewModel.event}"
                 android:id="@+id/detail_list"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 app:layout_constraintTop_toBottomOf="@+id/total_list"
                 android:visibility="gone" android:layout_marginTop="8dp">
         </androidx.recyclerview.widget.RecyclerView>
+        <TextView
+                android:text="@string/no_spend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/spend_hint"
+                android:layout_marginEnd="8dp"
+                android:textStyle="bold"
+                android:textColor="@color/gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/date"
+                android:layout_marginTop="140dp"
+                android:textSize="20sp"
+                android:visibility="invisible"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

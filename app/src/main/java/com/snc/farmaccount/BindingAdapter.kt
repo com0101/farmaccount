@@ -1,6 +1,7 @@
 package com.snc.farmaccount
 
 
+import android.util.Log
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.snc.farmaccount.`object`.*
@@ -39,6 +40,9 @@ fun bindTotal(recyclerView: RecyclerView, data: List<SumEvent>?) {
     val adapter = recyclerView.adapter as StatisticCatagoryAdapter
     data?.let {
         adapter.submitList(data)
+        Log.i("Sophie", "data : $data")
+        Log.i("Sophie", "size : ${data.size}")
+
     }
 }
 

@@ -12,6 +12,15 @@ import com.snc.farmaccount.`object`.SumEvent
 import com.snc.farmaccount.helper.UserManager
 import java.util.*
 import kotlin.collections.ArrayList
+import android.R.id.message
+import androidx.databinding.adapters.NumberPickerBindingAdapter.setValue
+import android.R.id.message
+import android.content.Context
+import com.google.gson.Gson
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
+import com.snc.farmaccount.ApplicationContext
+
 
 class StatisticViewModel : ViewModel() {
 
@@ -25,6 +34,7 @@ class StatisticViewModel : ViewModel() {
         get() = _sum
 
     val catagory = MutableLiveData<StatisticCatalog>()
+    val catagoryMap = MutableLiveData<StatisticCatalog>()
     private var year: Int = 0
     private var month:Int = 0
     private var day:Int = 0
@@ -33,11 +43,12 @@ class StatisticViewModel : ViewModel() {
     private var pickMonth = MutableLiveData<String>()
     var currentMonth = MutableLiveData<String>()
     var sumEvent = MutableLiveData<List<SumEvent>>()
-    var filter = MutableLiveData<StatisticCatalog>()
+    var filter = MutableLiveData<Boolean>()
     var DATE_MODE = ""
 
 
-    val eventByCatagory: LiveData<List<Event>> = Transformations.map(catagory) { catalog ->
+
+    val eventByCatagory: LiveData<List<Event>> = Transformations.map(catagoryMap) { catalog ->
         catalog?.let {
             event.value?.filter {
                 it.catalog == catalog.name
@@ -123,10 +134,10 @@ class StatisticViewModel : ViewModel() {
         _sum.value = sumEvent.value
     }
 
-    fun getType() {
-        Log.i("Sophie_cata", "${catagory.value}")
-        filter.value = catagory.value
+    fun getGson(){
+
     }
+
 
     fun getFirebase() {
         val db = FirebaseFirestore.getInstance()
