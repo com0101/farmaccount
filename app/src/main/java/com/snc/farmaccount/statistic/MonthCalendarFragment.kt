@@ -18,6 +18,7 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.snc.farmaccount.R
+import com.snc.farmaccount.`object`.Event
 import com.snc.farmaccount.`object`.StatisticCatalog
 import com.snc.farmaccount.`object`.SumEvent
 import com.snc.farmaccount.databinding.FragmentMonthCalendarBinding
@@ -76,12 +77,11 @@ class MonthCalendarFragment : Fragment() {
         })
 
         viewModel.eventByCatagory.observe(viewLifecycleOwner, Observer {
-            Log.i("Sophie_Catagory", "$it")
             (binding.detailList.adapter as StatisticEventAdapter).submitList(it)
-            if (it.isEmpty()) {
-                binding.spendHint.visibility = View.VISIBLE
-            } else {
-                binding.spendHint.visibility = View.GONE
+            when (it) {
+                null -> binding.spendHint.visibility = View.VISIBLE
+                emptyList<Event>() -> binding.spendHint.visibility = View.VISIBLE
+                else -> binding.spendHint.visibility = View.GONE
             }
         })
 
