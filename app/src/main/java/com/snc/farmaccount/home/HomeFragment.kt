@@ -51,7 +51,6 @@ class HomeFragment : Fragment() {
         refreshEvents()
         arrowButtons()
         viewModel.getOverage()
-//        viewModel.currentDate.value = currentDayCode
 
         binding.buttonBudget.setOnClickListener {
             findNavController()
@@ -83,6 +82,15 @@ class HomeFragment : Fragment() {
 
         viewModel.date.observe(this, androidx.lifecycle.Observer {
 
+        })
+
+        viewModel.postPrice.observe(this, androidx.lifecycle.Observer {
+            Log.i("Sophie_farm", "$it")
+            when {
+                it > 1000 -> binding.imageFarm.setBackgroundResource(R.drawable.hen)
+                it < 0 -> binding.imageFarm.setBackgroundResource(R.drawable.tag_income)
+                else -> binding.imageFarm.setBackgroundResource(R.drawable.tag_traffic)
+            }
         })
         return binding.root
     }

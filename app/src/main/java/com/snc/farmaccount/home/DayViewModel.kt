@@ -3,6 +3,7 @@ package com.snc.farmaccount.home
 import android.util.Log
 import androidx.lifecycle.*
 import com.google.firebase.firestore.FirebaseFirestore
+import com.simplemobiletools.commons.extensions.toInt
 import com.snc.farmaccount.`object`.Event
 import com.snc.farmaccount.helper.UserManager
 import java.text.DecimalFormat
@@ -23,8 +24,9 @@ class DayViewModel: ViewModel() {
     lateinit var firebaseEvent : Event
     var currentDate = MutableLiveData<String>()
     var date = MutableLiveData<String>()
-    var budgetPrice = MutableLiveData<String>()
+    var postPrice = MutableLiveData<Int>()
     var overagePrice = MutableLiveData<String>()
+    var farmStatus = MutableLiveData<Boolean>()
     var dataList = ArrayList<Event>()
     var DATE_MODE = ""
 
@@ -40,7 +42,7 @@ class DayViewModel: ViewModel() {
     init {
         pickDate
         week()
-        getBudget()
+//        getBudget()
 
     }
 
@@ -87,20 +89,20 @@ class DayViewModel: ViewModel() {
             }
     }
 
-    private fun getBudget() {
-        val db = FirebaseFirestore.getInstance()
-        val decimalFormat = DecimalFormat("#,###")
-        db.collection("User").document("${UserManager.userToken}").collection("Budget")
-            .get()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    for (document in task.result!!) {
-                        Log.d("Sophie_db", "${document.id} => ${document.data["budgetPrice"]}")
-                        budgetPrice.value = decimalFormat.format(document.data["budgetPrice"].toString().toDouble())
-                    }
-                }
-            }
-    }
+//    private fun getBudget() {
+//        val db = FirebaseFirestore.getInstance()
+//        val decimalFormat = DecimalFormat("#,###")
+//        db.collection("User").document("${UserManager.userToken}").collection("Budget")
+//            .get()
+//            .addOnCompleteListener { task ->
+//                if (task.isSuccessful) {
+//                    for (document in task.result!!) {
+//                        Log.d("Sophie_db", "${document.id} => ${document.data["budgetPrice"]}")
+//                        budgetPrice.value = decimalFormat.format(document.data["budgetPrice"].toString().toDouble())
+//                    }
+//                }
+//            }
+//    }
 
     fun getOverage() {
         val db = FirebaseFirestore.getInstance()
@@ -110,10 +112,11 @@ class DayViewModel: ViewModel() {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     for (document in task.result!!) {
-                        Log.d("Sophie_db", "${document.id} => ${document.data["overage"]}")
                         overagePrice.value = decimalFormat.format(document.data["overage"].toString().toDouble())
+                        postPrice.value = document.data["overage"]?.toInt()
                     }
                 }
+                Log.d("Sophie_db", "overagePrice.value = ${farmStatus.value}")
             }
     }
 
