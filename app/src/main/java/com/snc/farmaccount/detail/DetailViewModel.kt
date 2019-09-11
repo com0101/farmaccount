@@ -15,6 +15,7 @@ class DetailViewModel(product: Event, app: Application) : AndroidViewModel(app) 
 
     var infoInput = MutableLiveData<String>()
     var idCheck = MutableLiveData<String>()
+    var overagePrice = MutableLiveData<String>()
 
     private val _detail = MutableLiveData<Event>()
 
@@ -25,7 +26,7 @@ class DetailViewModel(product: Event, app: Application) : AndroidViewModel(app) 
     init {
         _detail.value = product
         infoInput.value = detail.value?.description
-
+        getOverage()
     }
 
     fun deleteEvent() {
@@ -47,7 +48,18 @@ class DetailViewModel(product: Event, app: Application) : AndroidViewModel(app) 
                                     "Sophie_update",
                                     "DocumentSnapshot added with ID: $documentReference"
                                 )
-
+                                var price = detail.value!!.price!!.toInt()
+                                var overageInt = overagePrice.value?.toInt()
+                                if (detail.value!!.status == true) {
+                                    overagePrice.value = (overageInt?.minus(price)).toString()
+                                } else {
+                                    overagePrice.value = (overageInt?.plus(price)).toString()
+                                }
+                                db.collection("User").document("${UserManager.userToken}").collection("Budget")
+                                    .document("${UserManager.userToken}")
+                                    .update("overage","${overagePrice.value}")
+                                    .addOnSuccessListener { Log.d("Sophie_budget_edit", "DocumentSnapshot successfully written!") }
+                                    .addOnFailureListener { e -> Log.w("Sophie_budget_edit", "Error writing document", e) }
 
                             }
                             .addOnFailureListener { e -> Log.w("Sophie_add_fail", "Error adding document", e) }
@@ -55,6 +67,20 @@ class DetailViewModel(product: Event, app: Application) : AndroidViewModel(app) 
                 }
             }
 
+    }
+
+    private fun getOverage() {
+        val db = FirebaseFirestore.getInstance()
+        db.collection("User").document("${UserManager.userToken}").collection("Budget")
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    for (document in task.result!!) {
+                        Log.d("Sophie_db", "${document.id} => ${document.data["overage"]}")
+                        overagePrice.value = document.data["overage"].toString()
+                    }
+                }
+            }
     }
 
 
