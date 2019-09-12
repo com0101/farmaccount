@@ -1,12 +1,15 @@
 package com.snc.farmaccount.event
 
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -18,14 +21,18 @@ import com.snc.farmaccount.detail.DetailFactory
 import com.snc.farmaccount.detail.DetailFragmentArgs
 import com.snc.farmaccount.detail.DetailViewModel
 import com.snc.farmaccount.home.DayViewModel
+import com.snc.farmaccount.qrcode.QrCodeFragment
+import com.snc.farmaccount.qrcode.QrCodeFragmentDirections
 
 class AddEventFragment : Fragment() {
 
     private lateinit var binding: FragmentAddEventBinding
     val tag = ArrayList<Tag>()
-//    private val viewModel: AddEventViewModel by lazy {
-//        ViewModelProviders.of(this).get(AddEventViewModel::class.java)
-//    }
+    var REQUEST_EVALUATE = 0X110
+
+    private val viewModel: AddEventViewModel by lazy {
+        ViewModelProviders.of(this).get(AddEventViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,17 +40,27 @@ class AddEventFragment : Fragment() {
     ): View? {
 
         binding = FragmentAddEventBinding.inflate(inflater)
+
+        val QRviewModel: AddEventViewModel by lazy {
+            ViewModelProviders.of(activity!!).get(AddEventViewModel::class.java)
+        }
+        QRviewModel.someDay.observe(viewLifecycleOwner, Observer {
+            Log.i("Sophie_qr","$it")
+            if (QRviewModel.someDay.value != null) {
+                viewModel.today.value = it
+                QRviewModel.someDay.value = null
+            }
+        })
+
+        QRviewModel.getPrice.observe(viewLifecycleOwner, Observer {
+            Log.i("Sophie_qr","$it")
+            if (QRviewModel.getPrice.value != null) {
+                viewModel.priceInput.value = it
+                QRviewModel.getPrice.value = null
+            }
+        })
+
         binding.lifecycleOwner = this
-
-        val application = requireNotNull(activity).application
-
-        val product = DetailFragmentArgs.fromBundle(arguments!!).detail
-
-        val viewModelFactory = DetailFactory(product , application)
-
-        val viewModel = ViewModelProviders.of(
-            this, viewModelFactory).get(AddEventViewModel::class.java)
-
         binding.viewModel = viewModel
 
         binding.tagList.adapter = TagAdapter(TagAdapter.OnClickListener {
@@ -61,6 +78,16 @@ class AddEventFragment : Fragment() {
             findNavController()
                 .navigate(AddEventFragmentDirections.actionGlobalHomeFragment())
         }
+
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // 做你要的事，這邊是跳轉首頁
+                findNavController().
+                    navigate(R.id.action_global_homeFragment)
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+
         tagList()
         viewModel.mark.value = tag
         viewModel.getTag()
@@ -68,6 +95,14 @@ class AddEventFragment : Fragment() {
         return binding.root
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        val qrCodeFragment = QrCodeFragment()
+        qrCodeFragment.setTargetFragment(this, REQUEST_EVALUATE)
+
+
+
+    }
 
     private fun tagList() {
         tag.add(Tag(R.drawable.tag_breakfast,R.drawable.tag_breakfast_press,

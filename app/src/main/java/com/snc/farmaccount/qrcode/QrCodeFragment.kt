@@ -8,25 +8,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.budiyev.android.codescanner.CodeScanner
 import com.budiyev.android.codescanner.DecodeCallback
-import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode
-import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetectorOptions
-import com.google.firebase.ml.vision.common.FirebaseVisionImage
-import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata
 import com.snc.farmaccount.R
-import com.snc.farmaccount.`object`.Product
 import com.snc.farmaccount.`object`.QrCode
 import com.snc.farmaccount.databinding.FragmentQrCodeBinding
-import com.snc.farmaccount.home.DayCalendarFragmentDirections
+import com.snc.farmaccount.event.AddEventViewModel
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class QrCodeFragment : Fragment() {
 
     private lateinit var binding: FragmentQrCodeBinding
     private lateinit var codeScanner: CodeScanner
-    var code = ArrayList<QrCode>()
+
+    private val viewModel: AddEventViewModel by lazy {
+        ViewModelProviders.of(this).get(AddEventViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,11 +37,19 @@ class QrCodeFragment : Fragment() {
 
         binding = FragmentQrCodeBinding.inflate(inflater)
         binding.lifecycleOwner = this
-
         binding.imageBackState.setOnClickListener {
             findNavController()
                 .navigate(QrCodeFragmentDirections.actionGlobalHomeFragment())
         }
+
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // 做你要的事，這邊是跳轉首頁
+                findNavController().
+                    navigate(R.id.action_global_homeFragment)
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
         // Inflate the layout for this fragment
         return binding.root
     }
@@ -52,33 +62,20 @@ class QrCodeFragment : Fragment() {
                 Toast.makeText(this.requireContext(), it.text, Toast.LENGTH_LONG).show()
                 Log.i("Sophie_scan","${it.text}")
                 val price = Integer.parseInt( it.text.substring(30, 37), 16 ).toString()
-                val time = it.text.substring(17, 23)
-
-                Log.i("Sophie_16", "$price + $time")
-
-                code.add(QrCode(price,time))
-//                val values = it.text.substring(2) // Read List from somewhere
-//                val lstValues: List<String> = values .split(":").map { it -> it.trim() }
-//                lstValues.let {
-//                    for (i in 0 until lstValues.size) {
-//                        when (i % 3) {
-//                            0 -> product?.name == it[i]
-//                            1 -> product?.quantity == it[i]
-//                            2 -> product?.price == it[i]
-//                        }
-//                        Log.i("Sophie_listvalue", "$it")
-//                    }
-//
-//                }
-//
-//                lstValues.forEach { it ->
-//                    it
-//                    Log.i("Values", "value=$it")
-//                    //Do Something
-//                }
+                val year = it.text.substring(10, 13).toInt()
+                val month = it.text.substring(14, 15).toInt()
+                val day = it.text.substring(16, 17).toInt()
+                val getDate = Date(year+11, month-1, day+10)
+                val simpledateformat = SimpleDateFormat("yyyy.MM.dd (EEEE)")
+                val time = simpledateformat.format(getDate)
+                val codeViewModel: AddEventViewModel by lazy {
+                    ViewModelProviders.of(activity!!).get(AddEventViewModel::class.java)
+                }
                 if (it.text != null) {
                     this.findNavController()
                         .navigate(QrCodeFragmentDirections.actionGlobalAddEventFragment())
+                    codeViewModel.someDay.value = time
+                    codeViewModel.getPrice.value = price
                 }
 
             }

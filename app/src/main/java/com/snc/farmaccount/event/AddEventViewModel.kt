@@ -30,6 +30,8 @@ class AddEventViewModel : ViewModel() {
     var infoInput = MutableLiveData<String>()
     var chooseTag = MutableLiveData<Tag>()
     var today = MutableLiveData<String>()
+    var someDay = MutableLiveData<String>()
+    var getPrice = MutableLiveData<String>()
     var idCheck = MutableLiveData<String>()
     var monthFormat = MutableLiveData<String>()
     var overagePrice = MutableLiveData<String>()
@@ -41,6 +43,7 @@ class AddEventViewModel : ViewModel() {
     init {
         week()
         getOverage()
+        Log.i("Sophie_today","${today.value}")
     }
 
     fun getTag() {
