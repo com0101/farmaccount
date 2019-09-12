@@ -63,9 +63,10 @@ class QrCodeFragment : Fragment() {
                 Log.i("Sophie_scan","${it.text}")
                 val price = Integer.parseInt( it.text.substring(30, 37), 16 ).toString()
                 val year = it.text.substring(10, 13).toInt()
-                val month = it.text.substring(14, 15).toInt()
-                val day = it.text.substring(16, 17).toInt()
-                val getDate = Date(year+11, month-1, day+10)
+                val month = it.text.substring(13, 15).toInt()
+                val day = it.text.substring(15, 17).toInt()
+                Log.i("Sophie_day","$day")
+                val getDate = Date(year+11, month-1, day)
                 val simpledateformat = SimpleDateFormat("yyyy.MM.dd (EEEE)")
                 val time = simpledateformat.format(getDate)
                 val codeViewModel: AddEventViewModel by lazy {
