@@ -88,7 +88,7 @@ class LogInFragment : Fragment() {
 
         }
     }
-    fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
+    private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
         Log.d("Sophie_fire_google", "firebaseAuthWithGoogle:" + account.id!!)
         var firebaseAuth = FirebaseAuth.getInstance()
         val credential = GoogleAuthProvider.getCredential(account.idToken, null)

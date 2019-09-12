@@ -23,9 +23,9 @@ class AddEventFragment : Fragment() {
 
     private lateinit var binding: FragmentAddEventBinding
     val tag = ArrayList<Tag>()
-    private val viewModel: AddEventViewModel by lazy {
-        ViewModelProviders.of(this).get(AddEventViewModel::class.java)
-    }
+//    private val viewModel: AddEventViewModel by lazy {
+//        ViewModelProviders.of(this).get(AddEventViewModel::class.java)
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,6 +34,16 @@ class AddEventFragment : Fragment() {
 
         binding = FragmentAddEventBinding.inflate(inflater)
         binding.lifecycleOwner = this
+
+        val application = requireNotNull(activity).application
+
+        val product = DetailFragmentArgs.fromBundle(arguments!!).detail
+
+        val viewModelFactory = DetailFactory(product , application)
+
+        val viewModel = ViewModelProviders.of(
+            this, viewModelFactory).get(AddEventViewModel::class.java)
+
         binding.viewModel = viewModel
 
         binding.tagList.adapter = TagAdapter(TagAdapter.OnClickListener {

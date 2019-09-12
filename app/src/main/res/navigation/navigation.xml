@@ -15,7 +15,10 @@
     <fragment android:id="@+id/addEventFragment"
               android:name="com.snc.farmaccount.event.AddEventFragment"
               android:label="AddEventFragment"
-              tools:layout="@layout/fragment_add_event"/>
+              tools:layout="@layout/fragment_add_event">
+    <argument android:name="price"
+              app:argType="com.snc.farmaccount.object.QrCode"/>
+    </fragment>
 
     <action android:id="@+id/action_global_addEventFragment"
             app:destination="@id/addEventFragment"/>
