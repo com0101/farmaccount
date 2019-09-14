@@ -102,6 +102,10 @@ dependencies {
 
     // Chart
     implementation 'com.github.PhilJay:MPAndroidChart:v2.2.4'
+    implementation 'devlight.io:arcprogressstackview:1.0.4'
+    implementation 'com.lalongooo:rings:1.0.0'
+    implementation 'com.github.bmarrdev:android-DecoView-charting:v1.2'
+    implementation 'com.github.lecho:hellocharts-library:1.5.8@aar'
 
     // Qr Code
     implementation 'com.budiyev.android:code-scanner:2.1.0'

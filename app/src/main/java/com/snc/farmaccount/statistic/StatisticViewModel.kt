@@ -56,7 +56,7 @@ class StatisticViewModel : ViewModel() {
         }
     }
 
-    val eventByTotalPrice: LiveData<Int> = Transformations.map(eventByCatagory) { it ->
+    val eventByTotalPrice: LiveData<Int> = Transformations.map(event) { it ->
         it.sumBy { it.price!!.toInt() }
     }
 
@@ -153,6 +153,7 @@ class StatisticViewModel : ViewModel() {
                     }
                 }
                 _event.value = dataList
+                eventByTotalPrice
                 getEventSum()
                 Log.w("Sophie_db_list", "$dataList")
             }
