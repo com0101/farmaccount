@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.snc.farmaccount.R
@@ -54,6 +55,7 @@ class MonthCalendarFragment : Fragment() {
 
         binding.textMonth.text = title
         viewModel.currentMonth.value = title.substring(5,7)
+        binding.spendHint.visibility = View.GONE
         viewModel.getCurrentMonth()
         viewModel.getFirebase()
 
@@ -65,10 +67,12 @@ class MonthCalendarFragment : Fragment() {
             if (it == true) {
                 binding.detailList.visibility = View.VISIBLE
                 binding.totalList.visibility = View.GONE
+                binding.dynamicArcView.visibility = View.GONE
             } else {
                 binding.detailList.visibility = View.GONE
                 binding.totalList.visibility = View.VISIBLE
                 binding.spendHint.visibility = View.GONE
+                binding.dynamicArcView.visibility = View.VISIBLE
             }
         })
 
@@ -150,6 +154,10 @@ class MonthCalendarFragment : Fragment() {
                     pieChart()
                 }
             })
+
+            if (price == 0) {
+                pieData.add(SliceValue(100f, Color.argb(100,148,148,148)).setLabel("沒有費用喔"))
+            }
         })
         binding.totalList.adapter = StatisticCatagoryAdapter(StatisticCatagoryAdapter.OnClickListener {
 

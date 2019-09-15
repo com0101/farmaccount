@@ -4,21 +4,23 @@ package com.snc.farmaccount.statistic
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
-import com.snc.farmaccount.ApplicationContext
 import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.StatisticCatalog
 import com.snc.farmaccount.databinding.FragmentStatisticBinding
 import com.snc.farmaccount.helper.Format
-import com.snc.farmaccount.helper.NavigationListener
+
+
 
 
 
@@ -48,9 +50,24 @@ class StatisticFragment : Fragment() {
 
         binding.tagList.adapter = StatisticTagAdapter(tag,StatisticTagAdapter.OnClickListener {
             viewModel.catagory.value = it
+            val params =  binding.imageArrowRight.layoutParams as ConstraintLayout.LayoutParams
+            val paramsleft =  binding.imageArrowLeft.layoutParams as ConstraintLayout.LayoutParams
+
             when(it.name){
-                "總覽" -> viewModel.filter.value = false
-                else -> viewModel.filter.value = true
+                "總覽" -> {
+                    viewModel.filter.value = false
+                    params.setMargins(0,715,70,0)
+                    paramsleft.setMargins(70,715,0,0)
+                    binding.imageArrowRight.requestLayout()
+                    binding.imageArrowLeft.requestLayout()
+                }
+                else -> {
+                    viewModel.filter.value = true
+                    params.setMargins(0,25,70,0)
+                    paramsleft.setMargins(70,25,0,0)
+                    binding.imageArrowRight.requestLayout()
+                    binding.imageArrowLeft.requestLayout()
+                }
             }
             Log.i("Sophie_taglist", "${viewModel.catagory.value}")
         })

@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="arrow_rotate_180">180</dimen>
+    <dimen name="right_25">25dp</dimen>
+    <dimen name="left_25">25dp</dimen>
+    <dimen name="top_260">260dp</dimen>
+    <dimen name="top_10">10dp</dimen>
 </resources>

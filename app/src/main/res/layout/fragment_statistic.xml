@@ -102,6 +102,27 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         android:layout_marginTop="260dp"/>
+                <ImageView
+                        android:id="@+id/top_arrow_left"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:rotation="@dimen/arrow_rotate_180"
+                        android:layout_marginStart="25dp"
+                        android:layout_weight="0.2"
+                        app:srcCompat="@android:drawable/ic_media_play"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="10dp" android:visibility="gone"/>
+                <ImageView
+                        android:id="@+id/top_arrow_right"
+                        android:layout_width="33dp"
+                        android:layout_height="33dp"
+                        android:layout_marginEnd="25dp"
+                        android:layout_weight="0.2"
+                        app:srcCompat="@android:drawable/ic_media_play"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="10dp" android:visibility="gone"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.appbar.AppBarLayout>
