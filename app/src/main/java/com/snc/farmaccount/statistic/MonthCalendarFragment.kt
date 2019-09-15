@@ -20,6 +20,7 @@ import com.snc.farmaccount.`object`.SumEvent
 import com.snc.farmaccount.databinding.FragmentMonthCalendarBinding
 import lecho.lib.hellocharts.model.PieChartData
 import lecho.lib.hellocharts.model.SliceValue
+import kotlin.math.roundToInt
 
 class MonthCalendarFragment : Fragment() {
 
@@ -67,6 +68,7 @@ class MonthCalendarFragment : Fragment() {
             } else {
                 binding.detailList.visibility = View.GONE
                 binding.totalList.visibility = View.VISIBLE
+                binding.spendHint.visibility = View.GONE
             }
         })
 
@@ -79,83 +81,79 @@ class MonthCalendarFragment : Fragment() {
             }
         })
 
+        viewModel.eventByTotalPrice.observe(this, Observer { price ->
+            total = price
+            viewModel.eventByEatPrice.observe(this, Observer { it ->
+                it?.let {
+                    if (it != 0) {
+                        var percent=Math.round((viewModel.eventByEatPrice.value!!.toFloat()/total)*100)
+                        pieData.add(SliceValue(viewModel.eventByEatPrice.value!!.toFloat(), Color.argb(100,253,104,57)).setLabel("食: $percent %"))
 
-
-        viewModel.eventByEatPrice.observe(this, Observer { it ->
-            it?.let {
-                var percent=  (viewModel.eventByEatPrice.value!!.toInt())
-                if (it != 0) {
-                    pieData.add(SliceValue(viewModel.eventByEatPrice.value!!.toFloat(), Color.argb(100,253,104,57)).setLabel("食: $percent"))
+                    }
+                    sumEvent.add(SumEvent(R.drawable.tag_eat,getString(R.string.catalog_eat),viewModel.eventByEatPrice.value.toString()))
                 }
-                sumEvent.add(SumEvent(R.drawable.tag_eat,getString(R.string.catalog_eat),viewModel.eventByEatPrice.value.toString()))
-            }
-        })
+            })
 
-        viewModel.eventByClothPrice.observe(this, Observer {
-            Log.i("Sophie_cloth", "$it")
-            it?.let {
-                var percent=  (viewModel.eventByClothPrice.value!!.toInt())
-                sumEvent.add(SumEvent(R.drawable.tag_cloth,getString(R.string.catalog_cloth),viewModel.eventByClothPrice.value.toString()))
-                if (it != 0) {
-                    pieData.add(SliceValue(viewModel.eventByClothPrice.value!!.toFloat(), Color.argb(100,255,152,0)).setLabel("衣: $percent"))
+            viewModel.eventByClothPrice.observe(this, Observer { it ->
+                Log.i("Sophie_cloth", "$it")
+                it?.let {
+                    sumEvent.add(SumEvent(R.drawable.tag_cloth,getString(R.string.catalog_cloth),viewModel.eventByClothPrice.value.toString()))
+                    if (it != 0) {
+                        var percent=Math.round((viewModel.eventByClothPrice.value!!.toFloat()/total)*100)
+                        pieData.add(SliceValue(viewModel.eventByClothPrice.value!!.toFloat(), Color.argb(100,255,152,0)).setLabel("衣: $percent %"))
+                    }
                 }
-            }
-        })
+            })
 
-        viewModel.eventByLivePrice.observe(this, Observer {
-            Log.i("Sophie_live", "$it")
-            it?.let {
-                var percent=  (viewModel.eventByLivePrice.value!!.toInt())
-                sumEvent.add(SumEvent(R.drawable.tag_live,getString(R.string.catalog_live),viewModel.eventByLivePrice.value.toString()))
-                if (it != 0) {
-                    pieData.add(SliceValue(viewModel.eventByLivePrice.value!!.toFloat(), Color.argb(100,255,193,7)).setLabel("住: $percent"))
+            viewModel.eventByLivePrice.observe(this, Observer { it ->
+                Log.i("Sophie_live", "$it")
+                it?.let {
+                    sumEvent.add(SumEvent(R.drawable.tag_live,getString(R.string.catalog_live),viewModel.eventByLivePrice.value.toString()))
+                    if (it != 0) {
+                        var percent=Math.round((viewModel.eventByLivePrice.value!!.toFloat()/total)*100)
+                        pieData.add(SliceValue(viewModel.eventByLivePrice.value!!.toFloat(), Color.argb(100,255,193,7)).setLabel("住: $percent %"))
+                    }
                 }
-            }
-        })
+            })
 
-        viewModel.eventByTrafficPrice.observe(this, Observer {
-            Log.i("Sophie_traffic", "$it")
-            it?.let {
-                var percent=  (viewModel.eventByTrafficPrice.value!!.toInt())
-                sumEvent.add(SumEvent(R.drawable.tag_traffic,getString(R.string.catalog_traffic),viewModel.eventByTrafficPrice.value.toString()))
-                if (it != 0) {
-                    pieData.add(SliceValue(viewModel.eventByTrafficPrice.value!!.toFloat(), Color.argb(100,255,235,59)).setLabel("行: $percent"))
+            viewModel.eventByTrafficPrice.observe(this, Observer { it ->
+                Log.i("Sophie_traffic", "$it")
+                it?.let {
+                    sumEvent.add(SumEvent(R.drawable.tag_traffic,getString(R.string.catalog_traffic),viewModel.eventByTrafficPrice.value.toString()))
+                    if (it != 0) {
+                        var percent=Math.round((viewModel.eventByTrafficPrice.value!!.toFloat()/total)*100)
+                        pieData.add(SliceValue(viewModel.eventByTrafficPrice.value!!.toFloat(), Color.argb(100,255,235,59)).setLabel("行: $percent %"))
+                    }
                 }
-            }
-        })
+            })
 
-        viewModel.eventByFunPrice.observe(this, Observer {
-            Log.i("Sophie_fun", "$it")
-            it?.let {
-                var percent=  (viewModel.eventByFunPrice.value!!.toInt())
-                sumEvent.add(SumEvent(R.drawable.tag_fun,getString(R.string.catalog_fun),viewModel.eventByFunPrice.value.toString()))
-                if (it != 0) {
-                    pieData.add(SliceValue(viewModel.eventByFunPrice.value!!.toFloat(), Color.argb(100,205,220,57)).setLabel("樂: $percent"))
+            viewModel.eventByFunPrice.observe(this, Observer { it ->
+                Log.i("Sophie_fun", "$it")
+                it?.let {
+                    sumEvent.add(SumEvent(R.drawable.tag_fun,getString(R.string.catalog_fun),viewModel.eventByFunPrice.value.toString()))
+                    if (it != 0) {
+                        var percent=Math.round((viewModel.eventByFunPrice.value!!.toFloat()/total)*100)
+                        pieData.add(SliceValue(viewModel.eventByFunPrice.value!!.toFloat(), Color.argb(100,205,220,57)).setLabel("樂: $percent %"))
+                    }
                 }
-            }
-        })
+            })
 
-        viewModel.eventByIncomePrice.observe(this, Observer {
-            Log.i("Sophie_income", "$it")
-            it?.let {
-                sumEvent.add(SumEvent(R.drawable.tag_income,getString(R.string.catalog_income),viewModel.eventByIncomePrice.value.toString()))
-                viewModel.sumEvent.value = sumEvent
-                var percent=  (viewModel.eventByIncomePrice.value!!.toInt())
-                if (it != 0) {
-                    pieData.add(SliceValue(viewModel.eventByIncomePrice.value!!.toFloat(), Color.argb(100,139,195,74)).setLabel("收入: $percent"))
+            viewModel.eventByIncomePrice.observe(this, Observer { it ->
+                Log.i("Sophie_income", "$it")
+                it?.let {
+                    sumEvent.add(SumEvent(R.drawable.tag_income,getString(R.string.catalog_income),viewModel.eventByIncomePrice.value.toString()))
+                    viewModel.sumEvent.value = sumEvent
+                    if (it != 0) {
+                        var percent=Math.round((viewModel.eventByIncomePrice.value!!.toFloat()/total)*100)
+                        pieData.add(SliceValue(viewModel.eventByIncomePrice.value!!.toFloat(), Color.argb(100,139,195,74)).setLabel("收入: $percent %"))
+                    }
+                    pieChart()
                 }
-                pieChart()
-            }
+            })
         })
-
         binding.totalList.adapter = StatisticCatagoryAdapter(StatisticCatagoryAdapter.OnClickListener {
 
         }, viewModel)
-
-
-
-
-
 
         return binding.root
     }

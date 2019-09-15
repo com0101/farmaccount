@@ -153,7 +153,6 @@ class StatisticViewModel : ViewModel() {
                     }
                 }
                 _event.value = dataList
-                eventByTotalPrice
                 getEventSum()
                 Log.w("Sophie_db_list", "$dataList")
             }
