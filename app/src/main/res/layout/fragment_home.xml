@@ -137,11 +137,14 @@
                     android:id="@+id/image_add_event"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/add_event"
+                    android:src="@drawable/add"
                     android:layout_marginBottom="8dp"
-                    app:layout_constraintBottom_toTopOf="@+id/appBarLayout" app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/appBarLayout"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginStart="8dp"/>
+
             <com.google.android.material.appbar.AppBarLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"

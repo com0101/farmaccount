@@ -36,7 +36,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintVertical_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/image_tag"/>
+                    app:layout_constraintStart_toEndOf="@+id/image_tag" android:layout_marginBottom="4dp"/>
 
             <TextView
                     android:id="@+id/text_price"
@@ -45,23 +45,23 @@
                     android:layout_height="wrap_content"
                     android:paddingStart="6dp"
                     android:textSize="18sp"
-                    android:textColor="@color/gray_green"
+                    android:textColor="@color/fui_bgGoogle"
                     android:gravity="center"
                     android:layout_marginEnd="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="4dp"/>
 
             <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:id="@+id/image_tag"
                     android:layout_marginStart="8dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/tag_eat"
-                    app:layout_constraintVertical_bias="0.5"/>
+                    app:layout_constraintVertical_bias="0.5" android:layout_marginBottom="4dp"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

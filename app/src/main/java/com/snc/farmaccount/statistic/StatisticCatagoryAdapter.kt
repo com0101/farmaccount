@@ -1,5 +1,6 @@
 package com.snc.farmaccount.statistic
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.internal.view.SupportSubMenu
@@ -48,11 +49,19 @@ class StatisticCatagoryAdapter(var onClickListener: OnClickListener, var viewMod
     class EventViewHolder(private var binding: ItemStatisticTotalBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
+        @SuppressLint("ResourceAsColor")
         fun bind(event: SumEvent) {
             binding.sum = event
             binding.imageTag.setImageResource(event.tagImage)
             binding.titleTag.text = event.tagType
             binding.textPrice.text = event.totalPrice
+            if (event.status) {
+                binding.price.setBackgroundResource(R.drawable.greenbar)
+                binding.titleTag.setTextColor(R.color.dark_green)
+            } else {
+                binding.price.setBackgroundResource(R.drawable.redbar)
+                binding.titleTag.setTextColor(R.color.dark_red)
+            }
 
             binding.executePendingBindings()
         }

@@ -17,6 +17,10 @@
     <color name="logo_gray">#949494</color>
     <color name="light_gray">#B9B9B9</color>
 
+    //text
+    <color name="dark_red">#BC4141</color>
+    <color name="dark_green">#82B763</color>
+
     <color name="translate_40">#66000000</color>
     <color name="translate_100">#00000000</color>
 
