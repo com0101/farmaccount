@@ -18,8 +18,13 @@
     <color name="light_gray">#B9B9B9</color>
 
     //text
-    <color name="dark_red">#BC4141</color>
+    <color name="dark_red">#D36B5A</color>
     <color name="dark_green">#82B763</color>
+    <color name="bar_green">#A2E979</color>
+    <color name="bar_red">#EF7A68</color>
+    <color name="egg_yellow">#FDFFC7</color>
+    <color name="expend_title">#B28E4D</color>
+
 
     <color name="translate_40">#66000000</color>
     <color name="translate_100">#00000000</color>

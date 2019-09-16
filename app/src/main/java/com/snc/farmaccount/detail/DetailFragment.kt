@@ -56,16 +56,16 @@ class DetailFragment : Fragment() {
         viewModel.detail.observe(this , Observer {
             Log.i("Sophie_detail","$it")
             if(it.tag == "早餐") {
-                binding.tagImage.setImageResource(R.drawable.tag_breakfast)
+                binding.tagImage.setImageResource(R.drawable.tag_egg)
             }
             if(it.tag == "午餐") {
-                binding.tagImage.setImageResource(R.drawable.tag_lunch)
+                binding.tagImage.setImageResource(R.drawable.tag_pig)
             }
             if(it.tag == "晚餐") {
-                binding.tagImage.setImageResource(R.drawable.tag_dinner)
+                binding.tagImage.setImageResource(R.drawable.tag_cow)
             }
             if(it.tag == "點心") {
-                binding.tagImage.setImageResource(R.drawable.tag_dessert)
+                binding.tagImage.setImageResource(R.drawable.tag_ginger)
             }
             if(it.tag == "衣服") {
                 binding.tagImage.setImageResource(R.drawable.tag_cloth)
@@ -80,10 +80,10 @@ class DetailFragment : Fragment() {
                 binding.tagImage.setImageResource(R.drawable.tag_fun)
             }
             if(it.tag == "薪水") {
-                binding.tagImage.setImageResource(R.drawable.tag_payment)
+                binding.tagImage.setImageResource(R.drawable.tag_money)
             }
             if(it.tag == "中獎") {
-                binding.tagImage.setImageResource(R.drawable.tag_lottery)
+                binding.tagImage.setImageResource(R.drawable.tag_ticket)
             }
         })
 

@@ -56,15 +56,15 @@ class StatisticFragment : Fragment() {
             when(it.name){
                 "總覽" -> {
                     viewModel.filter.value = false
-                    params.setMargins(0,715,70,0)
-                    paramsleft.setMargins(70,715,0,0)
+                    params.setMargins(0,715,74,0)
+                    paramsleft.setMargins(74,715,0,0)
                     binding.imageArrowRight.requestLayout()
                     binding.imageArrowLeft.requestLayout()
                 }
                 else -> {
                     viewModel.filter.value = true
-                    params.setMargins(0,25,70,0)
-                    paramsleft.setMargins(70,25,0,0)
+                    params.setMargins(0,25,74,0)
+                    paramsleft.setMargins(74,25,0,0)
                     binding.imageArrowRight.requestLayout()
                     binding.imageArrowLeft.requestLayout()
                 }

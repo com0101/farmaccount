@@ -40,6 +40,11 @@ class BudgetFragment : Fragment() {
         binding.farmList.visibility = View.GONE
         binding.unSelectFarmList.visibility = View.VISIBLE
         binding.farmList.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+        binding.textBudget.isEnabled = false
+        binding.textBudget.setTextColor(resources.getColor(R.color.light_gray))
+        binding.price.background = resources.getDrawable(R.drawable.unedit_radius_border)
+        binding.imageCoin.background = resources.getDrawable(R.drawable.money_unedit)
+
 
         addBudget()
         unEditBudget()
@@ -50,11 +55,7 @@ class BudgetFragment : Fragment() {
 
         binding.farmList.adapter = BudgetAdapter(budget,BudgetAdapter.OnClickListener {
             viewModel.getBudgetType.value = it
-            binding.textBudget.setTextColor(resources.getColor(R.color.gray_green))
-            binding.price.background = resources.getDrawable(R.drawable.radius_border)
-            binding.imageCoin.background = resources.getDrawable(R.drawable.money_icon)
-            binding.textBudget.isEnabled = true
-            Snackbar.make(this.requireView(), "選擇完成", Snackbar.LENGTH_LONG).show()
+            Snackbar.make(this.requireView(), "選擇更改金額或直接儲存", Snackbar.LENGTH_LONG).show()
         })
 
         binding.unSelectFarmList.adapter = BudgetAdapter(budgetUnselect,BudgetAdapter.OnClickListener {
@@ -83,10 +84,10 @@ class BudgetFragment : Fragment() {
         }
 
         binding.imageEdit.setOnClickListener {
-            binding.textBudget.setTextColor(resources.getColor(R.color.light_gray))
-            binding.price.background = resources.getDrawable(R.drawable.unedit_radius_border)
-            binding.imageCoin.background = resources.getDrawable(R.drawable.money_unedit)
-            binding.textBudget.isEnabled = false
+            binding.textBudget.isEnabled = true
+            binding.textBudget.setTextColor(resources.getColor(R.color.gray_green))
+            binding.price.background = resources.getDrawable(R.drawable.radius_border)
+            binding.imageCoin.background = resources.getDrawable(R.drawable.money_icon)
 
             binding.imageArrowRight.setOnClickListener {
                 binding.farmList.currentItem = binding.farmList.currentItem + 1

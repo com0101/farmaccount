@@ -10,11 +10,11 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/description_border"
             tools:context=".dialog.CheckDialog">
 
         <TextView
                 android:text="@string/check_content_tool"
+                android:fontFamily="@font/gen_normal"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/check_content"

@@ -46,6 +46,7 @@
             <TextView
                     android:id="@+id/textView"
                     android:text="@string/GOOGLE_LOG_IN"
+                    android:fontFamily="@font/gen_normal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"

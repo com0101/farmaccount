@@ -16,8 +16,9 @@
     <string name="budget_range_title">預算金額</string>
     <string name="title_price">金額</string>
     <string name="title_date">日期</string>
-    <string name="budget_edit_title">修改預算</string>
-    <string name="farm_edit_title">農場更換</string>
+    <string name="edit">修改</string>
+    <string name="save">儲存</string>
+    <string name="delete">刪除</string>
     <string name="detail_page_title">費用明細</string>
     <string name="budget_page_title">預算編制</string>
     <string name="qrcode_page_title">發票掃描</string>

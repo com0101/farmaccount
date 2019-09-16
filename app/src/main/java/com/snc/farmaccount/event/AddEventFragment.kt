@@ -13,16 +13,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-
 import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.Tag
 import com.snc.farmaccount.databinding.FragmentAddEventBinding
-import com.snc.farmaccount.detail.DetailFactory
-import com.snc.farmaccount.detail.DetailFragmentArgs
-import com.snc.farmaccount.detail.DetailViewModel
-import com.snc.farmaccount.home.DayViewModel
 import com.snc.farmaccount.qrcode.QrCodeFragment
-import com.snc.farmaccount.qrcode.QrCodeFragmentDirections
 
 class AddEventFragment : Fragment() {
 
@@ -105,15 +99,15 @@ class AddEventFragment : Fragment() {
     }
 
     private fun tagList() {
-        tag.add(Tag(R.drawable.tag_breakfast,R.drawable.tag_breakfast_press,
+        tag.add(Tag(R.drawable.tag_egg,R.drawable.tag_egg_press,
             getString(R.string.tag_breakfast),false, getString(R.string.catalog_eat)))
-        tag.add(Tag(R.drawable.tag_lunch,R.drawable.tag_lunch_press,
+        tag.add(Tag(R.drawable.tag_pig,R.drawable.tag_pig_press,
            getString(R.string.tag_lunch),false, getString(R.string.catalog_eat)))
-        tag.add(Tag(R.drawable.tag_dinner,R.drawable.tag_dinner_press,
+        tag.add(Tag(R.drawable.tag_cow,R.drawable.tag_cow_press,
             getString(R.string.tag_dinner),false, getString(R.string.catalog_eat)))
-        tag.add(Tag(R.drawable.tag_dessert,R.drawable.tag_dessert_press,
+        tag.add(Tag(R.drawable.tag_ginger,R.drawable.tag_ginger_press,
             getString(R.string.tag_dessert),false, getString(R.string.catalog_eat)))
-        tag.add(Tag(R.drawable.tag_payment,R.drawable.tag_payment_press,
+        tag.add(Tag(R.drawable.tag_money,R.drawable.tag_money_press,
             getString(R.string.tag_payment),true, getString(R.string.catalog_income)))
         tag.add(Tag(R.drawable.tag_cloth,R.drawable.tag_cloth_press,
             getString(R.string.tag_cloth),false, getString(R.string.catalog_cloth)))
@@ -123,7 +117,7 @@ class AddEventFragment : Fragment() {
             getString(R.string.tag_traffic),false, getString(R.string.catalog_traffic)))
         tag.add(Tag(R.drawable.tag_fun,R.drawable.tag_fun_press,
             getString(R.string.tag_fun),false, getString(R.string.catalog_fun)))
-        tag.add(Tag(R.drawable.tag_lottery,R.drawable.tag_lottery_press,
+        tag.add(Tag(R.drawable.tag_ticket,R.drawable.tag_ticket_press,
             getString(R.string.tag_lottery),true, getString(R.string.catalog_income)))
     }
 

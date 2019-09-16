@@ -1,6 +1,7 @@
 package com.snc.farmaccount.home
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -79,15 +80,15 @@ class DayEventAdapter(var onClickListener: OnClickListener,var viewModel: DayVie
                 binding.imageTag.setImageResource(R.drawable.money)
             }
             if (event.tag == "中獎") {
-                binding.imageTag.setImageResource(R.drawable.tickets)
+                binding.imageTag.setImageResource(R.drawable.ticket)
             }
 
             if (event.status == true) {
-                binding.price.setBackgroundResource(R.drawable.greenbar)
-                binding.titleTag.setTextColor(R.color.dark_green)
+                binding.price.setBackgroundResource(R.drawable.radius_border_green)
+                binding.titleTag.setTextColor(Color.parseColor("#82B763"))
             } else {
-                binding.price.setBackgroundResource(R.drawable.redbar)
-                binding.titleTag.setTextColor(R.color.dark_red)
+                binding.price.setBackgroundResource(R.drawable.radius_border_red)
+                binding.titleTag.setTextColor(Color.parseColor("#BC4141"))
             }
 
             binding.executePendingBindings()

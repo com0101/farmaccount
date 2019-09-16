@@ -5,7 +5,6 @@
 
     <data>
         <variable name="viewModel" type="com.snc.farmaccount.home.DayViewModel"/>
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,13 +25,15 @@
             <TextView
                     android:id="@+id/text_date"
                     android:text="@string/date"
+                    android:fontFamily="@font/gen_normal"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:textSize="22sp"
                     android:gravity="center"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginTop="8dp"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="12dp" android:textColor="@color/egg_yellow"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.recyclerview.widget.RecyclerView
@@ -51,8 +52,5 @@
                 app:layout_constraintTop_toBottomOf="@+id/date"
                 app:layout_constraintBottom_toBottomOf="parent">
         </androidx.recyclerview.widget.RecyclerView>
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </layout>

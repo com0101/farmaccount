@@ -31,7 +31,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/budget_farm_image"
                 app:layout_constraintEnd_toEndOf="@+id/budget_farm_image"
                 app:layout_constraintStart_toStartOf="@+id/budget_farm_image"
-                app:srcCompat="@drawable/setting"
+                app:srcCompat="@drawable/set"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginBottom="8dp"
                 app:layout_constraintHorizontal_bias="0.0"
