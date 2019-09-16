@@ -30,7 +30,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"/>
+                    app:layout_constraintHorizontal_bias="0.0" tools:srcCompat="@drawable/ic_launcher_background"/>
             <Button
                     android:id="@+id/button_date_picker"
                     android:layout_width="40dp"
@@ -46,7 +46,7 @@
                     android:layout_height="40dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
-                    android:background="@drawable/radius_border"
+                    android:background="@drawable/money_border"
                     app:layout_constraintStart_toEndOf="@+id/button_date_picker"
                     app:layout_constraintTop_toTopOf="@+id/button_date_picker"
                     app:layout_constraintBottom_toBottomOf="@+id/button_date_picker"
@@ -62,25 +62,24 @@
                         android:paddingStart="6dp"
                         android:layout_marginEnd="16dp"
                         android:textSize="18sp"
-                        android:textColor="@color/gray_green"
+                        android:textColor="@color/money_text"
                         android:gravity="center"
                         app:layout_constraintStart_toEndOf="@+id/image_coin"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
+                        app:layout_constraintBottom_toBottomOf="parent" android:textStyle="bold"/>
 
                 <ImageView
                         android:id="@+id/image_coin"
-                        android:layout_width="32dp"
+                        android:layout_width="27.5dp"
                         android:layout_height="30dp"
-                        android:layout_marginStart="4dp"
+                        android:layout_marginStart="6dp"
+                        android:scaleType="centerCrop"
                         app:srcCompat="@drawable/money_icon"
                         app:civ_border_width="0dp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="7dp"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
+                        android:layout_marginTop="2dp" app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginBottom="5dp" app:layout_constraintBottom_toBottomOf="parent"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -164,8 +163,10 @@
                             android:id="@+id/dayViewpager"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent">
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent">
                     </androidx.viewpager.widget.ViewPager>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

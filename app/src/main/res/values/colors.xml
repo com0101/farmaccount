@@ -24,6 +24,11 @@
     <color name="bar_red">#EF7A68</color>
     <color name="egg_yellow">#FDFFC7</color>
     <color name="expend_title">#B28E4D</color>
+    <color name="money_bar">#FFF7A9</color>
+    <color name="money_text">#D5C000</color>
+    <color name="google_text">#A36400</color>
+
+
 
 
     <color name="translate_40">#66000000</color>

@@ -29,7 +29,7 @@
                     android:id="@+id/title_tag"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:gravity="center"
                     android:layout_marginStart="10dp"
                     android:text="@string/tag_cloth"

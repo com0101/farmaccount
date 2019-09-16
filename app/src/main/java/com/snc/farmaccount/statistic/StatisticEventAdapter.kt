@@ -89,7 +89,7 @@ class StatisticEventAdapter(var onClickListener: OnClickListener,var viewModel: 
                 binding.imageTag.setImageResource(R.drawable.money)
             }
             if (event.tag == "中獎") {
-                binding.imageTag.setImageResource(R.drawable.tickets)
+                binding.imageTag.setImageResource(R.drawable.ticket)
             }
 
             if (event.status!!) {
