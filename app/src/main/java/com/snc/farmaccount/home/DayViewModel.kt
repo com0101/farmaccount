@@ -26,7 +26,7 @@ class DayViewModel: ViewModel() {
     var date = MutableLiveData<String>()
     var postPrice = MutableLiveData<Int>()
     var overagePrice = MutableLiveData<String>()
-    var farmStatus = MutableLiveData<Boolean>()
+    var farmStatus = MutableLiveData<Int>()
     var dataList = ArrayList<Event>()
     var DATE_MODE = ""
 
@@ -114,6 +114,7 @@ class DayViewModel: ViewModel() {
                     for (document in task.result!!) {
                         overagePrice.value = decimalFormat.format(document.data["overage"].toString().toDouble())
                         postPrice.value = document.data["overage"]?.toInt()
+                        farmStatus.value = document.data["position"]?.toInt()
                     }
                 }
                 Log.d("Sophie_db", "overagePrice.value = ${farmStatus.value}")

@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:context=".dialog.AmountInputDialog">
+            tools:context=".dialog.AmountInputDialog" android:background="@color/egg_yellow">
 
         <TextView
                 android:text="@string/budget_range_title"
@@ -24,7 +24,7 @@
                 android:layout_marginEnd="20dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent" android:textColor="@color/google_text"/>
 
         <ImageView
                 android:id="@+id/image_cancel"
@@ -41,7 +41,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="30dp"
-                app:srcCompat="@drawable/save"
+                app:srcCompat="@drawable/yes"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginBottom="30dp"/>

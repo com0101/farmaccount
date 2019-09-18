@@ -28,7 +28,7 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginStart="25dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@drawable/arrow"
+                app:srcCompat="@drawable/back"
                 app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
@@ -49,10 +49,18 @@
                 app:layout_constraintBottom_toBottomOf="@+id/image_back_state" android:textColor="@color/white"
                 android:textStyle="bold"/>
 
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/event_background"
+                android:id="@+id/background"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="parent"/>
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="40dp"
-                android:background="@drawable/radius_border"
+                android:background="@drawable/money_border"
                 android:id="@+id/price"
                 android:layout_marginTop="16dp"
                 app:layout_constraintTop_toBottomOf="@+id/farm_type"
@@ -70,7 +78,7 @@
                     android:paddingStart="6dp"
                     android:layout_marginEnd="16dp"
                     android:textSize="18sp"
-                    android:textColor="@color/gray_green"
+                    android:textColor="@color/money_text"
                     android:background="@null"
                     android:gravity="center|end"
                     app:layout_constraintStart_toEndOf="@+id/image_coin"

@@ -10,6 +10,9 @@
     <string name="GOOGLE_LOG_IN">登入</string>
     <string name="logo">FARM account</string>
     <string name="loading">LOADING......</string>
+    <string name="overage_low">預算 10,000-15,000</string>
+    <string name="overage_middle">預算 10,000-20,000</string>
+    <string name="overage_high">預算 10,000-25,000</string>
 
     //title
     <string name="expand_title">支出金額</string>

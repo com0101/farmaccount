@@ -86,11 +86,31 @@ class HomeFragment : Fragment() {
 
         viewModel.postPrice.observe(this, androidx.lifecycle.Observer {
             Log.i("Sophie_farm", "$it")
-            when {
-                it > 1000 -> binding.imageFarm.setBackgroundResource(R.drawable.simple1)
-                it < 0 -> binding.imageFarm.setBackgroundResource(R.drawable.simple3)
-                else -> binding.imageFarm.setBackgroundResource(R.drawable.simple2)
-            }
+            viewModel.farmStatus.observe(this, androidx.lifecycle.Observer { status ->
+                if (status == 0) {
+                    when {
+                        it > 1000 -> binding.imageFarm.setBackgroundResource(R.drawable.simple1)
+                        it < 0 -> binding.imageFarm.setBackgroundResource(R.drawable.simple3)
+                        else -> binding.imageFarm.setBackgroundResource(R.drawable.simple2)
+                    }
+                }
+                if (status == 1) {
+                    when {
+                        it > 1000 -> binding.imageFarm.setBackgroundResource(R.drawable.middle)
+                        it < 0 -> binding.imageFarm.setBackgroundResource(R.drawable.middle3)
+                        else -> binding.imageFarm.setBackgroundResource(R.drawable.middle2)
+                    }
+                }
+                if (status == 2) {
+                    when {
+                        it > 1000 -> binding.imageFarm.setBackgroundResource(R.drawable.rich)
+                        it < 0 -> binding.imageFarm.setBackgroundResource(R.drawable.rich3)
+                        else -> binding.imageFarm.setBackgroundResource(R.drawable.rich2)
+                    }
+                }
+
+            })
+
         })
         return binding.root
     }

@@ -3,6 +3,7 @@ package com.snc.farmaccount.choose
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.Budget
 import com.snc.farmaccount.databinding.ItemFarmTypeBinding
 
@@ -32,6 +33,12 @@ class ChooseAdapter(private val budget: ArrayList<Budget>, var onClickListener: 
             binding.budget = budget
             binding.budgetFarmImage.setImageResource(budget.farmImage)
             binding.type.setImageResource(budget.farmtype)
+
+            when {
+                budget.position == 0 -> binding.rangeText.setText(R.string.overage_low)
+                budget.position == 1 -> binding.rangeText.setText(R.string.overage_middle)
+                budget.position == 2 -> binding.rangeText.setText(R.string.overage_high)
+            }
 
 
             binding.executePendingBindings()

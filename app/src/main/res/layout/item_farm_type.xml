@@ -12,29 +12,39 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/fui_bgFacebook">
+            android:background="@color/translate_100">
 
         <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/hen"
+                app:srcCompat="@drawable/type1"
                 android:id="@+id/budget_farm_image"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintHorizontal_bias="0.496"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="171dp"/>
+                app:layout_constraintHorizontal_bias="0.538"
+                android:layout_marginStart="32dp" android:layout_marginEnd="32dp"
+                android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/type"/>
         <ImageView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="172dp"
+                android:layout_height="40dp"
                 android:id="@+id/type"
-                android:layout_marginTop="24dp"
-                app:layout_constraintTop_toBottomOf="@+id/budget_farm_image"
                 app:layout_constraintEnd_toEndOf="@+id/budget_farm_image"
                 app:layout_constraintStart_toStartOf="@+id/budget_farm_image"
-                app:srcCompat="@drawable/pickday" app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginBottom="8dp" app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintVertical_bias="0.058"/>
+                app:srcCompat="@drawable/rangebar" app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="248dp" app:layout_constraintHorizontal_bias="0.476"/>
+        <TextView
+                android:text="@string/overage_high"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/range_text"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@+id/type"
+                app:layout_constraintStart_toStartOf="@+id/type"
+                app:layout_constraintTop_toTopOf="@+id/type"
+                app:layout_constraintBottom_toBottomOf="@+id/type"
+                android:textColor="@color/google_text"
+                android:fontFamily="@font/gen_normal"
+                android:textStyle="bold"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
