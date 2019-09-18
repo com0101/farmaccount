@@ -87,9 +87,9 @@ class HomeFragment : Fragment() {
         viewModel.postPrice.observe(this, androidx.lifecycle.Observer {
             Log.i("Sophie_farm", "$it")
             when {
-                it > 1000 -> binding.imageFarm.setBackgroundResource(R.drawable.ic_launcher_background)
-                it < 0 -> binding.imageFarm.setBackgroundResource(R.drawable.tag_income)
-                else -> binding.imageFarm.setBackgroundResource(R.drawable.tag_traffic)
+                it > 1000 -> binding.imageFarm.setBackgroundResource(R.drawable.simple1)
+                it < 0 -> binding.imageFarm.setBackgroundResource(R.drawable.simple3)
+                else -> binding.imageFarm.setBackgroundResource(R.drawable.simple2)
             }
         })
         return binding.root

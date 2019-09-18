@@ -6,12 +6,12 @@
 
     //radius bar
     <color name="gray_green">#97C197</color>
-    <color name="yellow">#FF4415</color>
-    <color name="yellow_2">#FF9800</color>
-    <color name="yellow_3">#FFC107</color>
-    <color name="yellow_4">#FFEB3B</color>
-    <color name="green">#CDDC39</color>
-    <color name="green_2">#8BC34A</color>
+    <color name="yellow">#FF6E41</color>
+    <color name="yellow_2">#FFA524</color>
+    <color name="yellow_3">#FFC82C</color>
+    <color name="yellow_4">#FFEA67</color>
+    <color name="green">#F1FF60</color>
+    <color name="green_2">#B1FD5D</color>
     <color name="white">#FFFFFF</color>
     <color name="gray">#DDDDDD</color>
     <color name="logo_gray">#949494</color>
