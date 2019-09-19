@@ -1,6 +1,7 @@
 package com.snc.farmaccount.detail
 
 
+import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,9 +11,15 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomsheet.BottomSheetDialog
 
 import com.snc.farmaccount.R
+import com.snc.farmaccount.databinding.DialogCheckBinding
 import com.snc.farmaccount.databinding.FragmentDetailBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class DetailFragment : Fragment() {
 
@@ -41,11 +48,30 @@ class DetailFragment : Fragment() {
         }
 
         binding.imageDelete.setOnClickListener {
-            viewModel.deleteEvent()
-//            findNavController()
-//                .navigate(DetailFragmentDirections.actionGlobalCheckDialog())
-            findNavController()
-                .navigate(DetailFragmentDirections.actionGlobalHomeFragment())
+            var dialog = Dialog(this.requireContext())
+            var bindingCheck = DialogCheckBinding.inflate(layoutInflater)
+            dialog.setContentView(bindingCheck.root)
+            dialog.show()
+            dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+            bindingCheck.checkContent.text = "確定要刪掉嗎!"
+            bindingCheck.imageCancel.setOnClickListener {
+                dialog.dismiss()
+            }
+            bindingCheck.imageSave.setOnClickListener {
+                viewModel.deleteEvent()
+                dialog.dismiss()
+                GlobalScope.launch(context = Dispatchers.Main) {
+                    delay(1000)
+                    bindingCheck.checkContent.text = "刪除完成!"
+                    bindingCheck.imageCancel.visibility = View.GONE
+                    bindingCheck.imageSave.visibility = View.GONE
+                    dialog.show()
+                    delay(1000)
+                    dialog.dismiss()
+                    findNavController()
+                        .navigate(DetailFragmentDirections.actionGlobalHomeFragment())
+                }
+            }
         }
 
         binding.imageBackState.setOnClickListener {
@@ -90,6 +116,8 @@ class DetailFragment : Fragment() {
         // Inflate the layout for this fragment
         return binding.root
     }
+
+
 
 
 }

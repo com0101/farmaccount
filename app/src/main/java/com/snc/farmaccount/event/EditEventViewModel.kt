@@ -45,13 +45,14 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
 
     fun editFirebase() {
         val db = FirebaseFirestore.getInstance()
-
+        val currentTimestamp = System.currentTimeMillis()
         // Create a new user with a first and last name
         val event = HashMap<String,Any>()
         event["price"] = priceInput.value!!
         event["tag"] = detail.value!!.tag.toString()
         event["description"] = infoInput.value!!
         event["date"] = today.value!!
+        event["time"] = currentTimestamp
         event["status"] = detail.value!!.status!!.toBoolean()
         event["month"] = month
         // Add a new document with a generated ID

@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.snc.farmaccount.`object`.Event
 import com.snc.farmaccount.`object`.Tag
@@ -44,6 +45,7 @@ class AddEventViewModel : ViewModel() {
         week()
         getOverage()
         Log.i("Sophie_today","${today.value}")
+
     }
 
     fun getTag() {
@@ -52,13 +54,14 @@ class AddEventViewModel : ViewModel() {
 
     fun addFirebase() {
         val db = FirebaseFirestore.getInstance()
-
+        val currentTimestamp = System.currentTimeMillis()
         // Create a new user with a first and last name
         val event = HashMap<String,Any>()
         event["price"] = priceInput.value!!
         event["tag"] = chooseTag.value!!.tag_name
         event["description"] = infoInput.value!!
         event["date"] = today.value!!
+        event["time"] = currentTimestamp
         event["status"] = chooseTag.value!!.tag_status
         event["month"] = monthFormat.value.toString()
         event["catalog"] = chooseTag.value!!.tag_catalog
@@ -66,11 +69,12 @@ class AddEventViewModel : ViewModel() {
         idCheck.value = UserManager.userToken!!.substring(0,20)
         // Add a new document with a generated ID
         db.collection("User").document("${UserManager.userToken}").collection("Event")
-            .add(event)
+            .document("$currentTimestamp")
+            .set(event)
             .addOnSuccessListener { documentReference ->
                 Log.d(
                     "Sophie_add",
-                    "DocumentSnapshot added with ID: " + documentReference.id
+                    "DocumentSnapshot added with ID: $documentReference"
                 )
                 var price = priceInput.value!!.toInt()
                 var overageInt = overagePrice.value?.toInt()

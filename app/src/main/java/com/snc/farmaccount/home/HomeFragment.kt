@@ -18,6 +18,9 @@ import com.snc.farmaccount.helper.Format
 import java.text.SimpleDateFormat
 import java.util.*
 import android.app.DatePickerDialog
+import android.view.animation.TranslateAnimation
+
+
 
 
 class HomeFragment : Fragment() {
@@ -52,17 +55,36 @@ class HomeFragment : Fragment() {
         arrowButtons()
         viewModel.getOverage()
 
+        var buttonSense = false
+
+        binding.buttonSetting.setOnClickListener {
+            buttonSense = if (!buttonSense) {
+                binding.buttonBudget.animate().translationY(130f).start() // move away
+                binding.buttonStatistic.animate().translationY(260f).start()
+                binding.buttonScan.animate().translationY(390f).start()
+                true
+            } else {
+                binding.buttonBudget.animate().translationY(0f).start()
+                binding.buttonStatistic.animate().translationY(0f).start()
+                binding.buttonScan.animate().translationY(0f).start()
+                false
+            }
+        }
+
         binding.buttonBudget.setOnClickListener {
+            Log.i("Sophie_click","click")
             findNavController()
                 .navigate(R.id.action_global_budgetFragment)
         }
 
         binding.buttonStatistic.setOnClickListener {
+            Log.i("Sophie_click","click")
             findNavController()
                 .navigate(R.id.action_global_statisticFragment)
         }
 
         binding.buttonScan.setOnClickListener {
+            Log.i("Sophie_click","click")
             findNavController()
                 .navigate(R.id.action_global_qrCodeFragment)
         }

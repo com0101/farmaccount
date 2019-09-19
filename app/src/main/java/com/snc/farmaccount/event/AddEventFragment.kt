@@ -1,6 +1,7 @@
 package com.snc.farmaccount.event
 
 
+import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -15,8 +16,13 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.Tag
+import com.snc.farmaccount.databinding.DialogCheckBinding
 import com.snc.farmaccount.databinding.FragmentAddEventBinding
 import com.snc.farmaccount.qrcode.QrCodeFragment
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class AddEventFragment : Fragment() {
 
@@ -63,9 +69,21 @@ class AddEventFragment : Fragment() {
         })
 
         binding.imageSave.setOnClickListener {
-            findNavController()
-                .navigate(AddEventFragmentDirections.actionGlobalHomeFragment())
+            var dialog = Dialog(this.requireContext())
+            var bindingCheck = DialogCheckBinding.inflate(layoutInflater)
+            dialog.setContentView(bindingCheck.root)
             viewModel.addFirebase()
+            dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+            GlobalScope.launch(context = Dispatchers.Main) {
+                bindingCheck.checkContent.text = "新增完成!"
+                bindingCheck.imageCancel.visibility = View.GONE
+                bindingCheck.imageSave.visibility = View.GONE
+                dialog.show()
+                delay(1000)
+                dialog.dismiss()
+                findNavController()
+                    .navigate(EditEventFragmentDirections.actionGlobalHomeFragment())
+            }
         }
 
         binding.imageBackState.setOnClickListener {
