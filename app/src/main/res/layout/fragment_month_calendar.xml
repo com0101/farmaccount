@@ -35,7 +35,7 @@
                     android:fontFamily="@font/gen_normal"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
+                    android:textSize="22sp"
                     android:gravity="center"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +43,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:layout_marginTop="10dp" app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintVertical_bias="1.0" android:layout_marginBottom="5dp"
-                    android:textColor="@color/expend_title"/>
+                    android:textColor="@color/expend_title" android:textStyle="bold"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -62,7 +62,8 @@
                 android:layout_marginTop="8dp"
                 app:layout_constraintTop_toBottomOf="@+id/date"
                 android:visibility="visible" app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="8dp">
+                app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="8dp"
+                app:layout_constraintVertical_bias="0.0">
         </androidx.recyclerview.widget.RecyclerView>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -89,14 +90,15 @@
                 android:id="@+id/spend_hint"
                 android:layout_marginEnd="8dp"
                 android:textStyle="bold"
-                android:textColor="@color/logo_gray"
+                android:textColor="@color/md_amber_100_dark"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginStart="8dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/date"
                 android:layout_marginTop="144dp"
                 android:textSize="20sp"
-                android:visibility="invisible" app:layout_constraintHorizontal_bias="0.496"/>
+                android:visibility="invisible" app:layout_constraintHorizontal_bias="0.496"
+                android:fontFamily="@font/gen_normal"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

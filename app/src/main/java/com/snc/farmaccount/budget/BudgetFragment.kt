@@ -2,6 +2,7 @@ package com.snc.farmaccount.budget
 
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -18,12 +19,15 @@ import com.google.android.material.snackbar.Snackbar
 import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.Budget
 import com.snc.farmaccount.choose.ChooseFragmentDirections
+import com.snc.farmaccount.databinding.DialogCheckBinding
 import com.snc.farmaccount.databinding.FragmentBudgetBinding
 import com.snc.farmaccount.databinding.ItemFarmEditBinding
 import com.snc.farmaccount.dialog.AmountInputDialogDirections
-
-
-
+import com.snc.farmaccount.event.EditEventFragmentDirections
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class BudgetFragment : Fragment() {
@@ -76,12 +80,40 @@ class BudgetFragment : Fragment() {
 
         binding.imageSend.setOnClickListener {
             viewModel.editBudgetPrice()
-            when {
-                viewModel.amountCheck.value == true -> Toast.makeText(context, "超出範圍啦", Toast.LENGTH_SHORT).show()
-                viewModel.amountCheck.value == false -> Toast.makeText(context, "省錢還是要顧身體啦", Toast.LENGTH_SHORT).show()
-                else -> findNavController()
-                    .navigate(AmountInputDialogDirections.actionGlobalHomeFragment())
+            var dialog = Dialog(this.requireContext())
+            var bindingCheck = DialogCheckBinding.inflate(layoutInflater)
+            dialog.setContentView(bindingCheck.root)
+            dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+            GlobalScope.launch(context = Dispatchers.Main) {
+                when {
+                    viewModel.amountCheck.value == true -> {
+                        bindingCheck.checkContent.text = "超出範圍啦!"
+                        bindingCheck.imageCancel.visibility = View.GONE
+                        bindingCheck.imageSave.visibility = View.GONE
+                        dialog.show()
+                        delay(1000)
+                        dialog.dismiss()
+                    }
+                    viewModel.amountCheck.value == false -> {
+                        bindingCheck.checkContent.text = "省錢還是要顧身體啦!"
+                        bindingCheck.imageCancel.visibility = View.GONE
+                        bindingCheck.imageSave.visibility = View.GONE
+                        dialog.show()
+                        delay(1000)
+                        dialog.dismiss()
+                    }
+                    else -> {
+                        bindingCheck.checkContent.text = "編輯完成!"
+                        bindingCheck.imageCancel.visibility = View.GONE
+                        bindingCheck.imageSave.visibility = View.GONE
+                        dialog.show()
+                        delay(1000)
+                        dialog.dismiss()
+                        findNavController()
+                        .navigate(AmountInputDialogDirections.actionGlobalHomeFragment())}
+                }
             }
+
         }
 
         binding.imageBackState.setOnClickListener {
@@ -95,6 +127,8 @@ class BudgetFragment : Fragment() {
             binding.price.background = resources.getDrawable(R.drawable.money_border)
             binding.imageCoin.background = resources.getDrawable(R.drawable.money_icon)
             binding.imageArrowRight.visibility = View.VISIBLE
+            binding.imageArrowRight.setImageResource(R.drawable.arrow)
+            binding.imageArrowLeft.setImageResource(R.drawable.arrow)
             binding.imageArrowRight.setOnClickListener {
                 binding.farmList.currentItem = binding.farmList.currentItem + 1
                 if (binding.farmList.currentItem == 2) {
@@ -150,16 +184,16 @@ class BudgetFragment : Fragment() {
     }
 
     private fun addBudget() {
-        budget.add(Budget(R.drawable.type1, R.drawable.rangebar, "10000", "15000","",0,""))
-        budget.add(Budget(R.drawable.type2, R.drawable.rangebar, "10000", "20000","",1,""))
-        budget.add(Budget(R.drawable.type3, R.drawable.rangebar, "10000", "25000","",2,""))
+        budget.add(Budget(R.drawable.type1, R.drawable.rangelow, "10000", "15000","",0,""))
+        budget.add(Budget(R.drawable.type2, R.drawable.rangemiddle, "10000", "20000","",1,""))
+        budget.add(Budget(R.drawable.type3, R.drawable.rangehigh, "10000", "25000","",2,""))
         viewModel.budgetType.value = budget
     }
 
     private fun unEditBudget() {
-        budgetUnselect.add(Budget(R.drawable.type1un, R.drawable.rangebarun, "10000", "15000","",0,""))
-        budgetUnselect.add(Budget(R.drawable.type2un, R.drawable.rangebarun, "10000", "20000","",1,""))
-        budgetUnselect.add(Budget(R.drawable.type3un, R.drawable.rangebarun, "10000", "25000","",2,""))
+        budgetUnselect.add(Budget(R.drawable.type1un, R.drawable.rangelow_un, "10000", "15000","",0,""))
+        budgetUnselect.add(Budget(R.drawable.type2un, R.drawable.rangemiddle_un, "10000", "20000","",1,""))
+        budgetUnselect.add(Budget(R.drawable.type3un, R.drawable.ranghigh_un, "10000", "25000","",2,""))
     }
 
 

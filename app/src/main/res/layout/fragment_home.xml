@@ -26,12 +26,12 @@
                     android:layout_width="0dp"
                     android:layout_height="400dp"
                     android:scaleType="centerCrop"
-                    android:background="@drawable/simple1"
+                    android:background="@drawable/chicken"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
-                    tools:srcCompat="@drawable/simple_1"/>
+                    tools:srcCompat="@drawable/waiting"/>
             <Button
                     android:id="@+id/button_date_picker"
                     android:layout_width="40dp"

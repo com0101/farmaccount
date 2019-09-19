@@ -191,7 +191,7 @@ class HomeFragment : Fragment() {
         val calendar = Calendar.getInstance()
         val simpledateformat = SimpleDateFormat("EEEE")
         val datePickdialog = DatePickerDialog(
-            this.context!!, AlertDialog.THEME_HOLO_LIGHT,
+            this.context!!, R.style.my_dialog_theme,
             DatePickerDialog.OnDateSetListener { _, year, month, day ->
                 // Display Selected date in Toast
                 val date = Date(year, month, day-1)

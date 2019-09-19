@@ -41,12 +41,6 @@ class BudgetAdapter(private val budget: ArrayList<Budget>,var onClickListener: O
             binding.budgetFarmImage.setImageResource(budget.farmImage)
             binding.type.setImageResource(budget.farmtype)
 
-            when {
-                budget.position == 0 -> binding.rangeText.setText(R.string.overage_low)
-                budget.position == 1 -> binding.rangeText.setText(R.string.overage_middle)
-                budget.position == 2 -> binding.rangeText.setText(R.string.overage_high)
-            }
-
 
             binding.executePendingBindings()
         }

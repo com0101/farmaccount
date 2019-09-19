@@ -11,5 +11,21 @@
     <style name="Dialog">
         <item name="android:windowBackground">@color/translate_40</item>
     </style>
+    <style name="my_dialog_theme" parent="ThemeOverlay.AppCompat.Dialog">
+        <item name="colorAccent">@color/google_text</item>                   <!--header background-->
+        <item name="android:windowBackground">@drawable/datepicker_border</item>     <!--calendar background-->
+        <item name="android:colorControlActivated">@color/expend_title</item> <!--selected day-->
+        <item name="android:textColorPrimary">@color/expend_title</item> <!--days of the month-->
+        <item name="android:textColorSecondary">@color/google_text</item>
+        <item name="android:datePickerStyle">@style/MyDatePicker</item>
+        <item name="android:padding">@dimen/padding_2</item>
+        <item name="android:fontFamily">@font/gen_normal</item>
+        <item name="android:textSize">18dp</item>
+        <!--days of the week-->
+    </style>
+    <style name="MyDatePicker" parent="android:Widget.Material.DatePicker">
+        <item name="android:datePickerMode">spinner</item>
+    </style>
+
 
 </resources>

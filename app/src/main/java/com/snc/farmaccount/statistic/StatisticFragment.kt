@@ -63,8 +63,8 @@ class StatisticFragment : Fragment() {
                 }
                 else -> {
                     viewModel.filter.value = true
-                    params.setMargins(0,25,74,0)
-                    paramsleft.setMargins(74,25,0,0)
+                    params.setMargins(0,30,74,0)
+                    paramsleft.setMargins(74,30,0,0)
                     binding.imageArrowRight.requestLayout()
                     binding.imageArrowLeft.requestLayout()
                 }

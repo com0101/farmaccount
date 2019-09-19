@@ -51,12 +51,13 @@
 
         <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:scaleType="centerCrop"
                 app:srcCompat="@drawable/event_background"
                 android:id="@+id/background"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="32dp" app:layout_constraintTop_toBottomOf="@+id/price"/>
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="40dp"
@@ -164,7 +165,7 @@
                     android:layout_marginTop="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:srcCompat="@drawable/arrow"
+                    app:srcCompat="@drawable/arrowunedit"
                     app:layout_constraintTop_toTopOf="parent" android:rotation="@dimen/arrow_rotate_180"
                     android:visibility="gone"/>
 
@@ -175,7 +176,7 @@
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    app:srcCompat="@drawable/arrow"
+                    app:srcCompat="@drawable/arrowunedit"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"

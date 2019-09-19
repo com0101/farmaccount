@@ -96,9 +96,9 @@ class ChooseFragment : Fragment() {
     }
 
     private fun addBudget() {
-        budget.add(Budget(R.drawable.type1, R.drawable.rangebar, "10000", "15000","",0,""))
-        budget.add(Budget(R.drawable.type2, R.drawable.rangebar, "10000", "20000","",1,""))
-        budget.add(Budget(R.drawable.type3, R.drawable.rangebar, "10000", "25000","",2,""))
+        budget.add(Budget(R.drawable.type1, R.drawable.rangelow, "10000", "15000","",0,""))
+        budget.add(Budget(R.drawable.type2, R.drawable.rangemiddle, "10000", "20000","",1,""))
+        budget.add(Budget(R.drawable.type3, R.drawable.rangehigh, "10000", "25000","",2,""))
         viewModel.budgetType.value = budget
     }
 

@@ -17,34 +17,22 @@
         <ImageView
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/type1"
+                app:srcCompat="@drawable/waiting"
                 android:id="@+id/budget_farm_image"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintHorizontal_bias="0.538"
                 android:layout_marginStart="32dp" android:layout_marginEnd="32dp"
-                android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/type"/>
+                android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/type"
+        />
         <ImageView
                 android:layout_width="172dp"
                 android:layout_height="40dp"
                 android:id="@+id/type"
                 app:layout_constraintEnd_toEndOf="@+id/budget_farm_image"
                 app:layout_constraintStart_toStartOf="@+id/budget_farm_image"
-                app:srcCompat="@drawable/rangebar" app:layout_constraintBottom_toBottomOf="parent"
+                app:srcCompat="@drawable/waittext" app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginBottom="248dp" app:layout_constraintHorizontal_bias="0.476"/>
-        <TextView
-                android:text="@string/overage_high"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/range_text"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="@+id/type"
-                app:layout_constraintStart_toStartOf="@+id/type"
-                app:layout_constraintTop_toTopOf="@+id/type"
-                app:layout_constraintBottom_toBottomOf="@+id/type"
-                android:textColor="@color/google_text"
-                android:fontFamily="@font/gen_normal"
-                android:textStyle="bold"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
