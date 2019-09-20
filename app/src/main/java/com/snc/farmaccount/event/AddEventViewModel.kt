@@ -1,20 +1,13 @@
 package com.snc.farmaccount.event
 
 
-import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
-import com.snc.farmaccount.`object`.Event
 import com.snc.farmaccount.`object`.Tag
-import com.snc.farmaccount.helper.Format
 import com.snc.farmaccount.helper.UserManager
-import org.joda.time.DateTime
-import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -54,14 +47,16 @@ class AddEventViewModel : ViewModel() {
 
     fun addFirebase() {
         val db = FirebaseFirestore.getInstance()
-        val currentTimestamp = System.currentTimeMillis()
+        val time = Date( System.currentTimeMillis())
+        val simpledateformat = SimpleDateFormat("yyyyMMdd")
+        val date = simpledateformat.format(time)
         // Create a new user with a first and last name
         val event = HashMap<String,Any>()
         event["price"] = priceInput.value!!
         event["tag"] = chooseTag.value!!.tag_name
         event["description"] = infoInput.value!!
         event["date"] = today.value!!
-        event["time"] = currentTimestamp
+        event["time"] = date.toLong()
         event["status"] = chooseTag.value!!.tag_status
         event["month"] = monthFormat.value.toString()
         event["catalog"] = chooseTag.value!!.tag_catalog
@@ -69,7 +64,7 @@ class AddEventViewModel : ViewModel() {
         idCheck.value = UserManager.userToken!!.substring(0,20)
         // Add a new document with a generated ID
         db.collection("User").document("${UserManager.userToken}").collection("Event")
-            .document("$currentTimestamp")
+            .document("$date")
             .set(event)
             .addOnSuccessListener { documentReference ->
                 Log.d(

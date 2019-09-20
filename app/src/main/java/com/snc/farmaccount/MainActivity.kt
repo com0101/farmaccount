@@ -30,11 +30,7 @@ import com.snc.farmaccount.databinding.FragmentLogInBinding
 class MainActivity : AppCompatActivity(){
 
     private lateinit var binding: ActivityMainBinding
-//    private lateinit var bindingLogin: FragmentLogInBinding
-//    private lateinit var firebaseAuth: FirebaseAuth
-//    val RC_SIGN_IN: Int = 1
-//    lateinit var googleSignInClient: GoogleSignInClient
-//    lateinit var googleSignInOptions: GoogleSignInOptions
+
 
     private val viewModel: MainViewModel by lazy {
         ViewModelProviders.of(this).get(MainViewModel::class.java)
@@ -67,24 +63,6 @@ class MainActivity : AppCompatActivity(){
         binding.viewModel = viewModel
 
     }
-    private fun setToolbar() {
-
-        var toolbar=findViewById<ImageView>(R.id.image_back_state)
-        toolbar.setPadding(0, getStatusBarHeight(), 0, 0)
-
-    }
-
-    private fun getStatusBarHeight(): Int {
-        var result = 0
-        var resourceId = resources
-            .getIdentifier("status_bar_height", "dimen", "android")
-
-        if (resourceId > 0) {
-            result = resources.getDimensionPixelSize(resourceId)
-        }
-        return result
-    }
-
 
 
 }

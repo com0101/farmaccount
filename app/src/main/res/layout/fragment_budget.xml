@@ -133,7 +133,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 android:id="@+id/farm_type"
-                android:layout_marginTop="32dp" app:layout_constraintTop_toBottomOf="@+id/text__budget_edit">
+                android:layout_marginTop="18dp" app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
 
             <androidx.viewpager2.widget.ViewPager2
@@ -153,7 +153,8 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:id="@+id/unSelect_farm_list">
+                    android:id="@+id/unSelect_farm_list" app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintVertical_bias="1.0">
             </androidx.viewpager2.widget.ViewPager2>
 
             <ImageView
