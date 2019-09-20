@@ -36,7 +36,7 @@
                     android:id="@+id/button_date_picker"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="25dp"
                     android:layout_marginStart="25dp"
                     android:background="@drawable/pickday"
                     app:layout_constraintTop_toTopOf="parent"
@@ -90,7 +90,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:background="@drawable/today"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="25dp"
                     android:layout_marginEnd="16dp"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/button_setting"/>
@@ -102,14 +102,14 @@
                     android:layout_marginEnd="25dp"
                     android:background="@drawable/chart"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginTop="20dp" app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="25dp" app:layout_constraintTop_toTopOf="parent"
             />
             <Button
                     android:id="@+id/button_budget"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:background="@drawable/bank"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="25dp"
                     app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginEnd="24dp"/>
             <Button
@@ -119,13 +119,13 @@
                     android:layout_marginEnd="25dp"
                     android:background="@drawable/code"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginTop="20dp" app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="25dp" app:layout_constraintTop_toTopOf="parent"
             />
             <Button
                     android:id="@+id/button_setting"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="25dp"
                     android:layout_marginEnd="25dp"
                     android:background="@drawable/set"
                     app:layout_constraintTop_toTopOf="parent"

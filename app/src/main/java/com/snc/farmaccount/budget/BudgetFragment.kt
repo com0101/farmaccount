@@ -48,8 +48,8 @@ class BudgetFragment : Fragment() {
         binding = FragmentBudgetBinding.inflate(inflater)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-        binding.farmList.visibility = View.GONE
-        binding.unSelectFarmList.visibility = View.VISIBLE
+//        binding.farmList.visibility = View.GONE
+//        binding.farmList.visibility = View.VISIBLE
         binding.farmList.orientation = ViewPager2.ORIENTATION_HORIZONTAL
         binding.textBudget.isEnabled = false
         binding.textBudget.setTextColor(resources.getColor(R.color.light_gray))
