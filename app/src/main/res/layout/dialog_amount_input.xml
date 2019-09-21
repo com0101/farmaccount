@@ -30,21 +30,19 @@
                 android:id="@+id/image_cancel"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_marginEnd="30dp"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:srcCompat="@drawable/cancel"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginBottom="30dp"/>
+                android:layout_marginBottom="30dp"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="30dp"/>
 
         <ImageView
                 android:id="@+id/image_save"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_marginStart="30dp"
                 app:srcCompat="@drawable/yes"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginBottom="30dp"/>
+                android:layout_marginBottom="30dp" app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="30dp"/>
 
         <EditText
                 android:id="@+id/edit_budget_range"

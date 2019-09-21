@@ -24,21 +24,27 @@ class MainViewModel: ViewModel() {
     var overagePrice = MutableLiveData<String>()
     var totalPrice = MutableLiveData<Int>()
     var priceList = ArrayList<Int>()
-    var pickdate = 20
+    var pickdate = MutableLiveData<Int>()
+    var maxDay = MutableLiveData<Int>()
 
 
     init {
+        pickdate.value = 1
         week()
         updateOverage()
+    }
+
+    fun getCircleDay() {
+
     }
 
     private fun updateOverage() {
         val db = FirebaseFirestore.getInstance()
         var lastDay = Calendar.getInstance()
         var today = lastDay.get(Calendar.DAY_OF_MONTH)
-        var maxDay = lastDay.getActualMinimum(Calendar.DAY_OF_MONTH)
+        maxDay.value = lastDay.getActualMaximum(Calendar.DAY_OF_MONTH)
 
-        if (today == pickdate) {
+        if (today == pickdate.value) {
             db.collection("User").document("${UserManager.userToken}").collection("Event")
                 .whereEqualTo("date","$DATE_MODE")
                 .get()
@@ -153,8 +159,8 @@ class MainViewModel: ViewModel() {
             weekName = "星期六"
         }
         val getDate = Date(year-1900, month, day)
-        val thisMonth = Date(year-1900, month, pickdate-1)
-        val nextMonth = Date(year-1900, month+1, pickdate)
+        val thisMonth = Date(year-1900, month, pickdate.value!!.minus(1))
+        val nextMonth = Date(year-1900, month+1, pickdate.value!!)
         val simpledateformat = SimpleDateFormat("yyyy.MM.dd (EEEE)")
         val timeformat = SimpleDateFormat("yyyyMMdd")
         startTime = timeformat.format(thisMonth).toLong()

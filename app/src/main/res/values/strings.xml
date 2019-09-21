@@ -10,9 +10,8 @@
     <string name="GOOGLE_LOG_IN">登入</string>
     <string name="logo">FARM account</string>
     <string name="loading">LOADING......</string>
-    <string name="overage_low">預算 10,000-15,000</string>
-    <string name="overage_middle">預算 10,000-20,000</string>
-    <string name="overage_high">預算 10,000-25,000</string>
+    <string name="overage_cycle">每個月第 1 天結算</string>
+
 
     //title
     <string name="expand_title">支出金額</string>
@@ -26,6 +25,8 @@
     <string name="budget_page_title">預算編制</string>
     <string name="qrcode_page_title">發票掃描</string>
     <string name="statistic_page_title">明細統計</string>
+    <string name="circle_title">預算週期</string>
+    <string name="budget_edit_title">預算修改</string>
 
 
     //tag
