@@ -50,6 +50,7 @@ class AddEventViewModel : ViewModel() {
         val time = Date( System.currentTimeMillis())
         val simpledateformat = SimpleDateFormat("yyyyMMdd")
         val date = simpledateformat.format(time)
+        var timeStamp = System.currentTimeMillis()
         // Create a new user with a first and last name
         val event = HashMap<String,Any>()
         event["price"] = priceInput.value!!
@@ -64,7 +65,7 @@ class AddEventViewModel : ViewModel() {
         idCheck.value = UserManager.userToken!!.substring(0,20)
         // Add a new document with a generated ID
         db.collection("User").document("${UserManager.userToken}").collection("Event")
-            .document("$date")
+            .document("$timeStamp")
             .set(event)
             .addOnSuccessListener { documentReference ->
                 Log.d(

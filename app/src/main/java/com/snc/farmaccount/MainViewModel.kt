@@ -30,8 +30,7 @@ class MainViewModel: ViewModel() {
 
     init {
         pickdate.value = 1
-        getCircle()
-        week()
+//        week()
         updateOverage()
     }
 
@@ -46,19 +45,18 @@ class MainViewModel: ViewModel() {
 
     fun getCircle() {
         val db = FirebaseFirestore.getInstance()
+        var lastDay = Calendar.getInstance()
+        var today = lastDay.get(Calendar.DAY_OF_MONTH)
+        maxDay.value = lastDay.getActualMaximum(Calendar.DAY_OF_MONTH)
         db.collection("User").document("${UserManager.userToken}").collection("Budget")
             .document("${UserManager.userToken}")
             .get()
             .addOnSuccessListener { document ->
                 if (document != null) {
                     pickdate.value = document.data?.get("circleDay")!!.toInt()
-                    Log.d("Sophie_circle_get", "DocumentSnapshot data: ${pickdate.value}")
-                } else {
-                    Log.d("Sophie_circle_get", "No such document")
+                    week()
+
                 }
-            }
-            .addOnFailureListener { exception ->
-                Log.d("Sophie_circle_get", "get failed with ", exception)
             }
     }
 
@@ -67,21 +65,26 @@ class MainViewModel: ViewModel() {
         var lastDay = Calendar.getInstance()
         var today = lastDay.get(Calendar.DAY_OF_MONTH)
         maxDay.value = lastDay.getActualMaximum(Calendar.DAY_OF_MONTH)
-        Log.d("Sophie_today", "$today+${pickdate.value}")
+        Log.d("Sophie_today", "$today+${pickdate.value}+$DATE_MODE")
         if (today == pickdate.value) {
             db.collection("User").document("${UserManager.userToken}").collection("Event")
-                .whereEqualTo("date","$DATE_MODE")
+                .whereEqualTo("time","$DATE_MODE")
                 .get()
                 .addOnSuccessListener { documents ->
-                    for (document in documents) {
-                        Log.d("Sophie", "${document.id} => ${document.data}")
-                        priceList.add(document.data["price"]!!.toInt())
-                        if (priceList.isEmpty()) {
+                    if (documents != null) {
+                        Log.d("Sophie", "DocumentSnapshot data: ${documents.documents}")
+                        if (documents.documents.isEmpty()) {
                             totalPrice.value = 0
+
                         } else {
-                            totalPrice.value = priceList.sum()
+                            for (document in documents) {
+                                Log.d("Sophie", "${document.id} => ${document.data}")
+                                priceList.add(document.data["price"]!!.toInt())
+                                totalPrice.value = priceList.sum()
+                                Log.d("Sophie_list", "${totalPrice.value}")
+                            }
                         }
-                        Log.d("Sophie_list", "${totalPrice.value}")
+
                         db.collection("User").document("${UserManager.userToken}").collection("Budget")
                             .get()
                             .addOnCompleteListener { task ->
@@ -89,11 +92,16 @@ class MainViewModel: ViewModel() {
                                     for (document in task.result!!) {
                                         Log.d("Sophie_db", "${document.id} => ${document.data}")
                                         if (document.data != null) {
+                                            Log.d("Sophie_list", "${totalPrice.value}")
                                             overagePrice.value = (document.data["budgetPrice"]!!.toInt()- totalPrice.value!!).toString()
+                                            Log.d("Sophie_ overagePrice.value", "${overagePrice.value}")
                                             db.collection("User").document("${UserManager.userToken}").collection("Budget")
                                                 .document("${UserManager.userToken}")
                                                 .update("overage", "${overagePrice.value}")
-                                                .addOnSuccessListener { Log.d("Sophie_budget_edit", "DocumentSnapshot successfully written!") }
+                                                .addOnSuccessListener {
+                                                    Log.d("Sophie_list", "${overagePrice.value}")
+                                                    Log.d("Sophie_budget_edit", "DocumentSnapshot successfully written!")
+                                                }
                                                 .addOnFailureListener { e -> Log.w("Sophie_budget_edit", "Error writing document", e) }
                                         } else {
                                             Log.d("Sophie_db", "no data")
@@ -108,7 +116,8 @@ class MainViewModel: ViewModel() {
                 .addOnFailureListener { exception ->
                     Log.w("Sophie", "Error getting documents: ", exception)
                 }
-        } else {
+        }
+        else {
             Log.d("Sophie", "not today")
             db.collection("User").document("${UserManager.userToken}").collection("Event")
                 .whereGreaterThan("time", startTime)
@@ -189,9 +198,8 @@ class MainViewModel: ViewModel() {
         val timeformat = SimpleDateFormat("yyyyMMdd")
         startTime = timeformat.format(thisMonth).toLong()
         endTime = timeformat.format(nextMonth).toLong()
-
         DATE_MODE = simpledateformat.format(getDate)
-       Log.i("today","$endTime + $startTime")
-
+        Log.i("today","$endTime + $startTime")
+        updateOverage()
     }
 }

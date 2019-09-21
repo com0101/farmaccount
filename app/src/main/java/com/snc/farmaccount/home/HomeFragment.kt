@@ -19,8 +19,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import android.app.DatePickerDialog
 import android.view.animation.TranslateAnimation
-
-
+import com.snc.farmaccount.MainViewModel
 
 
 class HomeFragment : Fragment() {
@@ -36,6 +35,9 @@ class HomeFragment : Fragment() {
     private val viewModel: DayViewModel by lazy {
         ViewModelProviders.of(this).get(DayViewModel::class.java)
     }
+    private val mainViewModel: MainViewModel by lazy {
+        ViewModelProviders.of(this).get(MainViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,13 +50,12 @@ class HomeFragment : Fragment() {
         binding.viewModel = viewModel
         currentDayCode= viewModel.DATE_MODE
         todayDayCode = viewModel.DATE_MODE
-
+//        mainViewModel.getCircle()
         binding.dayViewpager.id = (System.currentTimeMillis() % 100000).toInt()
         setViewPager()
         refreshEvents()
         arrowButtons()
         viewModel.getOverage()
-
         var buttonSense = false
 
         binding.buttonSetting.setOnClickListener {

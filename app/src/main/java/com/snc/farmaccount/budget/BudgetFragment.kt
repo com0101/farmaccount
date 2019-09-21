@@ -20,6 +20,7 @@ import com.snc.farmaccount.databinding.DialogCheckBinding
 import com.snc.farmaccount.databinding.DialogNumberpickBinding
 import com.snc.farmaccount.databinding.FragmentBudgetBinding
 import com.snc.farmaccount.dialog.AmountInputDialogDirections
+import com.snc.farmaccount.event.EditEventFragmentDirections
 import com.snc.farmaccount.statistic.StatisticViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.coroutines.Dispatchers
@@ -39,7 +40,12 @@ class BudgetFragment : Fragment() {
     private val viewModel: BudgetViewModel by lazy {
         ViewModelProviders.of(this).get(BudgetViewModel::class.java)
     }
-
+    private val mainViewModel: MainViewModel by lazy {
+        ViewModelProviders.of(this.requireActivity()).get(MainViewModel::class.java)
+    }
+    private val getViewModel: MainViewModel by lazy {
+        ViewModelProviders.of(this).get(MainViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -198,9 +204,7 @@ class BudgetFragment : Fragment() {
     }
 
     fun numberPicker() {
-        val activityViewModel = ViewModelProviders.of(this.requireActivity())
-            .get(MainViewModel::class.java)
-        binding.numberTitle.text = "每個月第 ${activityViewModel.pickdate.value} 天結算"
+        binding.numberTitle.text = "每個月第 ${mainViewModel.pickdate.value} 天結算"
         var dialog = Dialog(this.requireContext())
         var bindingCheck = DialogNumberpickBinding.inflate(layoutInflater)
         dialog.setContentView(bindingCheck.root)
@@ -208,27 +212,41 @@ class BudgetFragment : Fragment() {
         binding.numberTitle.setOnClickListener {
             dialog.show()
         }
-
-        activityViewModel.maxDay.observe(this, Observer { maxDay->
+        mainViewModel.maxDay.observe(this, Observer { maxDay->
             bindingCheck.numberPicker.maxValue = maxDay
+            Log.d("Sophie_today", "$maxDay")
             bindingCheck.numberPicker.setOnValueChangedListener {
                     _, _, newVal ->
                 bindingCheck.save.setOnClickListener {
-                    activityViewModel.pickdate.value = newVal
-                    activityViewModel.postCircleDay()
+                    mainViewModel.pickdate.value = newVal
+                    mainViewModel.postCircleDay()
+                    getViewModel.getCircle()
+
                     if (newVal == maxDay) {
                         binding.numberTitle.text = "每個月最後一天結算"
                     } else {
-                        binding.numberTitle.text = "每個月第 ${activityViewModel.pickdate.value} 天結算"
+                        binding.numberTitle.text = "每個月第 ${mainViewModel.pickdate.value} 天結算"
                     }
                     dialog.dismiss()
+                    var success = Dialog(this.requireContext())
+                    var bindingCheck = DialogCheckBinding.inflate(layoutInflater)
+                    success.setContentView(bindingCheck.root)
+                    success.window?.setBackgroundDrawableResource(android.R.color.transparent)
+                    GlobalScope.launch(context = Dispatchers.Main) {
+                        delay(500)
+                        bindingCheck.checkContent.text = "修改完成!"
+                        bindingCheck.imageCancel.visibility = View.GONE
+                        bindingCheck.imageSave.visibility = View.GONE
+                        success.show()
+                        delay(1000)
+                        success.dismiss()
+                    }
                     Log.d("Sophie", "$newVal")
                 }
 
             }
         })
         bindingCheck.cancel.setOnClickListener {
-            activityViewModel.pickdate.value = 1
             dialog.dismiss()
         }
 

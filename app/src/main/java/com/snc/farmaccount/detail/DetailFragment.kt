@@ -53,7 +53,7 @@ class DetailFragment : Fragment() {
             dialog.setContentView(bindingCheck.root)
             dialog.show()
             dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-            bindingCheck.checkContent.text = "確定要刪掉嗎!"
+            bindingCheck.checkContent.text = "確定要刪掉嗎?"
             bindingCheck.imageCancel.setOnClickListener {
                 dialog.dismiss()
             }
