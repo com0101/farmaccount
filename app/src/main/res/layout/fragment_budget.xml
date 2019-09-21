@@ -5,6 +5,7 @@
 
     <data>
         <variable name="viewModel" type="com.snc.farmaccount.budget.BudgetViewModel"/>
+        <variable name="mainViewModel" type="com.snc.farmaccount.MainViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -78,7 +79,7 @@
                 android:layout_height="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:id="@+id/number_title"
-                android:layout_marginEnd="25dp"
+                android:layout_marginEnd="27dp"
                 app:layout_constraintStart_toEndOf="@+id/number_icon"
                 android:layout_marginStart="8dp"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -277,7 +278,7 @@
                 app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="25dp" app:layout_constraintHorizontal_bias="0.0"
                 android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/number_title"
-                android:layout_marginEnd="25dp"/>
+                android:layout_marginEnd="27dp"/>
         <TextView
                 android:text="@string/circle_title"
                 android:layout_width="wrap_content"

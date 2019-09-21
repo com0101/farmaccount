@@ -30,12 +30,36 @@ class MainViewModel: ViewModel() {
 
     init {
         pickdate.value = 1
+        getCircle()
         week()
         updateOverage()
     }
 
-    fun getCircleDay() {
+    fun postCircleDay() {
+        val db = FirebaseFirestore.getInstance()
+        db.collection("User").document("${UserManager.userToken}").collection("Budget")
+            .document("${UserManager.userToken}")
+            .update("circleDay", "${pickdate.value}")
+            .addOnSuccessListener { Log.d("Sophie_circle_edit", "DocumentSnapshot successfully written!") }
+            .addOnFailureListener { e -> Log.w("Sophie_circle_edit", "Error writing document", e) }
+    }
 
+    fun getCircle() {
+        val db = FirebaseFirestore.getInstance()
+        db.collection("User").document("${UserManager.userToken}").collection("Budget")
+            .document("${UserManager.userToken}")
+            .get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    pickdate.value = document.data?.get("circleDay")!!.toInt()
+                    Log.d("Sophie_circle_get", "DocumentSnapshot data: ${pickdate.value}")
+                } else {
+                    Log.d("Sophie_circle_get", "No such document")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d("Sophie_circle_get", "get failed with ", exception)
+            }
     }
 
     private fun updateOverage() {
@@ -43,7 +67,7 @@ class MainViewModel: ViewModel() {
         var lastDay = Calendar.getInstance()
         var today = lastDay.get(Calendar.DAY_OF_MONTH)
         maxDay.value = lastDay.getActualMaximum(Calendar.DAY_OF_MONTH)
-
+        Log.d("Sophie_today", "$today+${pickdate.value}")
         if (today == pickdate.value) {
             db.collection("User").document("${UserManager.userToken}").collection("Event")
                 .whereEqualTo("date","$DATE_MODE")

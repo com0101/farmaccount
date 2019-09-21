@@ -200,7 +200,7 @@ class BudgetFragment : Fragment() {
     fun numberPicker() {
         val activityViewModel = ViewModelProviders.of(this.requireActivity())
             .get(MainViewModel::class.java)
-
+        binding.numberTitle.text = "每個月第 ${activityViewModel.pickdate.value} 天結算"
         var dialog = Dialog(this.requireContext())
         var bindingCheck = DialogNumberpickBinding.inflate(layoutInflater)
         dialog.setContentView(bindingCheck.root)
@@ -215,10 +215,11 @@ class BudgetFragment : Fragment() {
                     _, _, newVal ->
                 bindingCheck.save.setOnClickListener {
                     activityViewModel.pickdate.value = newVal
+                    activityViewModel.postCircleDay()
                     if (newVal == maxDay) {
                         binding.numberTitle.text = "每個月最後一天結算"
                     } else {
-                        binding.numberTitle.text = "每個月第 $newVal 天結算"
+                        binding.numberTitle.text = "每個月第 ${activityViewModel.pickdate.value} 天結算"
                     }
                     dialog.dismiss()
                     Log.d("Sophie", "$newVal")
