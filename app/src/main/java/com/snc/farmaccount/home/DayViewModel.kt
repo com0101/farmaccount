@@ -62,48 +62,12 @@ class DayViewModel: ViewModel() {
                         } else {
                             Log.d("Sophie_db", "no data")
                         }
-//                        val sub = FirebaseFirestore.getInstance()
-//                        sub.collection("User/${document.id}/Event")
-//                            .get()
-//                            .addOnCompleteListener { task ->
-//                                if (task.isSuccessful) {
-//                                    for (document in task.result!!) {
-//                                        val timestamp = document["date"] as com.google.firebase.Timestamp
-//                                        val milliseconds = timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000
-//                                        val sdf = SimpleDateFormat("yyyy.MM.dd (EEEE)")
-//                                        val netDate = Date(milliseconds)
-//                                        val date = sdf.format(netDate).toString()
-//                                        firebaseEvent = document.toObject(Event::class.java)
-//                                        dataList.add(firebaseEvent)
-//                                    }
-//
-//                                } else {
-//                                    Log.w("Sophie_db_fail", "Error getting documents.", task.exception)
-//                                }
-//                                _event.value = dataList
-//                                Log.w("Sophie_db_list", "$dataList")
-//                            }
                     }
                 }
                 _event.value = dataList
                 Log.w("Sophie_db_list", "$dataList")
             }
     }
-
-//    private fun getBudget() {
-//        val db = FirebaseFirestore.getInstance()
-//        val decimalFormat = DecimalFormat("#,###")
-//        db.collection("User").document("${UserManager.userToken}").collection("Budget")
-//            .get()
-//            .addOnCompleteListener { task ->
-//                if (task.isSuccessful) {
-//                    for (document in task.result!!) {
-//                        Log.d("Sophie_db", "${document.id} => ${document.data["budgetPrice"]}")
-//                        budgetPrice.value = decimalFormat.format(document.data["budgetPrice"].toString().toDouble())
-//                    }
-//                }
-//            }
-//    }
 
     fun getOverage() {
         val db = FirebaseFirestore.getInstance()

@@ -21,6 +21,8 @@ class MainViewModel: ViewModel() {
     var DATE_MODE = ""
     var startTime: Long = 0
     var endTime: Long = 0
+    var lastTime: Long = 0
+    var futureTime: Long = 0
     var overagePrice = MutableLiveData<String>()
     var totalPrice = MutableLiveData<Int>()
     var priceList = ArrayList<Int>()
@@ -66,8 +68,8 @@ class MainViewModel: ViewModel() {
         var today = lastDay.get(Calendar.DAY_OF_MONTH)
         maxDay.value = lastDay.getActualMaximum(Calendar.DAY_OF_MONTH)
         Log.d("Sophie_today", "$today+${pickdate.value}+$DATE_MODE")
-        if (today == pickdate.value) {
-            db.collection("User").document("${UserManager.userToken}").collection("Event")
+        when {
+            today == pickdate.value -> db.collection("User").document("${UserManager.userToken}").collection("Event")
                 .whereEqualTo("time","$DATE_MODE")
                 .get()
                 .addOnSuccessListener { documents ->
@@ -116,49 +118,92 @@ class MainViewModel: ViewModel() {
                 .addOnFailureListener { exception ->
                     Log.w("Sophie", "Error getting documents: ", exception)
                 }
-        }
-        else {
-            Log.d("Sophie", "not today")
-            db.collection("User").document("${UserManager.userToken}").collection("Event")
-                .whereGreaterThan("time", startTime)
-                .whereLessThan("time", endTime)
-                .get()
-                .addOnSuccessListener { documents ->
-                    for (document in documents) {
-                        Log.d("Sophie", "${document.id} => ${document.data}")
-                        priceList.add(document.data["price"]!!.toInt())
-                        if (priceList.isEmpty()) {
-                            totalPrice.value = 0
-                        } else {
-                            totalPrice.value = priceList.sum()
-                        }
-                        Log.d("Sophie_list", "${totalPrice.value}")
-                        db.collection("User").document("${UserManager.userToken}").collection("Budget")
-                            .get()
-                            .addOnCompleteListener { task ->
-                                if (task.isSuccessful) {
-                                    for (document in task.result!!) {
-                                        Log.d("Sophie_db", "${document.id} => ${document.data}")
-                                        if (document.data != null) {
-                                            overagePrice.value = (document.data["budgetPrice"]!!.toInt()- totalPrice.value!!).toString()
-                                            db.collection("User").document("${UserManager.userToken}").collection("Budget")
-                                                .document("${UserManager.userToken}")
-                                                .update("overage", "${overagePrice.value}")
-                                                .addOnSuccessListener { Log.d("Sophie_budget_edit", "DocumentSnapshot successfully written!") }
-                                                .addOnFailureListener { e -> Log.w("Sophie_budget_edit", "Error writing document", e) }
-                                        } else {
-                                            Log.d("Sophie_db", "no data")
+            today > pickdate.value!! -> {
+                Log.d("Sophie", "not today")
+                db.collection("User").document("${UserManager.userToken}").collection("Event")
+                    .whereGreaterThan("time", startTime)
+                    .whereLessThan("time", endTime)
+                    .get()
+                    .addOnSuccessListener { documents ->
+                        for (document in documents) {
+                            Log.d("Sophie", "${document.id} => ${document.data}")
+                            priceList.add(document.data["price"]!!.toInt())
+                            if (priceList.isEmpty()) {
+                                totalPrice.value = 0
+                            } else {
+                                totalPrice.value = priceList.sum()
+                            }
+                            Log.d("Sophie_list", "${totalPrice.value}")
+                            db.collection("User").document("${UserManager.userToken}").collection("Budget")
+                                .get()
+                                .addOnCompleteListener { task ->
+                                    if (task.isSuccessful) {
+                                        for (document in task.result!!) {
+                                            Log.d("Sophie_db", "${document.id} => ${document.data}")
+                                            if (document.data != null) {
+                                                overagePrice.value = (document.data["budgetPrice"]!!.toInt()- totalPrice.value!!).toString()
+                                                db.collection("User").document("${UserManager.userToken}").collection("Budget")
+                                                    .document("${UserManager.userToken}")
+                                                    .update("overage", "${overagePrice.value}")
+                                                    .addOnSuccessListener { Log.d("Sophie_budget_edit", "DocumentSnapshot successfully written!") }
+                                                    .addOnFailureListener { e -> Log.w("Sophie_budget_edit", "Error writing document", e) }
+                                            } else {
+                                                Log.d("Sophie_db", "no data")
+                                            }
                                         }
+
                                     }
 
                                 }
-
-                            }
+                        }
                     }
-                }
-                .addOnFailureListener { exception ->
-                    Log.w("Sophie", "Error getting documents: ", exception)
-                }
+                    .addOnFailureListener { exception ->
+                        Log.w("Sophie", "Error getting documents: ", exception)
+                    }
+            }
+            today < pickdate.value!! -> {
+                Log.d("Sophie", "not today")
+                db.collection("User").document("${UserManager.userToken}").collection("Event")
+                    .whereGreaterThan("time", lastTime)
+                    .whereLessThan("time", futureTime)
+                    .get()
+                    .addOnSuccessListener { documents ->
+                        for (document in documents) {
+                            Log.d("Sophie", "${document.id} => ${document.data}")
+                            priceList.add(document.data["price"]!!.toInt())
+                            if (priceList.isEmpty()) {
+                                totalPrice.value = 0
+                            } else {
+                                totalPrice.value = priceList.sum()
+                            }
+                            Log.d("Sophie_list", "${totalPrice.value}")
+                            db.collection("User").document("${UserManager.userToken}").collection("Budget")
+                                .get()
+                                .addOnCompleteListener { task ->
+                                    if (task.isSuccessful) {
+                                        for (document in task.result!!) {
+                                            Log.d("Sophie_db", "${document.id} => ${document.data}")
+                                            if (document.data != null) {
+                                                overagePrice.value = (document.data["budgetPrice"]!!.toInt()- totalPrice.value!!).toString()
+                                                db.collection("User").document("${UserManager.userToken}").collection("Budget")
+                                                    .document("${UserManager.userToken}")
+                                                    .update("overage", "${overagePrice.value}")
+                                                    .addOnSuccessListener { Log.d("Sophie_budget_edit", "DocumentSnapshot successfully written!") }
+                                                    .addOnFailureListener { e -> Log.w("Sophie_budget_edit", "Error writing document", e) }
+                                            } else {
+                                                Log.d("Sophie_db", "no data")
+                                            }
+                                        }
+
+                                    }
+
+                                }
+                        }
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.w("Sophie", "Error getting documents: ", exception)
+                    }
+            }
         }
     }
 
@@ -194,10 +239,14 @@ class MainViewModel: ViewModel() {
         val getDate = Date(year-1900, month, day)
         val thisMonth = Date(year-1900, month, pickdate.value!!.minus(1))
         val nextMonth = Date(year-1900, month+1, pickdate.value!!)
+        val lastMonth = Date(year-1900, month-1,pickdate.value!!.minus(1))
+        val futureDay = Date(year-1900, month, pickdate.value!!)
         val simpledateformat = SimpleDateFormat("yyyy.MM.dd (EEEE)")
         val timeformat = SimpleDateFormat("yyyyMMdd")
         startTime = timeformat.format(thisMonth).toLong()
         endTime = timeformat.format(nextMonth).toLong()
+        lastTime = timeformat.format(lastMonth).toLong()
+        futureTime = timeformat.format(futureDay).toLong()
         DATE_MODE = simpledateformat.format(getDate)
         Log.i("today","$endTime + $startTime")
         updateOverage()
