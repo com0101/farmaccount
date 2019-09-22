@@ -204,7 +204,11 @@ class BudgetFragment : Fragment() {
     }
 
     fun numberPicker() {
-        binding.numberTitle.text = "每個月第 ${mainViewModel.pickdate.value} 天結算"
+        if (mainViewModel.pickdate.value == mainViewModel.maxDay.value) {
+            binding.numberTitle.text = "每個月最後一天結算"
+        } else {
+            binding.numberTitle.text = "每個月第 ${mainViewModel.pickdate.value} 天結算"
+        }
         var dialog = Dialog(this.requireContext())
         var bindingCheck = DialogNumberpickBinding.inflate(layoutInflater)
         dialog.setContentView(bindingCheck.root)
@@ -221,26 +225,12 @@ class BudgetFragment : Fragment() {
                     mainViewModel.pickdate.value = newVal
                     mainViewModel.postCircleDay()
                     getViewModel.getCircle()
-
                     if (newVal == maxDay) {
                         binding.numberTitle.text = "每個月最後一天結算"
                     } else {
                         binding.numberTitle.text = "每個月第 ${mainViewModel.pickdate.value} 天結算"
                     }
                     dialog.dismiss()
-                    var success = Dialog(this.requireContext())
-                    var bindingCheck = DialogCheckBinding.inflate(layoutInflater)
-                    success.setContentView(bindingCheck.root)
-                    success.window?.setBackgroundDrawableResource(android.R.color.transparent)
-                    GlobalScope.launch(context = Dispatchers.Main) {
-                        delay(500)
-                        bindingCheck.checkContent.text = "修改完成!"
-                        bindingCheck.imageCancel.visibility = View.GONE
-                        bindingCheck.imageSave.visibility = View.GONE
-                        success.show()
-                        delay(1000)
-                        success.dismiss()
-                    }
                     Log.d("Sophie", "$newVal")
                 }
 

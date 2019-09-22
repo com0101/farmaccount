@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,6 +16,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
+import com.snc.farmaccount.ApplicationContext
 import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.StatisticCatalog
 import com.snc.farmaccount.databinding.FragmentStatisticBinding
@@ -56,15 +58,15 @@ class StatisticFragment : Fragment() {
             when(it.name){
                 "總覽" -> {
                     viewModel.filter.value = false
-                    params.setMargins(0,715,74,0)
-                    paramsleft.setMargins(74,715,0,0)
+                    params.setMargins(0, 260.dpToPx(),27.dpToPx(),0)
+                    paramsleft.setMargins(25.dpToPx(), 260.dpToPx(),0,0)
                     binding.imageArrowRight.requestLayout()
                     binding.imageArrowLeft.requestLayout()
                 }
                 else -> {
                     viewModel.filter.value = true
-                    params.setMargins(0,30,74,0)
-                    paramsleft.setMargins(74,30,0,0)
+                    params.setMargins(0,10.dpToPx(),27.dpToPx(),0)
+                    paramsleft.setMargins(25.dpToPx(),10.dpToPx(),0,0)
                     binding.imageArrowRight.requestLayout()
                     binding.imageArrowLeft.requestLayout()
                 }
@@ -144,4 +146,7 @@ class StatisticFragment : Fragment() {
        tag.add(StatisticCatalog(getString(R.string.catalog_income)))
     }
 
+    fun Number.dpToPx(): Int {
+        return (this.toFloat() * (ApplicationContext.applicationContext().resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)).toInt()
+    }
 }

@@ -55,7 +55,7 @@ class MainViewModel: ViewModel() {
             .get()
             .addOnSuccessListener { document ->
                 if (document != null) {
-                    pickdate.value = document.data?.get("circleDay")!!.toInt()
+                    pickdate.value = document.data?.get("circleDay")?.toInt()
                     week()
 
                 }
@@ -70,7 +70,7 @@ class MainViewModel: ViewModel() {
         Log.d("Sophie_today", "$today+${pickdate.value}+$DATE_MODE")
         when {
             today == pickdate.value -> db.collection("User").document("${UserManager.userToken}").collection("Event")
-                .whereEqualTo("time","$DATE_MODE")
+                .whereEqualTo("date","$DATE_MODE")
                 .get()
                 .addOnSuccessListener { documents ->
                     if (documents != null) {
@@ -236,17 +236,21 @@ class MainViewModel: ViewModel() {
         if (week==7) {
             weekName = "星期六"
         }
-        val getDate = Date(year-1900, month, day)
+        if (pickdate.value == null) {
+            pickdate.value = 1
+        }
         val thisMonth = Date(year-1900, month, pickdate.value!!.minus(1))
         val nextMonth = Date(year-1900, month+1, pickdate.value!!)
         val lastMonth = Date(year-1900, month-1,pickdate.value!!.minus(1))
         val futureDay = Date(year-1900, month, pickdate.value!!)
-        val simpledateformat = SimpleDateFormat("yyyy.MM.dd (EEEE)")
         val timeformat = SimpleDateFormat("yyyyMMdd")
         startTime = timeformat.format(thisMonth).toLong()
         endTime = timeformat.format(nextMonth).toLong()
         lastTime = timeformat.format(lastMonth).toLong()
         futureTime = timeformat.format(futureDay).toLong()
+
+        val getDate = Date(year-1900, month, day)
+        val simpledateformat = SimpleDateFormat("yyyy.MM.dd (EEEE)")
         DATE_MODE = simpledateformat.format(getDate)
         Log.i("today","$endTime + $startTime")
         updateOverage()

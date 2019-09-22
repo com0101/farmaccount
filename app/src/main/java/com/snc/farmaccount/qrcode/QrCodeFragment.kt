@@ -1,7 +1,11 @@
 package com.snc.farmaccount.qrcode
 
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.hardware.Camera
 import android.os.Bundle
+import android.text.TextUtils.substring
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,16 +13,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.budiyev.android.codescanner.CodeScanner
+import com.budiyev.android.codescanner.CodeScannerView
 import com.budiyev.android.codescanner.DecodeCallback
+import com.firebase.ui.auth.AuthUI.getApplicationContext
+import com.snc.farmaccount.ApplicationContext
 import com.snc.farmaccount.R
-import com.snc.farmaccount.`object`.QrCode
 import com.snc.farmaccount.databinding.FragmentQrCodeBinding
 import com.snc.farmaccount.event.AddEventViewModel
-import java.text.SimpleDateFormat
 import java.util.*
+import java.text.SimpleDateFormat
 
 
 class QrCodeFragment : Fragment() {
@@ -50,9 +58,14 @@ class QrCodeFragment : Fragment() {
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+
+        if (ContextCompat.checkSelfPermission(ApplicationContext.applicationContext(),Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this.requireActivity(), arrayOf(Manifest.permission.CAMERA), 50)
+        }
         // Inflate the layout for this fragment
         return binding.root
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -68,7 +81,10 @@ class QrCodeFragment : Fragment() {
                 Log.i("Sophie_day","$day")
                 val getDate = Date(year+11, month-1, day)
                 val simpledateformat = SimpleDateFormat("yyyy.MM.dd (EEEE)")
+                val dateformat = SimpleDateFormat("yyyyMMdd")
                 val time = simpledateformat.format(getDate)
+                val getMonth = time.substring(5, 7)
+                val date = dateformat.format(getDate)
                 val codeViewModel: AddEventViewModel by lazy {
                     ViewModelProviders.of(activity!!).get(AddEventViewModel::class.java)
                 }
@@ -77,6 +93,8 @@ class QrCodeFragment : Fragment() {
                         .navigate(QrCodeFragmentDirections.actionGlobalAddEventFragment())
                     codeViewModel.someDay.value = time
                     codeViewModel.getPrice.value = price
+                    codeViewModel.getMonth.value = getMonth
+                    codeViewModel.getTime.value = date
                 }
 
             }

@@ -60,9 +60,9 @@ class HomeFragment : Fragment() {
 
         binding.buttonSetting.setOnClickListener {
             buttonSense = if (!buttonSense) {
-                binding.buttonBudget.animate().translationY(130f).start() // move away
-                binding.buttonStatistic.animate().translationY(260f).start()
-                binding.buttonScan.animate().translationY(390f).start()
+                binding.buttonBudget.animate().translationY(150f).start() // move away
+                binding.buttonStatistic.animate().translationY(300f).start()
+                binding.buttonScan.animate().translationY(450f).start()
                 true
             } else {
                 binding.buttonBudget.animate().translationY(0f).start()

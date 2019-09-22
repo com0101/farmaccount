@@ -60,6 +60,22 @@ class AddEventFragment : Fragment() {
             }
         })
 
+        QRviewModel.getMonth.observe(viewLifecycleOwner, Observer {
+            Log.i("Sophie_qr","$it")
+            if (QRviewModel.getMonth.value != null) {
+                viewModel.monthFormat.value = it
+                QRviewModel.getMonth.value = null
+            }
+        })
+
+        QRviewModel.getTime.observe(viewLifecycleOwner, Observer {
+            Log.i("Sophie_qr","$it")
+            if (QRviewModel.getTime.value != null) {
+                viewModel.time.value = it
+                QRviewModel.getTime.value = null
+            }
+        })
+
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
@@ -79,7 +95,7 @@ class AddEventFragment : Fragment() {
                 bindingCheck.imageCancel.visibility = View.GONE
                 bindingCheck.imageSave.visibility = View.GONE
                 dialog.show()
-                delay(1000)
+                delay(1500)
                 dialog.dismiss()
                 findNavController()
                     .navigate(EditEventFragmentDirections.actionGlobalHomeFragment())
