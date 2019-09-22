@@ -18,8 +18,15 @@ import com.snc.farmaccount.helper.Format
 import java.text.SimpleDateFormat
 import java.util.*
 import android.app.DatePickerDialog
+import android.app.Dialog
 import android.view.animation.TranslateAnimation
 import com.snc.farmaccount.MainViewModel
+import com.snc.farmaccount.databinding.DialogCheckBinding
+import com.snc.farmaccount.event.EditEventFragmentDirections
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class HomeFragment : Fragment() {
@@ -60,9 +67,9 @@ class HomeFragment : Fragment() {
 
         binding.buttonSetting.setOnClickListener {
             buttonSense = if (!buttonSense) {
-                binding.buttonBudget.animate().translationY(150f).start() // move away
-                binding.buttonStatistic.animate().translationY(300f).start()
-                binding.buttonScan.animate().translationY(450f).start()
+                binding.buttonBudget.animate().translationY(180f).start() // move away
+                binding.buttonStatistic.animate().translationY(360f).start()
+                binding.buttonScan.animate().translationY(540f).start()
                 true
             } else {
                 binding.buttonBudget.animate().translationY(0f).start()
@@ -109,25 +116,36 @@ class HomeFragment : Fragment() {
 
         viewModel.postPrice.observe(this, androidx.lifecycle.Observer {
             Log.i("Sophie_farm", "$it")
+
+
             viewModel.farmStatus.observe(this, androidx.lifecycle.Observer { status ->
                 if (status == 0) {
                     when {
                         it > 1000 -> binding.imageFarm.setBackgroundResource(R.drawable.simple1)
-                        it < 0 -> binding.imageFarm.setBackgroundResource(R.drawable.simple3)
+                        it < 0 -> {
+                            binding.imageFarm.setBackgroundResource(R.drawable.simple3)
+                            showWarnig()
+                        }
                         else -> binding.imageFarm.setBackgroundResource(R.drawable.simple2)
                     }
                 }
                 if (status == 1) {
                     when {
                         it > 1000 -> binding.imageFarm.setBackgroundResource(R.drawable.middle)
-                        it < 0 -> binding.imageFarm.setBackgroundResource(R.drawable.middle3)
+                        it < 0 -> {
+                            binding.imageFarm.setBackgroundResource(R.drawable.middle3)
+                            showWarnig()
+                        }
                         else -> binding.imageFarm.setBackgroundResource(R.drawable.middle2)
                     }
                 }
                 if (status == 2) {
                     when {
                         it > 1000 -> binding.imageFarm.setBackgroundResource(R.drawable.rich)
-                        it < 0 -> binding.imageFarm.setBackgroundResource(R.drawable.rich3)
+                        it < 0 -> {
+                            binding.imageFarm.setBackgroundResource(R.drawable.rich3)
+                            showWarnig()
+                        }
                         else -> binding.imageFarm.setBackgroundResource(R.drawable.rich2)
                     }
                 }
@@ -137,6 +155,22 @@ class HomeFragment : Fragment() {
         })
         return binding.root
     }
+
+    fun showWarnig() {
+        var dialog = Dialog(this.requireContext())
+        var bindingCheck = DialogCheckBinding.inflate(layoutInflater)
+        dialog.setContentView(bindingCheck.root)
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        bindingCheck.checkContent.text = "這個月透支了，農場被查封，宣告破產!!"
+        bindingCheck.imageCancel.visibility = View.GONE
+        bindingCheck.imageSave.visibility = View.GONE
+        GlobalScope.launch(context = Dispatchers.Main) {
+            dialog.show()
+            delay(2500)
+            dialog.dismiss()
+        }
+    }
+
 
     private fun setViewPager() {
         val codes = getDays(currentDayCode)

@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.snc.farmaccount.databinding.ActivityMainBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.os.Build
 import android.util.Log
@@ -57,7 +58,7 @@ class MainActivity : AppCompatActivity(){
             window.statusBarColor = Color.TRANSPARENT
 
         }
-
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
