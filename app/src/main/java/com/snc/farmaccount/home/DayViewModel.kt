@@ -3,6 +3,7 @@ package com.snc.farmaccount.home
 import android.util.Log
 import androidx.lifecycle.*
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.simplemobiletools.commons.extensions.toInt
 import com.snc.farmaccount.`object`.Event
 import com.snc.farmaccount.helper.UserManager
@@ -26,7 +27,7 @@ class DayViewModel: ViewModel() {
     var date = MutableLiveData<String>()
     var postPrice = MutableLiveData<Int>()
     var overagePrice = MutableLiveData<String>()
-    var farmStatus = MutableLiveData<Boolean>()
+    var farmStatus = MutableLiveData<Int>()
     var dataList = ArrayList<Event>()
     var DATE_MODE = ""
 
@@ -61,48 +62,12 @@ class DayViewModel: ViewModel() {
                         } else {
                             Log.d("Sophie_db", "no data")
                         }
-//                        val sub = FirebaseFirestore.getInstance()
-//                        sub.collection("User/${document.id}/Event")
-//                            .get()
-//                            .addOnCompleteListener { task ->
-//                                if (task.isSuccessful) {
-//                                    for (document in task.result!!) {
-//                                        val timestamp = document["date"] as com.google.firebase.Timestamp
-//                                        val milliseconds = timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000
-//                                        val sdf = SimpleDateFormat("yyyy.MM.dd (EEEE)")
-//                                        val netDate = Date(milliseconds)
-//                                        val date = sdf.format(netDate).toString()
-//                                        firebaseEvent = document.toObject(Event::class.java)
-//                                        dataList.add(firebaseEvent)
-//                                    }
-//
-//                                } else {
-//                                    Log.w("Sophie_db_fail", "Error getting documents.", task.exception)
-//                                }
-//                                _event.value = dataList
-//                                Log.w("Sophie_db_list", "$dataList")
-//                            }
                     }
                 }
                 _event.value = dataList
                 Log.w("Sophie_db_list", "$dataList")
             }
     }
-
-//    private fun getBudget() {
-//        val db = FirebaseFirestore.getInstance()
-//        val decimalFormat = DecimalFormat("#,###")
-//        db.collection("User").document("${UserManager.userToken}").collection("Budget")
-//            .get()
-//            .addOnCompleteListener { task ->
-//                if (task.isSuccessful) {
-//                    for (document in task.result!!) {
-//                        Log.d("Sophie_db", "${document.id} => ${document.data["budgetPrice"]}")
-//                        budgetPrice.value = decimalFormat.format(document.data["budgetPrice"].toString().toDouble())
-//                    }
-//                }
-//            }
-//    }
 
     fun getOverage() {
         val db = FirebaseFirestore.getInstance()
@@ -114,6 +79,7 @@ class DayViewModel: ViewModel() {
                     for (document in task.result!!) {
                         overagePrice.value = decimalFormat.format(document.data["overage"].toString().toDouble())
                         postPrice.value = document.data["overage"]?.toInt()
+                        farmStatus.value = document.data["position"]?.toInt()
                     }
                 }
                 Log.d("Sophie_db", "overagePrice.value = ${farmStatus.value}")

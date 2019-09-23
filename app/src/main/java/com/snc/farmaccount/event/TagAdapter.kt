@@ -53,9 +53,7 @@ class TagAdapter(private var onClickListener: OnClickListener):
             if (selectedPosition==adapterPosition) {
                 binding.eventTag.setImageResource(event.tag_img_press)
             }
-//            if (viewModel.detail.value?.tag == event.tag_name) {
-//                binding.eventTag.setImageResource(event.tag_img_press)
-//            }
+
             binding.executePendingBindings()
         }
 

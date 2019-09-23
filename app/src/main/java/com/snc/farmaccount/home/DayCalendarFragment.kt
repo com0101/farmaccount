@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.snc.farmaccount.helper.NavigationListener
@@ -44,6 +45,15 @@ class DayCalendarFragment : Fragment() {
                 this.findNavController()
                     .navigate(DayCalendarFragmentDirections.actionGlobalDetailFragment(it))
                 viewModel.displayPropertyDetailsComplete()
+            }
+        })
+
+        viewModel.event.observe(this, Observer {
+            if (it.isEmpty()) {
+                binding.spendHint.visibility = View.VISIBLE
+            } else {
+                binding.spendHint.visibility = View.GONE
+
             }
         })
 

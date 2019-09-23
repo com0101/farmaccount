@@ -1,34 +1,26 @@
 package com.snc.farmaccount
 
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
-import com.google.android.gms.auth.api.signin.*
-import com.google.firebase.auth.FirebaseAuth
 import com.snc.farmaccount.databinding.ActivityMainBinding
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import android.content.Intent
-import android.util.Log
-import android.widget.Toast
+import android.content.pm.ActivityInfo
+import android.graphics.Color
+import android.os.Build
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
+import android.widget.Button
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.findNavController
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
-import com.snc.farmaccount.databinding.FragmentLogInBinding
+import com.crashlytics.android.Crashlytics
+import io.fabric.sdk.android.Fabric
 
 
 class MainActivity : AppCompatActivity(){
 
     private lateinit var binding: ActivityMainBinding
-//    private lateinit var bindingLogin: FragmentLogInBinding
-//    private lateinit var firebaseAuth: FirebaseAuth
-//    val RC_SIGN_IN: Int = 1
-//    lateinit var googleSignInClient: GoogleSignInClient
-//    lateinit var googleSignInOptions: GoogleSignInOptions
+
 
     private val viewModel: MainViewModel by lazy {
         ViewModelProviders.of(this).get(MainViewModel::class.java)
@@ -36,96 +28,45 @@ class MainActivity : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) { // 4.4
+            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) { // 5.0
+            val window = window
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS) // 確認取消半透明設置。
+            window.decorView.systemUiVisibility =
+                (View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN // 全螢幕顯示，status bar 不隱藏，activity 上方 layout 會被 status bar 覆蓋。
+                        or View.SYSTEM_UI_FLAG_LAYOUT_STABLE // 配合其他 flag 使用，防止 system bar 改變後 layout 的變動。
+                        or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)// 表示我們的 UI 是 LIGHT 的 style，icon 就會呈現深色系。
+
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS) // 跟系統表示要渲染 system bar 背景。
+            window.statusBarColor = Color.TRANSPARENT
+
+        }
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
-
         binding.viewModel = viewModel
-//        firebaseAuth = FirebaseAuth.getInstance()
-//        googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//            .requestIdToken(getString(R.string.default_web_client_id))
-//            .requestEmail()
-//            .build()
-//        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions)
+        viewModel.getCircle()
+//        Fabric.with(this, Crashlytics())
+//        val crashButton = Button(this)
+//        crashButton.text = "Crash!"
+//        crashButton.setOnClickListener {
+//            Crashlytics.getInstance().crash() // Force a crash
+//        }
+//
+//        addContentView(crashButton, ViewGroup.LayoutParams(
+//            ViewGroup.LayoutParams.MATCH_PARENT,
+//            ViewGroup.LayoutParams.WRAP_CONTENT))
+
+
 
 
     }
-
-//    fun click() {
-//        bindingLogin = FragmentLogInBinding.inflate(layoutInflater)
-//        bindingLogin.signInButton.setOnClickListener {
-//            Log.i("Sophie_click", "click")
-//            signInGoogle()
-//        }
-//    }
-//
-//
-//    private fun signInGoogle() {
-//        val signInIntent = googleSignInClient.signInIntent
-//        startActivityForResult(signInIntent, RC_SIGN_IN)
-//    }
-//
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        if (requestCode == RC_SIGN_IN) {
-//            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-//            try {
-//                // Google Sign In was successful, authenticate with Firebase
-//                val account = task.getResult(ApiException::class.java)
-//                firebaseAuthWithGoogle(account!!)
-//            } catch (e: ApiException) {
-//                // Google Sign In failed, update UI appropriately
-//                Log.w("Sophie_fire_google", "Google sign in failed", e)
-//                // ...
-//            }
-//        }
-//    }
-//
-//    private fun updateUI(account: FirebaseUser?) {
-////        binding.textView.text = account?.uid
-//        bindingLogin = FragmentLogInBinding.inflate(layoutInflater)
-//        bindingLogin.buttonLogOut.setOnClickListener {
-//            googleSignInClient.signOut().addOnCompleteListener {
-//                bindingLogin.textView.text = ""
-//                Log.i("Sophie_click", "click")
-//            }
-//        }
-//    }
-//
-//    private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
-//        Log.d("Sophie_fire_google", "firebaseAuthWithGoogle:" + account.id!!)
-//
-//        val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-//        firebaseAuth.signInWithCredential(credential)
-//            .addOnCompleteListener(this) { task ->
-//                if (task.isSuccessful) {
-//                    // Sign in success, update UI with the signed-in user's information
-//                    Log.d("Sophie_fire_google", "signInWithCredential:success")
-//                    val user = firebaseAuth.currentUser
-//                    if (user != null) {
-//                        updateUI(user)
-//                        val usersToken = this.
-//                            getSharedPreferences("Token", Context.MODE_PRIVATE)
-//                        val editor = usersToken!!.edit()
-//                        editor.putString("Token", user.uid ).apply()
-//                        Log.i("Sophie_fire_google", "UID:" + user.uid)
-//                    }
-//                } else {
-//                    // If sign in fails, display a message to the user.
-//                    Log.w("Sophie_fire_google", "signInWithCredential:failure", task.exception)
-//                    Toast.makeText(this, "Authentication Failed.", Toast.LENGTH_SHORT).show()
-//                    updateUI(null)
-//                }
-//
-//                // ...
-//            }
-//    }
-//
-//    public override fun onStart() {
-//        super.onStart()
-//        // Check if user is signed in (non-null) and update UI accordingly.
-//        val currentUser = firebaseAuth.currentUser
-//        updateUI(currentUser)
-//    }
 
 
 }

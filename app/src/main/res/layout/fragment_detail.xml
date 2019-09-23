@@ -10,55 +10,79 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".detail.DetailFragment">
+            tools:context=".detail.DetailFragment" android:background="@color/egg_yellow">
 
         <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:srcCompat="@drawable/event_background"
+                android:id="@+id/background"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintHorizontal_bias="1.0" android:layout_marginTop="150dp"
+                app:layout_constraintTop_toBottomOf="@+id/date"/>
+
+        <ImageView
+                android:layout_width="0dp"
+                android:layout_height="70dp"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/toolbar"
+                android:id="@+id/toolbar"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        <ImageView
+                android:layout_width="26dp"
+                android:layout_height="29dp"
                 android:id="@+id/image_back_state"
-                android:rotation="@dimen/arrow_rotate_180"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="25dp"
                 android:layout_marginStart="25dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@android:drawable/ic_media_play"
+                app:srcCompat="@drawable/back"
                 app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
                 android:id="@+id/text_detail"
                 android:text="@string/detail_page_title"
+                android:fontFamily="@font/gen_normal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:textSize="20sp"
                 android:layout_marginBottom="8dp"
                 android:gravity="center"
-                android:layout_marginStart="8dp"
                 android:layout_marginEnd="50dp"
                 app:layout_constraintStart_toEndOf="@+id/image_back_state"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/image_back_state"
-                app:layout_constraintBottom_toBottomOf="@+id/image_back_state"/>
+                app:layout_constraintBottom_toBottomOf="@+id/image_back_state"
+                android:textStyle="bold"
+                android:textColor="@color/white"/>
 
         <ImageView
                 android:id="@+id/tag_image"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_marginStart="53dp"
-                android:layout_marginTop="22dp"
+                android:layout_marginStart="55dp"
                 app:srcCompat="@drawable/tag_dinner"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_detail"/>
+                android:layout_marginTop="24dp" app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
 
         <TextView
                 android:id="@+id/tag_text"
                 android:text="@{viewModel.detail.tag}"
+                android:fontFamily="@font/gen_normal"
                 android:textSize="18sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 app:layout_constraintTop_toTopOf="@+id/tag_image"
                 app:layout_constraintBottom_toBottomOf="@+id/tag_image"
-                app:layout_constraintStart_toEndOf="@+id/tag_image"/>
+                app:layout_constraintStart_toEndOf="@+id/tag_image" android:textColor="@color/expend_title"
+                android:textStyle="bold"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
@@ -66,7 +90,7 @@
                 android:background="@drawable/radius_border"
                 android:id="@+id/price"
                 android:layout_marginEnd="53dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginStart="53dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tag_image"
@@ -75,6 +99,7 @@
             <TextView
                     android:id="@+id/title_price"
                     android:text="@string/title_price"
+                    android:fontFamily="@font/gen_normal"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_marginStart="12dp"
@@ -82,17 +107,18 @@
                     android:gravity="center"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintBottom_toBottomOf="parent" android:textColor="@color/expend_title"/>
 
             <TextView
                     android:id="@+id/text_price"
                     android:text="@{viewModel.detail.price}"
+                    android:fontFamily="@font/gen_normal"
                     android:layout_width="0dp"
                     android:layout_height="30dp"
                     android:paddingStart="6dp"
                     android:layout_marginEnd="16dp"
                     android:textSize="18sp"
-                    android:textColor="@color/gray_green"
+                    android:textColor="@color/expend_title"
                     android:gravity="center"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/title_price"
@@ -106,7 +132,7 @@
                 android:id="@+id/date"
                 android:layout_marginEnd="53dp"
                 android:layout_marginStart="53dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -115,6 +141,7 @@
             <TextView
                     android:id="@+id/title_date"
                     android:text="@string/title_date"
+                    android:fontFamily="@font/gen_normal"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_marginStart="12dp"
@@ -122,16 +149,17 @@
                     android:gravity="center"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintBottom_toBottomOf="parent" android:textColor="@color/expend_title"/>
 
             <TextView
                     android:id="@+id/text__budget_edit"
                     android:text="@{viewModel.detail.date}"
+                    android:fontFamily="@font/gen_normal"
                     android:layout_width="0dp"
                     android:layout_height="30dp"
                     android:paddingStart="6dp"
                     android:textSize="18sp"
-                    android:textColor="@color/gray_green"
+                    android:textColor="@color/expend_title"
                     android:gravity="center"
                     android:layout_marginEnd="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -142,36 +170,62 @@
         <TextView
                 android:id="@+id/edit_description"
                 android:text="@{viewModel.detail.description}"
+                android:fontFamily="@font/gen_normal"
                 android:layout_width="0dp"
                 android:layout_height="280dp"
-                android:background="@drawable/description_border"
+                android:background="@drawable/infor_border"
                 android:textSize="18sp"
                 android:paddingStart="16dp"
                 android:paddingTop="16dp"
                 android:gravity="top"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="16dp"
                 app:layout_constraintStart_toStartOf="@+id/date"
                 app:layout_constraintEnd_toEndOf="@+id/date"
-                app:layout_constraintTop_toBottomOf="@+id/date"/>
+                app:layout_constraintTop_toBottomOf="@+id/date" android:textColor="@color/expend_title"/>
 
         <ImageView
                 android:id="@+id/image_delete"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="16dp"
                 app:srcCompat="@drawable/delete"
                 app:layout_constraintEnd_toEndOf="@+id/edit_description"
                 app:layout_constraintTop_toBottomOf="@+id/edit_description"/>
+        <TextView
+                android:text="@string/delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/delete_title"
+                app:layout_constraintTop_toTopOf="@+id/image_delete"
+                app:layout_constraintBottom_toBottomOf="@+id/image_delete"
+                app:layout_constraintEnd_toEndOf="@+id/image_delete"
+                app:layout_constraintStart_toStartOf="@+id/image_delete"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:fontFamily="@font/gen_normal"
+                android:layout_marginStart="32dp"/>
 
         <ImageView
                 android:id="@+id/image_edit"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="20dp"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="16dp"
                 app:srcCompat="@drawable/edit"
                 app:layout_constraintTop_toBottomOf="@+id/edit_description"
-                app:layout_constraintStart_toStartOf="@+id/edit_description" android:layout_marginStart="20dp"/>
+                app:layout_constraintStart_toStartOf="@+id/edit_description"/>
+        <TextView
+                android:text="@string/edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/edit_title"
+                app:layout_constraintTop_toTopOf="@+id/image_edit"
+                app:layout_constraintBottom_toBottomOf="@+id/image_edit"
+                app:layout_constraintEnd_toEndOf="@+id/image_edit"
+                app:layout_constraintStart_toStartOf="@+id/image_edit"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:fontFamily="@font/gen_normal"
+                android:layout_marginStart="32dp"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

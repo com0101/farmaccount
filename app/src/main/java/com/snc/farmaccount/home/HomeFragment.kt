@@ -18,6 +18,15 @@ import com.snc.farmaccount.helper.Format
 import java.text.SimpleDateFormat
 import java.util.*
 import android.app.DatePickerDialog
+import android.app.Dialog
+import android.view.animation.TranslateAnimation
+import com.snc.farmaccount.MainViewModel
+import com.snc.farmaccount.databinding.DialogCheckBinding
+import com.snc.farmaccount.event.EditEventFragmentDirections
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class HomeFragment : Fragment() {
@@ -33,6 +42,9 @@ class HomeFragment : Fragment() {
     private val viewModel: DayViewModel by lazy {
         ViewModelProviders.of(this).get(DayViewModel::class.java)
     }
+    private val mainViewModel: MainViewModel by lazy {
+        ViewModelProviders.of(this).get(MainViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,24 +57,42 @@ class HomeFragment : Fragment() {
         binding.viewModel = viewModel
         currentDayCode= viewModel.DATE_MODE
         todayDayCode = viewModel.DATE_MODE
-
+//        mainViewModel.getCircle()
         binding.dayViewpager.id = (System.currentTimeMillis() % 100000).toInt()
         setViewPager()
         refreshEvents()
         arrowButtons()
         viewModel.getOverage()
+        var buttonSense = false
+
+        binding.buttonSetting.setOnClickListener {
+            buttonSense = if (!buttonSense) {
+                binding.buttonBudget.animate().translationY(180f).start() // move away
+                binding.buttonStatistic.animate().translationY(360f).start()
+                binding.buttonScan.animate().translationY(540f).start()
+                true
+            } else {
+                binding.buttonBudget.animate().translationY(0f).start()
+                binding.buttonStatistic.animate().translationY(0f).start()
+                binding.buttonScan.animate().translationY(0f).start()
+                false
+            }
+        }
 
         binding.buttonBudget.setOnClickListener {
+            Log.i("Sophie_click","click")
             findNavController()
                 .navigate(R.id.action_global_budgetFragment)
         }
 
         binding.buttonStatistic.setOnClickListener {
+            Log.i("Sophie_click","click")
             findNavController()
                 .navigate(R.id.action_global_statisticFragment)
         }
 
         binding.buttonScan.setOnClickListener {
+            Log.i("Sophie_click","click")
             findNavController()
                 .navigate(R.id.action_global_qrCodeFragment)
         }
@@ -86,14 +116,59 @@ class HomeFragment : Fragment() {
 
         viewModel.postPrice.observe(this, androidx.lifecycle.Observer {
             Log.i("Sophie_farm", "$it")
-            when {
-                it > 1000 -> binding.imageFarm.setBackgroundResource(R.drawable.hen)
-                it < 0 -> binding.imageFarm.setBackgroundResource(R.drawable.tag_income)
-                else -> binding.imageFarm.setBackgroundResource(R.drawable.tag_traffic)
-            }
+            viewModel.farmStatus.observe(this, androidx.lifecycle.Observer { status ->
+                if (status == 0) {
+                    when {
+                        it > 1000 -> binding.imageFarm.setBackgroundResource(R.drawable.simple1)
+                        it < 0 -> {
+                            binding.imageFarm.setBackgroundResource(R.drawable.simple3)
+                            showWarning()
+                        }
+                        else -> binding.imageFarm.setBackgroundResource(R.drawable.simple2)
+                    }
+                }
+                if (status == 1) {
+                    when {
+                        it > 1000 -> binding.imageFarm.setBackgroundResource(R.drawable.middle)
+                        it < 0 -> {
+                            binding.imageFarm.setBackgroundResource(R.drawable.middle3)
+                            showWarning()
+                        }
+                        else -> binding.imageFarm.setBackgroundResource(R.drawable.middle2)
+                    }
+                }
+                if (status == 2) {
+                    when {
+                        it > 1000 -> binding.imageFarm.setBackgroundResource(R.drawable.rich)
+                        it < 0 -> {
+                            binding.imageFarm.setBackgroundResource(R.drawable.rich3)
+                            showWarning()
+                        }
+                        else -> binding.imageFarm.setBackgroundResource(R.drawable.rich2)
+                    }
+                }
+
+            })
+
         })
         return binding.root
     }
+
+    private fun showWarning() {
+        var dialog = Dialog(this.requireContext())
+        var bindingCheck = DialogCheckBinding.inflate(layoutInflater)
+        dialog.setContentView(bindingCheck.root)
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        bindingCheck.checkContent.text = "這個月透支了，農場被查封，宣告破產!!"
+        bindingCheck.imageCancel.visibility = View.GONE
+        bindingCheck.imageSave.visibility = View.GONE
+        GlobalScope.launch(context = Dispatchers.Main) {
+            dialog.show()
+            delay(2500)
+            dialog.dismiss()
+        }
+    }
+
 
     private fun setViewPager() {
         val codes = getDays(currentDayCode)
@@ -149,7 +224,7 @@ class HomeFragment : Fragment() {
         val calendar = Calendar.getInstance()
         val simpledateformat = SimpleDateFormat("EEEE")
         val datePickdialog = DatePickerDialog(
-            this.context!!, AlertDialog.THEME_HOLO_LIGHT,
+            this.context!!, R.style.my_dialog_theme,
             DatePickerDialog.OnDateSetListener { _, year, month, day ->
                 // Display Selected date in Toast
                 val date = Date(year, month, day-1)

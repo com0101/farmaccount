@@ -127,6 +127,7 @@ class LogInFragment : Fragment() {
     }
 
     private fun checkUserStatus() {
+        Log.i("Sophie_test", "TTTTest")
         CoroutineScope(Dispatchers.IO).launch {
             findNavController()
                 .navigate(R.id.action_global_loadingFragment)

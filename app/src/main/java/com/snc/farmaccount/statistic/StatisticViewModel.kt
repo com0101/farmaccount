@@ -56,7 +56,7 @@ class StatisticViewModel : ViewModel() {
         }
     }
 
-    val eventByTotalPrice: LiveData<Int> = Transformations.map(eventByCatagory) { it ->
+    val eventByTotalPrice: LiveData<Int> = Transformations.map(event) { it ->
         it.sumBy { it.price!!.toInt() }
     }
 

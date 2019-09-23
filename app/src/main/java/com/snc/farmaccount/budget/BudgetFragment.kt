@@ -1,23 +1,39 @@
 package com.snc.farmaccount.budget
 
 
+import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.view.inputmethod.InputMethodManager
+import androidx.activity.OnBackPressedCallback
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.snackbar.Snackbar
+import com.snc.farmaccount.ApplicationContext
+import com.snc.farmaccount.MainViewModel
 import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.Budget
-import com.snc.farmaccount.choose.ChooseFragmentDirections
+import com.snc.farmaccount.databinding.DialogCheckBinding
+import com.snc.farmaccount.databinding.DialogNumberpickBinding
 import com.snc.farmaccount.databinding.FragmentBudgetBinding
 import com.snc.farmaccount.dialog.AmountInputDialogDirections
+import com.snc.farmaccount.event.EditEventFragmentDirections
+import com.snc.farmaccount.statistic.StatisticViewModel
+import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.collections.ArrayList
+
 
 
 class BudgetFragment : Fragment() {
@@ -29,6 +45,12 @@ class BudgetFragment : Fragment() {
     private val viewModel: BudgetViewModel by lazy {
         ViewModelProviders.of(this).get(BudgetViewModel::class.java)
     }
+    private val mainViewModel: MainViewModel by lazy {
+        ViewModelProviders.of(this.requireActivity()).get(MainViewModel::class.java)
+    }
+    private val getViewModel: MainViewModel by lazy {
+        ViewModelProviders.of(this).get(MainViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,9 +59,14 @@ class BudgetFragment : Fragment() {
         binding = FragmentBudgetBinding.inflate(inflater)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-        binding.farmList.visibility = View.GONE
-        binding.unSelectFarmList.visibility = View.VISIBLE
+//        binding.farmList.visibility = View.GONE
+//        binding.farmList.visibility = View.VISIBLE
         binding.farmList.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+        binding.textBudget.isEnabled = false
+        binding.textBudget.setTextColor(resources.getColor(R.color.deep_gray))
+        binding.price.background = resources.getDrawable(R.drawable.unedit_radius_border)
+        binding.imageCoin.background = resources.getDrawable(R.drawable.money_unedit)
+
 
         addBudget()
         unEditBudget()
@@ -47,14 +74,10 @@ class BudgetFragment : Fragment() {
         getPager2()
         viewModel.getBudgetPrice()
         changeArrow()
-
+        numberPicker()
         binding.farmList.adapter = BudgetAdapter(budget,BudgetAdapter.OnClickListener {
             viewModel.getBudgetType.value = it
-            binding.textBudget.setTextColor(resources.getColor(R.color.gray_green))
-            binding.price.background = resources.getDrawable(R.drawable.radius_border)
-            binding.imageCoin.background = resources.getDrawable(R.drawable.money_icon)
-            binding.textBudget.isEnabled = true
-            Snackbar.make(this.requireView(), "選擇完成", Snackbar.LENGTH_LONG).show()
+            Snackbar.make(this.requireView(), "選擇更改金額或直接儲存", Snackbar.LENGTH_LONG).show()
         })
 
         binding.unSelectFarmList.adapter = BudgetAdapter(budgetUnselect,BudgetAdapter.OnClickListener {
@@ -69,12 +92,40 @@ class BudgetFragment : Fragment() {
 
         binding.imageSend.setOnClickListener {
             viewModel.editBudgetPrice()
-            when {
-                viewModel.amountCheck.value == true -> Toast.makeText(context, "超出範圍啦", Toast.LENGTH_SHORT).show()
-                viewModel.amountCheck.value == false -> Toast.makeText(context, "省錢還是要顧身體啦", Toast.LENGTH_SHORT).show()
-                else -> findNavController()
-                    .navigate(AmountInputDialogDirections.actionGlobalHomeFragment())
+            var dialog = Dialog(this.requireContext())
+            var bindingCheck = DialogCheckBinding.inflate(layoutInflater)
+            dialog.setContentView(bindingCheck.root)
+            dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+            GlobalScope.launch(context = Dispatchers.Main) {
+                when {
+                    viewModel.amountCheck.value == true -> {
+                        bindingCheck.checkContent.text = "超出範圍啦!"
+                        bindingCheck.imageCancel.visibility = View.GONE
+                        bindingCheck.imageSave.visibility = View.GONE
+                        dialog.show()
+                        delay(1000)
+                        dialog.dismiss()
+                    }
+                    viewModel.amountCheck.value == false -> {
+                        bindingCheck.checkContent.text = "省錢還是要顧身體啦!"
+                        bindingCheck.imageCancel.visibility = View.GONE
+                        bindingCheck.imageSave.visibility = View.GONE
+                        dialog.show()
+                        delay(1000)
+                        dialog.dismiss()
+                    }
+                    else -> {
+                        bindingCheck.checkContent.text = "編輯完成!"
+                        bindingCheck.imageCancel.visibility = View.GONE
+                        bindingCheck.imageSave.visibility = View.GONE
+                        dialog.show()
+                        delay(1000)
+                        dialog.dismiss()
+                        findNavController()
+                        .navigate(AmountInputDialogDirections.actionGlobalHomeFragment())}
+                }
             }
+
         }
 
         binding.imageBackState.setOnClickListener {
@@ -83,11 +134,13 @@ class BudgetFragment : Fragment() {
         }
 
         binding.imageEdit.setOnClickListener {
-            binding.textBudget.setTextColor(resources.getColor(R.color.light_gray))
-            binding.price.background = resources.getDrawable(R.drawable.unedit_radius_border)
-            binding.imageCoin.background = resources.getDrawable(R.drawable.money_unedit)
-            binding.textBudget.isEnabled = false
-
+            binding.textBudget.isEnabled = true
+            binding.textBudget.setTextColor(resources.getColor(R.color.money_text))
+            binding.price.background = resources.getDrawable(R.drawable.money_border)
+            binding.imageCoin.background = resources.getDrawable(R.drawable.money_icon)
+            binding.imageArrowRight.visibility = View.VISIBLE
+            binding.imageArrowRight.setImageResource(R.drawable.arrow)
+            binding.imageArrowLeft.setImageResource(R.drawable.arrow)
             binding.imageArrowRight.setOnClickListener {
                 binding.farmList.currentItem = binding.farmList.currentItem + 1
                 if (binding.farmList.currentItem == 2) {
@@ -111,6 +164,14 @@ class BudgetFragment : Fragment() {
 
         }
 
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // 做你要的事，這邊是跳轉首頁
+                findNavController().
+                    navigate(R.id.action_global_homeFragment)
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
         return binding.root
     }
 
@@ -144,17 +205,62 @@ class BudgetFragment : Fragment() {
     }
 
     private fun addBudget() {
-        budget.add(Budget(R.drawable.hen, R.drawable.tag_lottery, "10000", "15000","",0,""))
-        budget.add(Budget(R.drawable.hen, R.drawable.tag_breakfast, "10000", "20000","",1,""))
-        budget.add(Budget(R.drawable.hen, R.drawable.tag_lunch_press, "10000", "25000","",2,""))
+        budget.add(Budget(R.drawable.type1, R.drawable.rangelow, "10000", "15000","",0,"",1))
+        budget.add(Budget(R.drawable.type2, R.drawable.rangemiddle, "10000", "20000","",1,"",1))
+        budget.add(Budget(R.drawable.type3, R.drawable.rangehigh, "10000", "25000","",2,"",1))
         viewModel.budgetType.value = budget
     }
 
     private fun unEditBudget() {
-        budgetUnselect.add(Budget(R.drawable.hen, R.drawable.tag_lottery_press, "10000", "15000","",0,""))
-        budgetUnselect.add(Budget(R.drawable.hen, R.drawable.tag_breakfast_press, "10000", "20000","",1,""))
-        budgetUnselect.add(Budget(R.drawable.hen, R.drawable.tag_lunch, "10000", "25000","",2,""))
+        budgetUnselect.add(Budget(R.drawable.type1un, R.drawable.rangelow_un, "10000", "15000","",0,"",1))
+        budgetUnselect.add(Budget(R.drawable.type2un, R.drawable.rangemiddle_un, "10000", "20000","",1,"",1))
+        budgetUnselect.add(Budget(R.drawable.type3un, com.snc.farmaccount.R.drawable.ranghigh_un, "10000", "25000","",2,"",1))
     }
+
+    fun numberPicker() {
+        if (mainViewModel.pickdate.value == mainViewModel.maxDay.value) {
+            binding.numberTitle.text = "每個月最後一天結算"
+        } else {
+            binding.numberTitle.text = "每個月第 ${mainViewModel.pickdate.value} 天結算"
+        }
+        var dialog = Dialog(this.requireContext())
+        var bindingCheck = DialogNumberpickBinding.inflate(layoutInflater)
+        dialog.setContentView(bindingCheck.root)
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        binding.numberTitle.setOnClickListener {
+            dialog.show()
+        }
+        mainViewModel.maxDay.observe(this, Observer { maxDay->
+            bindingCheck.numberPicker.maxValue = maxDay
+            Log.d("Sophie_today", "$maxDay")
+            bindingCheck.numberPicker.setOnValueChangedListener {
+                    _, _, newVal ->
+                bindingCheck.save.setOnClickListener {
+                    mainViewModel.pickdate.value = newVal
+                    mainViewModel.postCircleDay()
+                    getViewModel.getCircle()
+                    if (newVal == maxDay) {
+                        binding.numberTitle.text = "每個月最後一天結算"
+                    } else {
+                        binding.numberTitle.text = "每個月第 ${mainViewModel.pickdate.value} 天結算"
+                    }
+                    dialog.dismiss()
+                    Log.d("Sophie", "$newVal")
+                }
+
+            }
+        })
+        bindingCheck.cancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+    }
+//    fun showSoftKeyboard(view: View) {
+//        if (view.requestFocus()) {
+//            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//            imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+//        }
+//    }
 
 
 }

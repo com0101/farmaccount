@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Farmaccount</string>
+    <string name="app_name">Farm Account</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="budget_number">1,8000</string>
@@ -7,21 +7,26 @@
     <string name="hint_description">描述</string>
     <string name="price_tool_text">-$80</string>
     <string name="check_content_tool">XXXXXXXXXXXXXXXXXXXXXXXXXX</string>
-    <string name="GOOGLE_LOG_IN">GOOGLE 登入</string>
+    <string name="GOOGLE_LOG_IN">登入</string>
     <string name="logo">FARM account</string>
     <string name="loading">LOADING......</string>
+    <string name="overage_cycle">每個月第 1 天結算</string>
+
 
     //title
     <string name="expand_title">支出金額</string>
     <string name="budget_range_title">預算金額</string>
     <string name="title_price">金額</string>
     <string name="title_date">日期</string>
-    <string name="budget_edit_title">修改預算</string>
-    <string name="farm_edit_title">農場更換</string>
+    <string name="edit">修改</string>
+    <string name="save">儲存</string>
+    <string name="delete">刪除</string>
     <string name="detail_page_title">費用明細</string>
     <string name="budget_page_title">預算編制</string>
     <string name="qrcode_page_title">發票掃描</string>
     <string name="statistic_page_title">明細統計</string>
+    <string name="circle_title">預算週期</string>
+    <string name="budget_edit_title">預算修改</string>
 
 
     //tag
@@ -31,7 +36,7 @@
     <string name="tag_payment">薪水</string>
     <string name="tag_dessert">點心</string>
     <string name="tag_cloth">衣服</string>
-    <string name="tag_live">住</string>
+    <string name="tag_live">生活</string>
     <string name="tag_traffic">交通</string>
     <string name="tag_fun">娛樂</string>
     <string name="tag_lottery">中獎</string>
@@ -44,6 +49,7 @@
     <string name="sure_btn">OK</string>
     <string name="statistic_tag">總覽</string>
     <string name="no_spend">尚無此類別的花費及收入</string>
+    <string name="no_event">尚無新增帳目</string>
     <string name="scan_hint">請對準左邊條碼</string>
 
 

@@ -10,22 +10,32 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".qrcode.QrCodeFragment">
+            tools:context=".qrcode.QrCodeFragment" android:background="@color/egg_yellow">
 
         <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="70dp"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/toolbar"
+                android:id="@+id/toolbar"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        <ImageView
+                android:layout_width="26dp"
+                android:layout_height="29dp"
                 android:id="@+id/image_back_state"
-                android:rotation="@dimen/arrow_rotate_180"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="25dp"
                 android:layout_marginStart="25dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@android:drawable/ic_media_play"
+                app:srcCompat="@drawable/back"
                 app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
                 android:id="@+id/text_statistic"
                 android:text="@string/qrcode_page_title"
+                android:fontFamily="@font/gen_normal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -37,7 +47,8 @@
                 app:layout_constraintStart_toEndOf="@+id/image_back_state"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/image_back_state"
-                app:layout_constraintBottom_toBottomOf="@+id/image_back_state"/>
+                app:layout_constraintBottom_toBottomOf="@+id/image_back_state" android:textColor="@color/white"
+                android:textStyle="bold"/>
 
         <com.budiyev.android.codescanner.CodeScannerView
                 android:id="@+id/surfaceView"
@@ -45,10 +56,10 @@
                 android:layout_height="368dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="40dp"
-                app:layout_constraintTop_toBottomOf="@+id/text_statistic"/>
+                app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
         <TextView
                 android:text="@string/scan_hint"
+                android:fontFamily="@font/gen_normal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/scan_text"
@@ -56,8 +67,21 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="32dp"
-                app:layout_constraintTop_toBottomOf="@+id/surfaceView" android:textSize="18sp"/>
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/surfaceView"
+                android:textSize="18sp" android:textColor="@color/google_text" android:textStyle="bold"/>
+
+        <ImageView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:srcCompat="@drawable/event_background"
+                android:id="@+id/background"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/scan_text"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -5,14 +5,13 @@
 
     <data>
         <variable name="viewModel" type="com.snc.farmaccount.home.DayViewModel"/>
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/event"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="@drawable/event_background"
             tools:context=".home.DayCalendarFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,33 +25,53 @@
             <TextView
                     android:id="@+id/text_date"
                     android:text="@string/date"
+                    android:fontFamily="@font/gen_normal"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
+                    android:textSize="22sp"
                     android:gravity="center"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginTop="8dp"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="12dp" android:textColor="@color/egg_yellow"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="0dp"
-                android:layout_height="150dp"
+                android:layout_height="0dp"
                 android:id="@+id/event_list"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 tools:listitem="@layout/item_add_event"
-                tools:itemCount="3"
+                tools:itemCount="7"
                 app:listEvent="@{viewModel.event}"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintTop_toBottomOf="@+id/date"
-                app:layout_constraintBottom_toBottomOf="parent">
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintVertical_bias="0.0">
         </androidx.recyclerview.widget.RecyclerView>
-
-
+        <TextView
+                android:text="@string/no_event"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:id="@+id/spend_hint"
+                android:layout_marginEnd="8dp"
+                android:textStyle="bold"
+                android:textColor="@color/wood"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/date"
+                android:textSize="20sp"
+                android:visibility="invisible"
+                app:layout_constraintHorizontal_bias="0.496"
+                android:fontFamily="@font/gen_normal"
+                app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="32dp"
+                android:gravity="center"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </layout>

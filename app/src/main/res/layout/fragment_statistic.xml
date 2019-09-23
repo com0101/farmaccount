@@ -14,19 +14,29 @@
 
 
         <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/toolbar"
+                android:id="@+id/toolbar"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/tag_list"/>
+        <ImageView
+                android:layout_width="26dp"
+                android:layout_height="29dp"
                 android:id="@+id/image_back_state"
-                android:rotation="@dimen/arrow_rotate_180"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="25dp"
                 android:layout_marginStart="25dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@android:drawable/ic_media_play"
+                app:srcCompat="@drawable/back"
                 app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
                 android:id="@+id/text_statistic"
                 android:text="@string/statistic_page_title"
+                android:fontFamily="@font/gen_normal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -38,22 +48,21 @@
                 app:layout_constraintStart_toEndOf="@+id/image_back_state"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/image_back_state"
-                app:layout_constraintBottom_toBottomOf="@+id/image_back_state"/>
+                app:layout_constraintBottom_toBottomOf="@+id/image_back_state" android:textColor="@color/white"
+                android:textStyle="bold"/>
 
         <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:orientation="horizontal"
                 tools:listitem="@layout/item_statistic_tag"
                 tools:itemCount="7"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintTop_toBottomOf="@+id/text_statistic"
-                android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:id="@+id/tag_list"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="16dp">
+                android:layout_marginStart="16dp" android:layout_marginTop="2dp">
         </androidx.recyclerview.widget.RecyclerView>
 
         <com.google.android.material.appbar.AppBarLayout
@@ -63,9 +72,9 @@
                 app:layout_constraintStart_toStartOf="parent"
                 android:id="@+id/appBarLayout"
                 app:layout_constraintHorizontal_bias="1.0"
-                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tag_list"
-                app:layout_constraintBottom_toBottomOf="parent">
+        >
 
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -75,38 +84,35 @@
                 <androidx.viewpager.widget.ViewPager
                         android:id="@+id/dayViewpager"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="0dp"
                         android:layout_weight="0.8"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/image_farm">
+                        app:layout_constraintHorizontal_bias="0.0">
                 </androidx.viewpager.widget.ViewPager>
                 <ImageView
                         android:id="@+id/image_arrow_left"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:rotation="@dimen/arrow_rotate_180"
+                        android:layout_width="26dp"
+                        android:layout_height="29dp"
                         android:layout_marginStart="25dp"
                         android:layout_weight="0.2"
-                        app:srcCompat="@android:drawable/ic_media_play"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginTop="218dp"/>
+                        android:layout_marginTop="260dp" android:background="@drawable/arrow"/>
                 <ImageView
                         android:id="@+id/image_arrow_right"
-                        android:layout_width="33dp"
-                        android:layout_height="33dp"
-                        android:layout_marginEnd="25dp"
+                        android:layout_width="26dp"
+                        android:layout_height="29dp"
+                        android:layout_marginEnd="27dp"
                         android:layout_weight="0.2"
-                        app:srcCompat="@android:drawable/ic_media_play"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginTop="218dp"/>
+                        android:layout_marginTop="260dp" android:background="@drawable/arrow"
+                        android:rotation="@dimen/arrow_rotate_180"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.appbar.AppBarLayout>
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

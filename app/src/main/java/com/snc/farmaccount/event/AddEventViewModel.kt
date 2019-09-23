@@ -1,19 +1,14 @@
 package com.snc.farmaccount.event
 
 
-import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
-import com.snc.farmaccount.`object`.Event
+import com.simplemobiletools.commons.extensions.toInt
 import com.snc.farmaccount.`object`.Tag
-import com.snc.farmaccount.helper.Format
 import com.snc.farmaccount.helper.UserManager
-import org.joda.time.DateTime
-import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -34,7 +29,16 @@ class AddEventViewModel : ViewModel() {
     var getPrice = MutableLiveData<String>()
     var idCheck = MutableLiveData<String>()
     var monthFormat = MutableLiveData<String>()
+    var getMonth = MutableLiveData<String>()
     var overagePrice = MutableLiveData<String>()
+    var time = MutableLiveData<String>()
+    var getTime = MutableLiveData<String>()
+    var circleDay = MutableLiveData<Int>()
+    var startTime = 0
+    var endTime = 0
+    var lastTime = 0
+    var futureTime = 0
+    var price = 0
 
     private val _tag = MutableLiveData<List<Tag>>()
     val tag: LiveData<List<Tag>>
@@ -44,6 +48,7 @@ class AddEventViewModel : ViewModel() {
         week()
         getOverage()
         Log.i("Sophie_today","${today.value}")
+
     }
 
     fun getTag() {
@@ -52,13 +57,14 @@ class AddEventViewModel : ViewModel() {
 
     fun addFirebase() {
         val db = FirebaseFirestore.getInstance()
-
+        var timeStamp = System.currentTimeMillis()
         // Create a new user with a first and last name
         val event = HashMap<String,Any>()
         event["price"] = priceInput.value!!
         event["tag"] = chooseTag.value!!.tag_name
         event["description"] = infoInput.value!!
         event["date"] = today.value!!
+        event["time"] = time.value!!.toLong()
         event["status"] = chooseTag.value!!.tag_status
         event["month"] = monthFormat.value.toString()
         event["catalog"] = chooseTag.value!!.tag_catalog
@@ -66,26 +72,73 @@ class AddEventViewModel : ViewModel() {
         idCheck.value = UserManager.userToken!!.substring(0,20)
         // Add a new document with a generated ID
         db.collection("User").document("${UserManager.userToken}").collection("Event")
-            .add(event)
+            .document("$timeStamp")
+            .set(event)
             .addOnSuccessListener { documentReference ->
                 Log.d(
                     "Sophie_add",
-                    "DocumentSnapshot added with ID: " + documentReference.id
+                    "DocumentSnapshot added with ID: $documentReference"
                 )
-                var price = priceInput.value!!.toInt()
-                var overageInt = overagePrice.value?.toInt()
-                if (chooseTag.value?.tag_status == true) {
-                    overagePrice.value = (overageInt?.plus(price)).toString()
-                } else {
-                    overagePrice.value = (overageInt?.minus(price)).toString()
-                }
+
                 db.collection("User").document("${UserManager.userToken}").collection("Budget")
                     .document("${UserManager.userToken}")
-                    .update("overage","${overagePrice.value}")
-                    .addOnSuccessListener { Log.d("Sophie_budget_edit", "DocumentSnapshot successfully written!") }
-                    .addOnFailureListener { e -> Log.w("Sophie_budget_edit", "Error writing document", e) }
+                    .get()
+                    .addOnSuccessListener {document ->
+                        if (document != null) {
+                            circleDay.value = document.data?.get("circleDay")!!.toInt()
+                            val thisMonth = Date(year-1900, month, circleDay.value!!.minus(1))
+                            val nextMonth = Date(year-1900, month+1, circleDay.value!!)
+                            val lastMonth = Date(year-1900, month-1,circleDay.value!!.minus(1))
+                            val futureDay = Date(year-1900, month, circleDay.value!!)
+                            val timeformat = SimpleDateFormat("yyyyMMdd")
+                            startTime = timeformat.format(thisMonth).toInt()
+                            endTime = timeformat.format(nextMonth).toInt()
+                            lastTime = timeformat.format(lastMonth).toInt()
+                            futureTime = timeformat.format(futureDay).toInt()
+                            Log.d("Sophie_budget_time",
+                                "$startTime + $endTime + $lastTime + $futureTime +${time.value}")
+                        }
+
+                        if (time.value!!.toInt() in (lastTime + 1) until futureTime) {
+                            price = priceInput.value!!.toInt()
+                            updateOverage()
+                            Log.d("Sophie_budget_over",
+                                "in!")
+
+                        } else if (time.value!!.toInt() in (startTime + 1) until endTime) {
+                            price = priceInput.value!!.toInt()
+                            updateOverage()
+                            Log.d("Sophie_budget_over",
+                                "inagain!")
+                        } else {
+                            price = 0
+                            updateOverage()
+                        }
+
+                    }
             }
             .addOnFailureListener { e -> Log.w("Sophie_add_fail", "Error adding document", e) }
+
+    }
+
+    private fun updateOverage() {
+        val db = FirebaseFirestore.getInstance()
+        var overageInt = overagePrice.value?.toInt()
+        if (chooseTag.value?.tag_status == true) {
+            overagePrice.value = (overageInt?.plus(price)).toString()
+        } else {
+            overagePrice.value = (overageInt?.minus(price)).toString()
+        }
+        db.collection("User").document("${UserManager.userToken}").collection("Budget")
+            .document("${UserManager.userToken}")
+            .update("overage", "${overagePrice.value}")
+            .addOnSuccessListener {
+                Log.d(
+                    "Sophie_budget_edit",
+                    "DocumentSnapshot successfully written!"
+                )
+            }
+            .addOnFailureListener { e -> Log.w("Sophie_budget_edit", "Error writing document", e) }
 
     }
 
@@ -135,8 +188,10 @@ class AddEventViewModel : ViewModel() {
         val getDate = Date(year-1900, month, day)
         val simpledateformat = SimpleDateFormat("yyyy.MM.dd (EEEE)")
         val monthformat = SimpleDateFormat("MM")
+        val dateformat = SimpleDateFormat("yyyyMMdd")
         monthFormat.value = monthformat.format(getDate)
         today.value = simpledateformat.format(getDate)
+        time.value = dateformat.format(getDate)
         Log.i("Sophie_date_mode", "${monthFormat.value}")
 
     }

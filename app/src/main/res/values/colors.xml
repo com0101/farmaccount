@@ -6,11 +6,35 @@
 
     //radius bar
     <color name="gray_green">#97C197</color>
+    <color name="yellow">#FF6E41</color>
+    <color name="yellow_2">#FFA524</color>
+    <color name="yellow_3">#FFC82C</color>
+    <color name="yellow_4">#FFEA67</color>
+    <color name="green">#F1FF60</color>
+    <color name="green_2">#B1FD5D</color>
     <color name="white">#FFFFFF</color>
     <color name="gray">#DDDDDD</color>
     <color name="logo_gray">#949494</color>
     <color name="light_gray">#B9B9B9</color>
+    <color name="deep_gray">#A8A8A8</color>
+
+
+    //text
+    <color name="dark_red">#D36B5A</color>
+    <color name="dark_green">#82B763</color>
+    <color name="bar_green">#A2E979</color>
+    <color name="bar_red">#EF7A68</color>
+    <color name="egg_yellow">#FDFFC7</color>
+    <color name="expend_title">#B28E4D</color>
+    <color name="money_bar">#FFF7A9</color>
+    <color name="money_text">#D5C000</color>
+    <color name="google_text">#A36400</color>
+    <color name="wood">#856633</color>
+
+
 
     <color name="translate_40">#66000000</color>
     <color name="translate_100">#00000000</color>
+
+
 </resources>

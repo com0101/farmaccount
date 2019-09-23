@@ -3,6 +3,7 @@ package com.snc.farmaccount.choose
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.Budget
 import com.snc.farmaccount.databinding.ItemFarmTypeBinding
 

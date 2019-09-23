@@ -58,13 +58,6 @@
     <action android:id="@+id/action_global_statisticFragment"
             app:destination="@id/statisticFragment" app:popUpToInclusive="true"/>
 
-    <dialog android:id="@+id/checkDialog"
-            android:name="com.snc.farmaccount.dialog.CheckDialog"
-            android:label="CheckDialog"
-            tools:layout="@layout/dialog_check"/>
-    <action android:id="@+id/action_global_checkDialog"
-            app:destination="@id/checkDialog"/>
-
     <dialog android:id="@+id/amountInputDialog"
             android:name="com.snc.farmaccount.dialog.AmountInputDialog"
             android:label="AmountInputDialog"

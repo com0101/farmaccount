@@ -1,6 +1,7 @@
 package com.snc.farmaccount.event
 
 
+import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -13,16 +14,15 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-
 import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.Tag
+import com.snc.farmaccount.databinding.DialogCheckBinding
 import com.snc.farmaccount.databinding.FragmentAddEventBinding
-import com.snc.farmaccount.detail.DetailFactory
-import com.snc.farmaccount.detail.DetailFragmentArgs
-import com.snc.farmaccount.detail.DetailViewModel
-import com.snc.farmaccount.home.DayViewModel
 import com.snc.farmaccount.qrcode.QrCodeFragment
-import com.snc.farmaccount.qrcode.QrCodeFragmentDirections
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class AddEventFragment : Fragment() {
 
@@ -60,6 +60,22 @@ class AddEventFragment : Fragment() {
             }
         })
 
+        QRviewModel.getMonth.observe(viewLifecycleOwner, Observer {
+            Log.i("Sophie_qr","$it")
+            if (QRviewModel.getMonth.value != null) {
+                viewModel.monthFormat.value = it
+                QRviewModel.getMonth.value = null
+            }
+        })
+
+        QRviewModel.getTime.observe(viewLifecycleOwner, Observer {
+            Log.i("Sophie_qr","$it")
+            if (QRviewModel.getTime.value != null) {
+                viewModel.time.value = it
+                QRviewModel.getTime.value = null
+            }
+        })
+
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
@@ -69,9 +85,21 @@ class AddEventFragment : Fragment() {
         })
 
         binding.imageSave.setOnClickListener {
-            findNavController()
-                .navigate(AddEventFragmentDirections.actionGlobalHomeFragment())
+            var dialog = Dialog(this.requireContext())
+            var bindingCheck = DialogCheckBinding.inflate(layoutInflater)
+            dialog.setContentView(bindingCheck.root)
             viewModel.addFirebase()
+            dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+            GlobalScope.launch(context = Dispatchers.Main) {
+                bindingCheck.checkContent.text = "新增完成!"
+                bindingCheck.imageCancel.visibility = View.GONE
+                bindingCheck.imageSave.visibility = View.GONE
+                dialog.show()
+                delay(1500)
+                dialog.dismiss()
+                findNavController()
+                    .navigate(EditEventFragmentDirections.actionGlobalHomeFragment())
+            }
         }
 
         binding.imageBackState.setOnClickListener {
@@ -105,25 +133,25 @@ class AddEventFragment : Fragment() {
     }
 
     private fun tagList() {
-        tag.add(Tag(R.drawable.tag_breakfast,R.drawable.tag_breakfast_press,
+        tag.add(Tag(R.drawable.tag_egg_press,R.drawable.tag_egg,
             getString(R.string.tag_breakfast),false, getString(R.string.catalog_eat)))
-        tag.add(Tag(R.drawable.tag_lunch,R.drawable.tag_lunch_press,
-           getString(R.string.tag_lunch),false, getString(R.string.catalog_eat)))
-        tag.add(Tag(R.drawable.tag_dinner,R.drawable.tag_dinner_press,
+        tag.add(Tag(R.drawable.tag_pig_press,R.drawable.tag_pig,
+            getString(R.string.tag_lunch),false, getString(R.string.catalog_eat)))
+        tag.add(Tag(R.drawable.tag_cow_press,R.drawable.tag_cow,
             getString(R.string.tag_dinner),false, getString(R.string.catalog_eat)))
-        tag.add(Tag(R.drawable.tag_dessert,R.drawable.tag_dessert_press,
+        tag.add(Tag(R.drawable.tag_ginger_press,R.drawable.tag_ginger,
             getString(R.string.tag_dessert),false, getString(R.string.catalog_eat)))
-        tag.add(Tag(R.drawable.tag_payment,R.drawable.tag_payment_press,
+        tag.add(Tag(R.drawable.tag_money_press,R.drawable.tag_money,
             getString(R.string.tag_payment),true, getString(R.string.catalog_income)))
-        tag.add(Tag(R.drawable.tag_cloth,R.drawable.tag_cloth_press,
+        tag.add(Tag(R.drawable.tag_cloth_press,R.drawable.tag_cloth,
             getString(R.string.tag_cloth),false, getString(R.string.catalog_cloth)))
-        tag.add(Tag(R.drawable.tag_live,R.drawable.tag_live_press,
+        tag.add(Tag(R.drawable.tag_live_press,R.drawable.tag_live,
             getString(R.string.tag_live),false, getString(R.string.catalog_live)))
-        tag.add(Tag(R.drawable.tag_traffic,R.drawable.tag_traffic_press,
+        tag.add(Tag(R.drawable.tag_traffic_press,R.drawable.tag_traffic,
             getString(R.string.tag_traffic),false, getString(R.string.catalog_traffic)))
-        tag.add(Tag(R.drawable.tag_fun,R.drawable.tag_fun_press,
+        tag.add(Tag(R.drawable.tag_fun_press,R.drawable.tag_fun,
             getString(R.string.tag_fun),false, getString(R.string.catalog_fun)))
-        tag.add(Tag(R.drawable.tag_lottery,R.drawable.tag_lottery_press,
+        tag.add(Tag(R.drawable.tag_ticket_press,R.drawable.tag_ticket,
             getString(R.string.tag_lottery),true, getString(R.string.catalog_income)))
     }
 
