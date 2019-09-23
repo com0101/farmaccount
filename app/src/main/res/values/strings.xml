@@ -49,6 +49,7 @@
     <string name="sure_btn">OK</string>
     <string name="statistic_tag">總覽</string>
     <string name="no_spend">尚無此類別的花費及收入</string>
+    <string name="no_event">尚無新增帳目</string>
     <string name="scan_hint">請對準左邊條碼</string>
 
 

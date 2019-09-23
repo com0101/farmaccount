@@ -99,7 +99,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/date"
                 android:layout_marginTop="144dp"
                 android:textSize="20sp"
-                android:visibility="invisible" app:layout_constraintHorizontal_bias="0.496"
+                android:visibility="invisible"
+                app:layout_constraintHorizontal_bias="0.496"
                 android:fontFamily="@font/gen_normal"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,13 +1,18 @@
 package com.snc.farmaccount.statistic
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.snc.farmaccount.ApplicationContext
+import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.StatisticCatalog
 import com.snc.farmaccount.databinding.ItemStatisticTagBinding
 
 class StatisticTagAdapter(private val budget: ArrayList<StatisticCatalog>, var onClickListener: OnClickListener)
     : RecyclerView.Adapter<StatisticTagAdapter.TagViewHolder>() {
+
+    var selectedPosition = -1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TagViewHolder {
         return TagViewHolder( ItemStatisticTagBinding
@@ -17,10 +22,11 @@ class StatisticTagAdapter(private val budget: ArrayList<StatisticCatalog>, var o
     override fun onBindViewHolder(holder: TagViewHolder, position: Int) {
         var catalog: StatisticCatalog = budget[position]
         holder.itemView.setOnClickListener {
+            selectedPosition = position
             onClickListener.onClick(catalog)
             notifyDataSetChanged()
         }
-        holder.bind(catalog)
+        holder.bind(catalog,selectedPosition)
     }
 
     override fun getItemCount() = budget.size
@@ -28,9 +34,16 @@ class StatisticTagAdapter(private val budget: ArrayList<StatisticCatalog>, var o
     class TagViewHolder(private var binding: ItemStatisticTagBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(catalog: StatisticCatalog ) {
+        fun bind(catalog: StatisticCatalog, selectedPosition:Int) {
             binding.tag = catalog
             binding.statisticCatalog.text = catalog.name
+            if (selectedPosition==adapterPosition) {
+                binding.statisticCatalog.setTextColor(ApplicationContext.applicationContext().getColor(R.color.wood))
+                binding.imageCatalog.setImageResource(R.drawable.datepicker_border)
+            } else {
+                binding.statisticCatalog.setTextColor(ApplicationContext.applicationContext().getColor(R.color.expend_title))
+                binding.imageCatalog.setImageResource(R.drawable.tag_border)
+            }
             binding.executePendingBindings()
         }
 
