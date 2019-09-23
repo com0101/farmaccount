@@ -116,15 +116,13 @@ class HomeFragment : Fragment() {
 
         viewModel.postPrice.observe(this, androidx.lifecycle.Observer {
             Log.i("Sophie_farm", "$it")
-
-
             viewModel.farmStatus.observe(this, androidx.lifecycle.Observer { status ->
                 if (status == 0) {
                     when {
                         it > 1000 -> binding.imageFarm.setBackgroundResource(R.drawable.simple1)
                         it < 0 -> {
                             binding.imageFarm.setBackgroundResource(R.drawable.simple3)
-                            showWarnig()
+                            showWarning()
                         }
                         else -> binding.imageFarm.setBackgroundResource(R.drawable.simple2)
                     }
@@ -134,7 +132,7 @@ class HomeFragment : Fragment() {
                         it > 1000 -> binding.imageFarm.setBackgroundResource(R.drawable.middle)
                         it < 0 -> {
                             binding.imageFarm.setBackgroundResource(R.drawable.middle3)
-                            showWarnig()
+                            showWarning()
                         }
                         else -> binding.imageFarm.setBackgroundResource(R.drawable.middle2)
                     }
@@ -144,7 +142,7 @@ class HomeFragment : Fragment() {
                         it > 1000 -> binding.imageFarm.setBackgroundResource(R.drawable.rich)
                         it < 0 -> {
                             binding.imageFarm.setBackgroundResource(R.drawable.rich3)
-                            showWarnig()
+                            showWarning()
                         }
                         else -> binding.imageFarm.setBackgroundResource(R.drawable.rich2)
                     }
@@ -156,7 +154,7 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-    fun showWarnig() {
+    private fun showWarning() {
         var dialog = Dialog(this.requireContext())
         var bindingCheck = DialogCheckBinding.inflate(layoutInflater)
         dialog.setContentView(bindingCheck.root)

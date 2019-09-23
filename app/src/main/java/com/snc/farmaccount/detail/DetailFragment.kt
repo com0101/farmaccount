@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -112,6 +113,15 @@ class DetailFragment : Fragment() {
                 binding.tagImage.setImageResource(R.drawable.tag_ticket)
             }
         })
+
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // 做你要的事，這邊是跳轉首頁
+                findNavController().
+                    navigate(R.id.action_global_homeFragment)
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
 
         // Inflate the layout for this fragment
         return binding.root

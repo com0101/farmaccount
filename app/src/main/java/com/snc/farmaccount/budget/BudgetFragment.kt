@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -162,6 +163,15 @@ class BudgetFragment : Fragment() {
             binding.unSelectFarmList.visibility = View.GONE
 
         }
+
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // 做你要的事，這邊是跳轉首頁
+                findNavController().
+                    navigate(R.id.action_global_homeFragment)
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
         return binding.root
     }
 

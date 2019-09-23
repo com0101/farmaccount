@@ -62,9 +62,6 @@ class QrCodeFragment : Fragment() {
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
 
-//        if (ContextCompat.checkSelfPermission(ApplicationContext.applicationContext(),Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(this.requireActivity(), arrayOf(Manifest.permission.CAMERA), 50)
-//        }
         // Inflate the layout for this fragment
         return binding.root
     }

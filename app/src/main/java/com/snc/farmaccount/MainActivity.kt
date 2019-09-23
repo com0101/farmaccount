@@ -1,31 +1,20 @@
 package com.snc.farmaccount
 
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
-import com.google.android.gms.auth.api.signin.*
-import com.google.firebase.auth.FirebaseAuth
 import com.snc.farmaccount.databinding.ActivityMainBinding
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.os.Build
-import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.ImageView
-import android.widget.Toast
-import androidx.appcompat.widget.Toolbar
+import android.widget.Button
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.findNavController
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
-import com.snc.farmaccount.databinding.FragmentLogInBinding
+import com.crashlytics.android.Crashlytics
+import io.fabric.sdk.android.Fabric
 
 
 class MainActivity : AppCompatActivity(){
@@ -63,6 +52,19 @@ class MainActivity : AppCompatActivity(){
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         viewModel.getCircle()
+//        Fabric.with(this, Crashlytics())
+//        val crashButton = Button(this)
+//        crashButton.text = "Crash!"
+//        crashButton.setOnClickListener {
+//            Crashlytics.getInstance().crash() // Force a crash
+//        }
+//
+//        addContentView(crashButton, ViewGroup.LayoutParams(
+//            ViewGroup.LayoutParams.MATCH_PARENT,
+//            ViewGroup.LayoutParams.WRAP_CONTENT))
+
+
+
 
     }
 
