@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 
@@ -49,9 +50,9 @@ class EditEventFragment : Fragment() {
                 .navigate(AddEventFragmentDirections.actionGlobalHomeFragment())
         }
 
-        binding.tagList.adapter = TagAdapter(TagAdapter.OnClickListener {
+        binding.tagList.adapter = TagEditAdapter(TagEditAdapter.OnClickListener {
             viewModel.chooseTag.value = it
-        })
+        },viewModel)
 
         binding.imageSave.setOnClickListener {
             var dialog = Dialog(this.requireContext())
@@ -72,6 +73,8 @@ class EditEventFragment : Fragment() {
             }
         }
 
+
+
         tagList()
         viewModel.mark.value = tag
         viewModel.getTag()
@@ -80,25 +83,25 @@ class EditEventFragment : Fragment() {
     }
 
     private fun tagList() {
-        tag.add(Tag(R.drawable.tag_egg,R.drawable.tag_egg_press,
+        tag.add(Tag(R.drawable.tag_egg_press,R.drawable.tag_egg,
             getString(R.string.tag_breakfast),false, getString(R.string.catalog_eat)))
-        tag.add(Tag(R.drawable.tag_pig,R.drawable.tag_pig_press,
+        tag.add(Tag(R.drawable.tag_pig_press,R.drawable.tag_pig,
             getString(R.string.tag_lunch),false, getString(R.string.catalog_eat)))
-        tag.add(Tag(R.drawable.tag_cow,R.drawable.tag_cow_press,
+        tag.add(Tag(R.drawable.tag_cow_press,R.drawable.tag_cow,
             getString(R.string.tag_dinner),false, getString(R.string.catalog_eat)))
-        tag.add(Tag(R.drawable.tag_ginger,R.drawable.tag_ginger_press,
+        tag.add(Tag(R.drawable.tag_ginger_press,R.drawable.tag_ginger,
             getString(R.string.tag_dessert),false, getString(R.string.catalog_eat)))
-        tag.add(Tag(R.drawable.tag_money,R.drawable.tag_money_press,
+        tag.add(Tag(R.drawable.tag_money_press,R.drawable.tag_money,
             getString(R.string.tag_payment),true, getString(R.string.catalog_income)))
-        tag.add(Tag(R.drawable.tag_cloth,R.drawable.tag_cloth_press,
+        tag.add(Tag(R.drawable.tag_cloth_press,R.drawable.tag_cloth,
             getString(R.string.tag_cloth),false, getString(R.string.catalog_cloth)))
-        tag.add(Tag(R.drawable.tag_live,R.drawable.tag_live_press,
+        tag.add(Tag(R.drawable.tag_live_press,R.drawable.tag_live,
             getString(R.string.tag_live),false, getString(R.string.catalog_live)))
-        tag.add(Tag(R.drawable.tag_traffic,R.drawable.tag_traffic_press,
+        tag.add(Tag(R.drawable.tag_traffic_press,R.drawable.tag_traffic,
             getString(R.string.tag_traffic),false, getString(R.string.catalog_traffic)))
-        tag.add(Tag(R.drawable.tag_fun,R.drawable.tag_fun_press,
+        tag.add(Tag(R.drawable.tag_fun_press,R.drawable.tag_fun,
             getString(R.string.tag_fun),false, getString(R.string.catalog_fun)))
-        tag.add(Tag(R.drawable.tag_ticket,R.drawable.tag_ticket_press,
+        tag.add(Tag(R.drawable.tag_ticket_press,R.drawable.tag_ticket,
             getString(R.string.tag_lottery),true, getString(R.string.catalog_income)))
     }
 

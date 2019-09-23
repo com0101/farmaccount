@@ -60,7 +60,8 @@
                 app:layout_constraintStart_toEndOf="@+id/image_back_state"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/image_back_state"
-                app:layout_constraintBottom_toBottomOf="@+id/image_back_state" android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/image_back_state"
+                android:textColor="@color/white"
                 android:textStyle="bold"/>
 
         <TextView
@@ -70,11 +71,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="58dp"
-                android:layout_marginTop="25dp"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_budget_edit" android:textColor="@color/expend_title"
-                android:textStyle="bold"/>
+                android:textColor="@color/expend_title"
+                android:textStyle="bold" android:layout_marginTop="24dp"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
 
         <EditText
                 android:id="@+id/edit_expand"
@@ -82,16 +83,18 @@
                 android:fontFamily="@font/gen_normal"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
-                android:inputType="textPersonName"
+                android:inputType="number"
                 android:ems="10"
-                android:paddingStart="16sp"
-                android:layout_marginTop="9dp"
-                android:layout_marginStart="55dp"
-                android:layout_marginEnd="55dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="53dp"
+                android:layout_marginEnd="53dp"
                 android:background="@drawable/radius_border"
                 app:layout_constraintTop_toBottomOf="@+id/text_expend_title"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" android:textColor="@color/expend_title"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textColor="@color/expend_title"/>
 
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/tag_list"
@@ -100,7 +103,7 @@
                 tools:listitem="@layout/item_event_tag"
                 tools:itemCount="2"
                 app:spanCount="5"
-                app:listTag="@{viewModel.tag}"
+                app:listEditTag="@{viewModel.tag}"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:layout_constraintStart_toStartOf="@+id/edit_expand"
                 app:layout_constraintEnd_toEndOf="@+id/edit_expand"
@@ -121,19 +124,20 @@
                 android:hint="@string/hint_description"
                 android:paddingStart="16dp"
                 android:paddingTop="16dp"
+                android:paddingEnd="16dp"
                 android:gravity="top"
                 app:layout_constraintStart_toStartOf="@+id/edit_expand"
                 app:layout_constraintEnd_toEndOf="@+id/edit_expand"
                 app:layout_constraintHorizontal_bias="1.0"
-                android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@+id/tag_list" android:textColor="@color/expend_title"/>
+                app:layout_constraintTop_toBottomOf="@+id/tag_list"
+                android:textColor="@color/expend_title"/>
 
         <ImageView
                 android:id="@+id/image_save"
                 android:layout_width="102dp"
                 android:layout_height="41dp"
                 app:srcCompat="@drawable/save"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="16dp"
                 app:layout_constraintTop_toBottomOf="@+id/edit_description"
                 app:layout_constraintEnd_toEndOf="@+id/edit_description"/>
 

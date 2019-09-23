@@ -1,18 +1,15 @@
 package com.snc.farmaccount.event
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.Tag
 import com.snc.farmaccount.databinding.ItemEventTagBinding
 
-
-class TagAdapter(private var onClickListener: OnClickListener):
-    ListAdapter<Tag, TagAdapter.EventTagViewHolder>(DiffCallback){
+class TagEditAdapter(private var onClickListener: OnClickListener,var viewModel: EditEventViewModel):
+    ListAdapter<Tag, TagEditAdapter.EventTagViewHolder>(DiffCallback){
 
     var selectedPosition = -1
 
@@ -40,17 +37,20 @@ class TagAdapter(private var onClickListener: OnClickListener):
             onClickListener.onClick(event)
             notifyDataSetChanged()
         }
-        holder.bind(event,selectedPosition)
+        holder.bind(event,selectedPosition,viewModel)
     }
 
     class EventTagViewHolder(private var binding: ItemEventTagBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(event : Tag, selectedPosition: Int) {
+        fun bind(event : Tag, selectedPosition: Int, viewModel: EditEventViewModel) {
             binding.tag = event
             binding.textEvent.text = event.tag_name
             binding.eventTag.setImageResource(event.tag_img)
             if (selectedPosition==adapterPosition) {
+                binding.eventTag.setImageResource(event.tag_img_press)
+            }
+            if (viewModel.detail.value?.tag == event.tag_name) {
                 binding.eventTag.setImageResource(event.tag_img_press)
             }
 

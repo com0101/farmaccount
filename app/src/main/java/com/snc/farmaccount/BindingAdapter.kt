@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.snc.farmaccount.`object`.*
 import com.snc.farmaccount.budget.BudgetAdapter
 import com.snc.farmaccount.event.TagAdapter
+import com.snc.farmaccount.event.TagEditAdapter
 import com.snc.farmaccount.home.DayEventAdapter
 import com.snc.farmaccount.statistic.StatisticCatagoryAdapter
 import com.snc.farmaccount.statistic.StatisticEventAdapter
@@ -26,6 +27,15 @@ fun bindTag(recyclerView: RecyclerView, data: List<Tag>?) {
         adapter.submitList(data)
     }
 }
+
+@BindingAdapter("listEditTag")
+fun bindEditTag(recyclerView: RecyclerView, data: List<Tag>?) {
+    val adapter = recyclerView.adapter as TagEditAdapter
+    data?.let {
+        adapter.submitList(data)
+    }
+}
+
 
 @BindingAdapter("listStatistic")
 fun bindStatistic(recyclerView: RecyclerView, data: List<Event>?) {
