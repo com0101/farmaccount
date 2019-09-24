@@ -72,8 +72,8 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
                                     "Sophie_update",
                                     "DocumentSnapshot added with ID: $documentReference"
                                 )
-                                var price = priceInput.value!!.toInt() - detail.value!!.price!!.toInt()
-                                var overageInt = overagePrice.value?.toInt()
+                                var price = priceInput.value!!.toLong() - detail.value!!.price!!.toLong()
+                                var overageInt = overagePrice.value?.toLong()
                                 if (chooseTag.value?.tag_status == true) {
                                     overagePrice.value = (overageInt?.plus(price)).toString()
                                 } else {

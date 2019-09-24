@@ -25,7 +25,7 @@ class DayViewModel: ViewModel() {
     lateinit var firebaseEvent : Event
     var currentDate = MutableLiveData<String>()
     var date = MutableLiveData<String>()
-    var postPrice = MutableLiveData<Int>()
+    var postPrice = MutableLiveData<Long>()
     var overagePrice = MutableLiveData<String>()
     var farmStatus = MutableLiveData<Int>()
     var dataList = ArrayList<Event>()
@@ -78,7 +78,7 @@ class DayViewModel: ViewModel() {
                 if (task.isSuccessful) {
                     for (document in task.result!!) {
                         overagePrice.value = decimalFormat.format(document.data["overage"].toString().toDouble())
-                        postPrice.value = document.data["overage"]?.toInt()
+                        postPrice.value = document.data["overage"].toString().toLong()
                         farmStatus.value = document.data["position"]?.toInt()
                     }
                 }

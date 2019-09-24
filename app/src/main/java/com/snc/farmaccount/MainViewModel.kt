@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
+import com.simplemobiletools.commons.extensions.toBoolean
 import com.simplemobiletools.commons.extensions.toInt
 import com.snc.farmaccount.`object`.Event
 import com.snc.farmaccount.helper.UserManager
@@ -24,11 +25,12 @@ class MainViewModel: ViewModel() {
     var lastTime: Long = 0
     var futureTime: Long = 0
     var overagePrice = MutableLiveData<String>()
-    var totalPrice = MutableLiveData<Int>()
-    var priceList = ArrayList<Int>()
+    var totalPrice = MutableLiveData<Long>()
+    var priceList = ArrayList<Long>()
     var pickdate = MutableLiveData<Int>()
     var maxDay = MutableLiveData<Int>()
-
+    var tagStatus = MutableLiveData<Boolean>()
+    var allPrice = 0L
 
     init {
         pickdate.value = 1
@@ -81,7 +83,16 @@ class MainViewModel: ViewModel() {
                         } else {
                             for (document in documents) {
                                 Log.d("Sophie", "${document.id} => ${document.data}")
-                                priceList.add(document.data["price"]!!.toInt())
+                                tagStatus.value = document.data["status"]?.toBoolean()
+
+                                if (tagStatus.value == false) {
+                                  allPrice = document.data["price"]!!.toString().toLong()
+                                }
+                                if (tagStatus.value == true)  {
+                                  allPrice = 0-document.data["price"]!!.toString().toLong()
+                                }
+                                priceList.add(allPrice)
+                                Log.i("Sophie_minus", "$priceList")
                                 totalPrice.value = priceList.sum()
                                 Log.d("Sophie_list", "${totalPrice.value}")
                             }
@@ -127,10 +138,18 @@ class MainViewModel: ViewModel() {
                     .addOnSuccessListener { documents ->
                         for (document in documents) {
                             Log.d("Sophie", "${document.id} => ${document.data}")
-                            priceList.add(document.data["price"]!!.toInt())
+                            tagStatus.value = document.data["status"]?.toBoolean()
+                                if (tagStatus.value == false) {
+                                    allPrice = document.data["price"]!!.toString().toLong()
+                                }
+                                if (tagStatus.value == true)  {
+                                    allPrice = 0-document.data["price"]!!.toString().toLong()
+                                }
+                            priceList.add(allPrice)
                             if (priceList.isEmpty()) {
                                 totalPrice.value = 0
                             } else {
+                                Log.i("Sophie_minus", "$priceList")
                                 totalPrice.value = priceList.sum()
                             }
                             Log.d("Sophie_list", "${totalPrice.value}")
@@ -170,10 +189,18 @@ class MainViewModel: ViewModel() {
                     .addOnSuccessListener { documents ->
                         for (document in documents) {
                             Log.d("Sophie", "${document.id} => ${document.data}")
-                            priceList.add(document.data["price"]!!.toInt())
+                            tagStatus.value = document.data["status"]?.toBoolean()
+                                if (tagStatus.value == false) {
+                                    allPrice = document.data["price"]!!.toString().toLong()
+                                }
+                                if (tagStatus.value == true)  {
+                                    allPrice = 0-document.data["price"]!!.toString().toLong()
+                                }
+                            priceList.add(allPrice)
                             if (priceList.isEmpty()) {
                                 totalPrice.value = 0
                             } else {
+                                Log.i("Sophie_minus", "$priceList")
                                 totalPrice.value = priceList.sum()
                             }
                             Log.d("Sophie_list", "${totalPrice.value}")

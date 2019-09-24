@@ -48,8 +48,8 @@ class DetailViewModel(product: Event, app: Application) : AndroidViewModel(app) 
                                     "Sophie_update",
                                     "DocumentSnapshot added with ID: $documentReference"
                                 )
-                                var price = detail.value!!.price!!.toInt()
-                                var overageInt = overagePrice.value?.toInt()
+                                var price = detail.value!!.price!!.toLong()
+                                var overageInt = overagePrice.value?.toLong()
                                 if (detail.value!!.status == true) {
                                     overagePrice.value = (overageInt?.minus(price)).toString()
                                 } else {

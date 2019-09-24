@@ -10,7 +10,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:context=".dialog.AmountInputDialog" android:background="@color/egg_yellow">
+            tools:context=".dialog.AmountInputDialog"
+            android:background="@drawable/money_border">
 
         <TextView
                 android:text="@string/budget_range_title"

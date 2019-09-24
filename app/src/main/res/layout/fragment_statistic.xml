@@ -55,6 +55,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:overScrollMode="never"
                 tools:listitem="@layout/item_statistic_tag"
                 tools:itemCount="7"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

@@ -38,7 +38,7 @@ class AddEventViewModel : ViewModel() {
     var endTime = 0
     var lastTime = 0
     var futureTime = 0
-    var price = 0
+    var price = 0L
 
     private val _tag = MutableLiveData<List<Tag>>()
     val tag: LiveData<List<Tag>>
@@ -100,13 +100,13 @@ class AddEventViewModel : ViewModel() {
                         }
 
                         if (time.value!!.toInt() in (lastTime + 1) until futureTime) {
-                            price = priceInput.value!!.toInt()
+                            price = priceInput.value!!.toLong()
                             updateOverage()
                             Log.d("Sophie_budget_over",
                                 "in!")
 
                         } else if (time.value!!.toInt() in (startTime + 1) until endTime) {
-                            price = priceInput.value!!.toInt()
+                            price = priceInput.value!!.toLong()
                             updateOverage()
                             Log.d("Sophie_budget_over",
                                 "inagain!")
