@@ -97,7 +97,7 @@ class DetailFragment : Fragment() {
             if(it.tag == "衣服") {
                 binding.tagImage.setImageResource(R.drawable.tag_cloth_press)
             }
-            if(it.tag == "住") {
+            if(it.tag == "生活") {
                 binding.tagImage.setImageResource(R.drawable.tag_live_press)
             }
             if(it.tag == "交通") {

@@ -67,7 +67,7 @@ class DayEventAdapter(var onClickListener: OnClickListener,var viewModel: DayVie
             if (event.tag == "衣服") {
                 binding.imageTag.setImageResource(R.drawable.apron)
             }
-            if (event.tag == "住") {
+            if (event.tag == "生活") {
                 binding.imageTag.setImageResource(R.drawable.field)
             }
             if (event.tag == "交通") {

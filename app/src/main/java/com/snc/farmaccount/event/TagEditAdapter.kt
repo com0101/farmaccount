@@ -52,18 +52,17 @@ class TagEditAdapter(private var onClickListener: OnClickListener,var viewModel:
             binding.textEvent.text = event.tag_name
             binding.eventTag.setImageResource(event.tag_img)
             if (selectedPosition==adapterPosition) {
-                viewModel.chooseTag.value = event
-                Log.i("Sophie_tag","${viewModel.chooseTag.value}")
-//                binding.eventTag.setImageResource(event.tag_img_press)
+                binding.eventTag.setImageResource(event.tag_img_press)
                 select
             } else {
                 binding.eventTag.setImageResource(event.tag_img)
                 !select
             }
-            if (viewModel.detail.value?.tag == event.tag_name) {
-                binding.eventTag.setImageResource(event.tag_img_press)
+            if (viewModel.chooseTag.value == null) {
+                if (viewModel.detail.value?.tag == event.tag_name) {
+                    binding.eventTag.setImageResource(event.tag_img_press)
+                }
             }
-
 
 
             binding.executePendingBindings()

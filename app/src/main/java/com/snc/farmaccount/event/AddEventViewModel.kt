@@ -99,20 +99,24 @@ class AddEventViewModel : ViewModel() {
                                 "$startTime + $endTime + $lastTime + $futureTime +${time.value}")
                         }
 
-                        if (time.value!!.toInt() in (lastTime + 1) until futureTime) {
-                            price = priceInput.value!!.toLong()
-                            updateOverage()
-                            Log.d("Sophie_budget_over",
-                                "in!")
+                        when {
+                            time.value!!.toInt() in (lastTime + 1) until futureTime -> {
+                                price = priceInput.value!!.toLong()
+                                updateOverage()
+                                Log.d("Sophie_budget_over",
+                                    "in!")
 
-                        } else if (time.value!!.toInt() in (startTime + 1) until endTime) {
-                            price = priceInput.value!!.toLong()
-                            updateOverage()
-                            Log.d("Sophie_budget_over",
-                                "inagain!")
-                        } else {
-                            price = 0
-                            updateOverage()
+                            }
+                            time.value!!.toInt() in (startTime + 1) until endTime -> {
+                                price = priceInput.value!!.toLong()
+                                updateOverage()
+                                Log.d("Sophie_budget_over",
+                                    "inagain!")
+                            }
+                            else -> {
+                                price = 0
+                                updateOverage()
+                            }
                         }
 
                     }
