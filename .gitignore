@@ -12,3 +12,5 @@
 /captures
 .externalNativeBuild
 /app/google-services.json
+/app/my-release-key.keystore.jks
+app/release/
