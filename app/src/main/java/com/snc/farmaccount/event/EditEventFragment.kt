@@ -8,10 +8,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Adapter
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 
 import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.Tag
@@ -53,6 +55,10 @@ class EditEventFragment : Fragment() {
 
         binding.tagList.adapter = TagEditAdapter(TagEditAdapter.OnClickListener {
             viewModel.chooseTag.value = it
+            if (viewModel.detail.value?.tag != it.tag_name) {
+                (binding.tagList.adapter as TagEditAdapter).select = false
+            }
+
         },viewModel)
 
         binding.imageSave.setOnClickListener {

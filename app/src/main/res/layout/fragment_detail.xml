@@ -21,8 +21,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintHorizontal_bias="1.0" android:layout_marginTop="150dp"
-                app:layout_constraintTop_toBottomOf="@+id/date"/>
+                app:layout_constraintHorizontal_bias="1.0"
+                android:layout_marginTop="350dp" app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
 
         <ImageView
                 android:layout_width="0dp"
@@ -87,7 +87,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="40dp"
-                android:background="@drawable/radius_border"
+                android:background="@drawable/detail_border"
                 android:id="@+id/price"
                 android:layout_marginEnd="53dp"
                 android:layout_marginTop="16dp"
@@ -107,11 +107,12 @@
                     android:gravity="center"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent" android:textColor="@color/expend_title"/>
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:textColor="@color/expend_title"/>
 
             <TextView
                     android:id="@+id/text_price"
-                    android:text="@{viewModel.detail.price}"
+                    android:text='@{"$"+viewModel.detail.price}'
                     android:fontFamily="@font/gen_normal"
                     android:layout_width="0dp"
                     android:layout_height="30dp"
@@ -128,7 +129,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="40dp"
-                android:background="@drawable/radius_border"
+                android:background="@drawable/detail_border"
                 android:id="@+id/date"
                 android:layout_marginEnd="53dp"
                 android:layout_marginStart="53dp"
@@ -173,7 +174,7 @@
                 android:fontFamily="@font/gen_normal"
                 android:layout_width="0dp"
                 android:layout_height="280dp"
-                android:background="@drawable/infor_border"
+                android:background="@drawable/detailinfor_border"
                 android:textSize="18sp"
                 android:paddingStart="16dp"
                 android:paddingTop="16dp"

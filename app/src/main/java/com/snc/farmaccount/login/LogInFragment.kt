@@ -128,20 +128,32 @@ class LogInFragment : Fragment() {
 
     private fun checkUserStatus() {
         Log.i("Sophie_test", "TTTTest")
-        CoroutineScope(Dispatchers.IO).launch {
-            findNavController()
-                .navigate(R.id.action_global_loadingFragment)
-            delay(2500)
-            if(viewModel.checkFirst.value == true) {
-                findNavController()
-                    .navigate(R.id.action_global_chooseFragment)
-            } else {
-                findNavController()
-                    .navigate(R.id.action_global_homeFragment)
+
+        Log.i("Sophie_test", "${viewModel.checkFirst}")
+        viewModel.checkFirst.observe(this, Observer {
+            Log.i("Sophie_test", "${viewModel.checkFirst}")
+            it?.let {
+                Log.i("Sophie_test", "${viewModel.checkFirst}")
+                if(viewModel.checkFirst.value == true) {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        findNavController()
+                            .navigate(R.id.action_global_loadingFragment)
+                        delay(2000)
+                        findNavController()
+                            .navigate(R.id.action_global_chooseFragment)
+                    }
+                } else {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        findNavController()
+                            .navigate(R.id.action_global_loadingFragment)
+                        delay(2000)
+                        findNavController()
+                            .navigate(R.id.action_global_homeFragment)
+                    }
+                }
             }
-        }
+        })
 
     }
-
 
 }
