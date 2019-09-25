@@ -34,6 +34,7 @@ class AddEventViewModel : ViewModel() {
     var time = MutableLiveData<String>()
     var getTime = MutableLiveData<String>()
     var circleDay = MutableLiveData<Int>()
+    var thisDate = MutableLiveData<Long>()
     var startTime = 0
     var endTime = 0
     var lastTime = 0
@@ -100,18 +101,21 @@ class AddEventViewModel : ViewModel() {
                         }
 
                         when {
-                            time.value!!.toInt() in (lastTime + 1) until (futureTime-1) -> {
-                                price = priceInput.value!!.toLong()
-                                updateOverage()
-                                Log.d("Sophie_budget_over",
-                                    "in!")
-
+                            thisDate.value!! in (lastTime + 1) until (futureTime-1) -> {
+                                if (time.value!!.toInt() in (lastTime + 1) until (futureTime-1)) {
+                                    price = priceInput.value!!.toLong()
+                                    updateOverage()
+                                    Log.d("Sophie_budget_over",
+                                        "in!")
+                                }
                             }
-                            time.value!!.toInt() in (startTime + 1) until (endTime-1) -> {
-                                price = priceInput.value!!.toLong()
-                                updateOverage()
-                                Log.d("Sophie_budget_over",
-                                    "inagain!")
+                            thisDate.value!! in (startTime + 1) until (endTime-1) -> {
+                                if (time.value!!.toInt() in (startTime + 1) until (endTime-1)) {
+                                    price = priceInput.value!!.toLong()
+                                    updateOverage()
+                                    Log.d("Sophie_budget_over",
+                                        "inagain!")
+                                }
                             }
                             else -> {
                                 price = 0
@@ -196,6 +200,7 @@ class AddEventViewModel : ViewModel() {
         monthFormat.value = monthformat.format(getDate)
         today.value = simpledateformat.format(getDate)
         time.value = dateformat.format(getDate)
+        thisDate.value = dateformat.format(getDate).toLong()
         Log.i("Sophie_date_mode", "${monthFormat.value}")
 
     }

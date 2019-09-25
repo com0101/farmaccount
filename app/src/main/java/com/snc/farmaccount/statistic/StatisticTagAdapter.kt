@@ -39,14 +39,13 @@ class StatisticTagAdapter(private val budget: ArrayList<StatisticCatalog>, var o
             binding.statisticCatalog.text = catalog.name
             if (selectedPosition==adapterPosition) {
                 binding.statisticCatalog.setTextColor(ApplicationContext.applicationContext().getColor(R.color.wood))
-                binding.imageCatalog.setImageResource(R.drawable.datepicker_border)
+                binding.imageCatalog.setImageResource(R.drawable.tag_select_border)
             } else {
                 binding.statisticCatalog.setTextColor(ApplicationContext.applicationContext().getColor(R.color.expend_title))
                 binding.imageCatalog.setImageResource(R.drawable.tag_border)
             }
             binding.executePendingBindings()
         }
-
     }
     class OnClickListener(val clickListener: (catalog: StatisticCatalog ) -> Unit) {
         fun onClick(catalog: StatisticCatalog ) = clickListener(catalog)

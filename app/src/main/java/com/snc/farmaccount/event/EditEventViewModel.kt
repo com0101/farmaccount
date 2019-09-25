@@ -33,6 +33,7 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
     var tagName = MutableLiveData<String>()
     var tagStatus = MutableLiveData<Boolean>()
     var category = MutableLiveData<String>()
+    var thisDate = MutableLiveData<Long>()
 
     private val _tag = MutableLiveData<List<Tag>>()
     val tag: LiveData<List<Tag>>
@@ -97,24 +98,27 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
                                     "DocumentSnapshot added with ID: $documentReference"
                                 )
                                 when {
-                                    time.value!!.toInt() in (lastTime + 1) until (futureTime-1) -> {
-                                        updateOverage()
-                                        Log.d("Sophie_budget_over",
-                                            "in!")
+                                    thisDate.value!!.toInt() in (lastTime + 1) until (futureTime-1) -> {
+                                       if (time.value!!.toInt() in (lastTime + 1) until (futureTime-1)) {
+                                           updateOverage()
+                                           Log.d("Sophie_budget_over",
+                                               "in!")
+                                       }
+
                                     }
-                                    time.value!!.toInt() in (startTime + 1) until (endTime-1) -> {
-                                        updateOverage()
-                                        Log.d("Sophie_budget_over",
-                                            "inagain!")
+                                    thisDate.value!!.toInt() in (startTime + 1) until (endTime-1) -> {
+                                       if (time.value!!.toInt() in (startTime + 1) until (endTime-1)) {
+                                           updateOverage()
+                                           Log.d("Sophie_budget_over",
+                                               "inagain!")
+                                       }
                                     }
                                 }
                             }
                             .addOnFailureListener { e -> Log.w("Sophie_add_fail", "Error adding document", e) }
-
                     }
                 }
             }
-
     }
 
     private fun updateOverage() {
@@ -177,15 +181,18 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
                         val c = Calendar.getInstance()
                         val year = c.get(Calendar.YEAR)
                         val monthly = c.get(Calendar.MONTH)
+                        val day = c.get(Calendar.DATE)
                         val thisMonth = Date(year-1900, monthly, circleDay.value!!.minus(1))
                         val nextMonth = Date(year-1900, monthly+1, circleDay.value!!)
                         val lastMonth = Date(year-1900, monthly-1,circleDay.value!!.minus(1))
                         val futureDay = Date(year-1900, monthly, circleDay.value!!)
+                        val today = Date(year-1900, monthly, day)
                         val timeformat = SimpleDateFormat("yyyyMMdd")
                         startTime = timeformat.format(thisMonth).toInt()
                         endTime = timeformat.format(nextMonth).toInt()
                         lastTime = timeformat.format(lastMonth).toInt()
                         futureTime = timeformat.format(futureDay).toInt()
+                        thisDate.value = timeformat.format(today).toLong()
                         Log.d("Sophie_budget_time",
                             "$startTime + $endTime + $lastTime + $futureTime +${time.value}")
                     }
