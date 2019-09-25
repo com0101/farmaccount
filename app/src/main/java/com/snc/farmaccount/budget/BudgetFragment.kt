@@ -214,15 +214,13 @@ class BudgetFragment : Fragment() {
     private fun unEditBudget() {
         budgetUnselect.add(Budget(R.drawable.type1un, R.drawable.rangelow_un, "10000", "15000","",0,"",1))
         budgetUnselect.add(Budget(R.drawable.type2un, R.drawable.rangemiddle_un, "10000", "20000","",1,"",1))
-        budgetUnselect.add(Budget(R.drawable.type3un, com.snc.farmaccount.R.drawable.ranghigh_un, "10000", "25000","",2,"",1))
+        budgetUnselect.add(Budget(R.drawable.type3un, R.drawable.ranghigh_un, "10000", "25000","",2,"",1))
     }
 
     fun numberPicker() {
-        if (mainViewModel.pickdate.value == mainViewModel.maxDay.value) {
-            binding.numberTitle.text = "每個月最後一天結算"
-        } else {
-            binding.numberTitle.text = "每個月第 ${mainViewModel.pickdate.value} 天結算"
-        }
+
+        binding.numberTitle.text = "每個月 ${mainViewModel.pickdate.value} 號結算"
+
         var dialog = Dialog(this.requireContext())
         var bindingCheck = DialogNumberpickBinding.inflate(layoutInflater)
         dialog.setContentView(bindingCheck.root)
@@ -239,11 +237,8 @@ class BudgetFragment : Fragment() {
                     mainViewModel.pickdate.value = newVal
                     mainViewModel.postCircleDay()
                     getViewModel.getCircle()
-                    if (newVal == maxDay) {
-                        binding.numberTitle.text = "每個月最後一天結算"
-                    } else {
-                        binding.numberTitle.text = "每個月第 ${mainViewModel.pickdate.value} 天結算"
-                    }
+                    binding.numberTitle.text = "每個月 ${mainViewModel.pickdate.value} 號結算"
+
                     dialog.dismiss()
                     Log.d("Sophie", "$newVal")
                 }

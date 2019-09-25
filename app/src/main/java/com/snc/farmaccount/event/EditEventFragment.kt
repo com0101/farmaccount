@@ -30,6 +30,8 @@ class EditEventFragment : Fragment() {
 
     private lateinit var binding: FragmentEditEventBinding
     val tag = ArrayList<Tag>()
+    var inputCheck = 0
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -66,17 +68,42 @@ class EditEventFragment : Fragment() {
             var bindingCheck = DialogCheckBinding.inflate(layoutInflater)
             dialog.setContentView(bindingCheck.root)
             dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-            viewModel.editFirebase()
-            GlobalScope.launch(context = Dispatchers.Main) {
-                delay(1000)
-                bindingCheck.checkContent.text = "編輯完成!"
-                bindingCheck.imageCancel.visibility = View.GONE
-                bindingCheck.imageSave.visibility = View.GONE
-                dialog.show()
-                delay(1000)
-                dialog.dismiss()
-                findNavController()
-                    .navigate(EditEventFragmentDirections.actionGlobalHomeFragment())
+            when {
+                viewModel.priceInput.value == null && viewModel.chooseTag.value == null &&viewModel.infoInput.value == null
+                -> {
+                    inputCheck = 0
+                    warning()
+                }
+                viewModel.priceInput.value!!.isEmpty() -> {
+                    inputCheck = 1
+                    warning()
+                }
+                viewModel.tagName.value == null -> {
+                    inputCheck = 2
+                    warning()
+                }
+                viewModel.infoInput.value!!.isEmpty() -> {
+                    inputCheck = 3
+                    warning()
+                }
+
+            }
+            if (viewModel.priceInput.value!!.isNotEmpty() &&
+                viewModel.tagName.value != null &&
+                viewModel.infoInput.value!!.isNotEmpty()) {
+
+                viewModel.editFirebase()
+                GlobalScope.launch(context = Dispatchers.Main) {
+                    delay(1000)
+                    bindingCheck.checkContent.text = "編輯完成!"
+                    bindingCheck.imageCancel.visibility = View.GONE
+                    bindingCheck.imageSave.visibility = View.GONE
+                    dialog.show()
+                    delay(1000)
+                    dialog.dismiss()
+                    findNavController()
+                        .navigate(EditEventFragmentDirections.actionGlobalHomeFragment())
+                }
             }
         }
 
@@ -94,6 +121,26 @@ class EditEventFragment : Fragment() {
         viewModel.getTag()
 
         return binding.root
+    }
+
+    private fun warning() {
+        var warning = Dialog(this.requireContext())
+        var bindingCheck = DialogCheckBinding.inflate(layoutInflater)
+        warning.setContentView(bindingCheck.root)
+        warning.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        GlobalScope.launch(context = Dispatchers.Main) {
+            when (inputCheck) {
+                0 -> bindingCheck.checkContent.text = "資訊沒填喔!"
+                1 -> bindingCheck.checkContent.text = "價錢沒填喔!"
+                2 -> bindingCheck.checkContent.text = "類別沒選喔!"
+                3 -> bindingCheck.checkContent.text = "寫個描述吧!"
+            }
+            bindingCheck.imageCancel.visibility = View.GONE
+            bindingCheck.imageSave.visibility = View.GONE
+            warning.show()
+            delay(1000)
+            warning.dismiss()
+        }
     }
 
     private fun tagList() {

@@ -100,14 +100,14 @@ class AddEventViewModel : ViewModel() {
                         }
 
                         when {
-                            time.value!!.toInt() in (lastTime + 1) until futureTime -> {
+                            time.value!!.toInt() in (lastTime + 1) until (futureTime-1) -> {
                                 price = priceInput.value!!.toLong()
                                 updateOverage()
                                 Log.d("Sophie_budget_over",
                                     "in!")
 
                             }
-                            time.value!!.toInt() in (startTime + 1) until endTime -> {
+                            time.value!!.toInt() in (startTime + 1) until (endTime-1) -> {
                                 price = priceInput.value!!.toLong()
                                 updateOverage()
                                 Log.d("Sophie_budget_over",

@@ -110,6 +110,10 @@ class HomeFragment : Fragment() {
             goToToday()
         }
 
+        viewModel.overagePrice.observe(this, androidx.lifecycle.Observer {
+            binding.textBudget.text = it
+        })
+
         viewModel.date.observe(this, androidx.lifecycle.Observer {
 
         })
@@ -169,6 +173,21 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun note() {
+        var dialog = Dialog(this.requireContext())
+        var bindingCheck = DialogCheckBinding.inflate(layoutInflater)
+        dialog.setContentView(bindingCheck.root)
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        bindingCheck.checkContent.text = "跳至今日已完成"
+        bindingCheck.imageCancel.visibility = View.GONE
+        bindingCheck.imageSave.visibility = View.GONE
+        GlobalScope.launch(context = Dispatchers.Main) {
+            dialog.show()
+            delay(1000)
+            dialog.dismiss()
+        }
+    }
+
 
     private fun setViewPager() {
         val codes = getDays(currentDayCode)
@@ -218,6 +237,7 @@ class HomeFragment : Fragment() {
     private fun goToToday() {
         currentDayCode = todayDayCode
         setViewPager()
+        note()
     }
 
     private fun showDialog() {

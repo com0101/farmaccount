@@ -32,6 +32,7 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
     var price = 0L
     var tagName = MutableLiveData<String>()
     var tagStatus = MutableLiveData<Boolean>()
+    var category = MutableLiveData<String>()
 
     private val _tag = MutableLiveData<List<Tag>>()
     val tag: LiveData<List<Tag>>
@@ -48,6 +49,7 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
         today.value = detail.value?.date
         month = detail.value?.month!!
         time.value = detail.value?.time
+        tagName.value = detail.value?.tag
         getOverage()
         Log.i("tag","${detail.value?.status}")
     }
@@ -63,11 +65,12 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
         if (chooseTag.value != null) {
             tagName.value = chooseTag.value?.tag_name
             tagStatus.value = chooseTag.value?.tag_status
+            category.value = chooseTag.value?.tag_catalog
         } else {
             tagName.value = detail.value?.tag
             tagStatus.value = detail.value?.status
+            category.value = detail.value?.catalog
         }
-        Log.i("tag","${tagName.value}")
         event["price"] = priceInput.value!!
         event["tag"] = tagName.value.toString()
         event["description"] = infoInput.value!!
@@ -75,6 +78,7 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
         event["time"] = time.value!!
         event["status"] = tagStatus.value?:true
         event["month"] = month
+        event["catalog"] = category.value.toString()
         // Add a new document with a generated ID
 
         db.collection("User").document("${UserManager.userToken}").collection("Event")
@@ -94,23 +98,11 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
                                 )
                                 when {
                                     time.value!!.toInt() in (lastTime + 1) until (futureTime-1) -> {
-//                                        price = if (priceInput.value != detail.value?.price) {
-//                                            priceInput.value!!.toLong()-detail.value?.price!!.toLong()
-//                                        } else {
-//                                            priceInput.value!!.toLong()
-//                                        }
-//                                        price = priceInput.value!!.toLong()
                                         updateOverage()
                                         Log.d("Sophie_budget_over",
                                             "in!")
                                     }
                                     time.value!!.toInt() in (startTime + 1) until (endTime-1) -> {
-//                                        price = if (priceInput.value != detail.value?.price) {
-//                                            priceInput.value!!.toLong()-detail.value?.price!!.toLong()
-//                                        } else {
-//
-//                                        }
-//                                        price = priceInput.value!!.toLong()
                                         updateOverage()
                                         Log.d("Sophie_budget_over",
                                             "inagain!")
@@ -159,11 +151,6 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
                 overagePrice.value = overageInt.toString()
             }
         }
-        Log.d("Sophie_update",
-            " overagePrice.value: " +
-                    "${overagePrice.value}+" +
-                    "${priceInput.value}+${detail.value?.price}+" +
-                    "${tagStatus.value}"+"${detail.value?.status}")
         db.collection("User").document("${UserManager.userToken}").collection("Budget")
             .document("${UserManager.userToken}")
             .update("overage", "${overagePrice.value}")
