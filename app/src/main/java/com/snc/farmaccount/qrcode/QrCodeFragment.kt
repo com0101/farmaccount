@@ -29,13 +29,20 @@ import java.util.*
 import java.text.SimpleDateFormat
 import android.content.DialogInterface
 import android.app.AlertDialog
+import android.app.Dialog
+import com.snc.farmaccount.databinding.DialogCheckBinding
+import com.snc.farmaccount.event.EditEventFragmentDirections
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class QrCodeFragment : Fragment() {
 
     private lateinit var binding: FragmentQrCodeBinding
     private lateinit var codeScanner: CodeScanner
-    var camera = false
+    var camera = 0
 
     private val viewModel: AddEventViewModel by lazy {
         ViewModelProviders.of(this).get(AddEventViewModel::class.java)
@@ -78,31 +85,49 @@ class QrCodeFragment : Fragment() {
                 requireActivity().runOnUiThread {
                     Toast.makeText(this.requireContext(), it.text, Toast.LENGTH_LONG).show()
                     Log.i("Sophie_scan","${it.text}")
-                    val price = Integer.parseInt( it.text.substring(30, 37), 16 ).toString()
-                    val year = it.text.substring(10, 13).toInt()
-                    val month = it.text.substring(13, 15).toInt()
-                    val day = it.text.substring(15, 17).toInt()
-                    Log.i("Sophie_day","$day")
-                    val getDate = Date(year+11, month-1, day)
-                    val simpledateformat = SimpleDateFormat("yyyy.MM.dd (EEEE)")
-                    val dateformat = SimpleDateFormat("yyyyMMdd")
-                    val time = simpledateformat.format(getDate)
-                    val getMonth = time.substring(5, 7)
-                    val date = dateformat.format(getDate)
-                    val codeViewModel: AddEventViewModel by lazy {
-                        ViewModelProviders.of(activity!!).get(AddEventViewModel::class.java)
+                    if (it.text.trim().length < 44 || it.text.trim().isEmpty()) {
+                        var dialog = Dialog(this.requireContext())
+                        var bindingCheck = DialogCheckBinding.inflate(layoutInflater)
+                        GlobalScope.launch(context = Dispatchers.Main) {
+                            dialog.setContentView(bindingCheck.root)
+                            dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+                            bindingCheck.checkContent.text = "掃錯邊嘍~"
+                            bindingCheck.imageCancel.visibility = View.GONE
+                            bindingCheck.imageSave.visibility = View.GONE
+                            dialog.show()
+                            delay(1500)
+                            dialog.dismiss()
+                        }
+                    } else {
+                        val price = Integer.parseInt( it.text.substring(30, 37), 16 ).toString()
+                        val year = it.text.substring(10, 13).toInt()
+                        val month = it.text.substring(13, 15).toInt()
+                        val day = it.text.substring(15, 17).toInt()
+                        Log.i("Sophie_day","$day")
+                        val getDate = Date(year+11, month-1, day)
+                        val simpledateformat = SimpleDateFormat("yyyy.MM.dd (EEEE)")
+                        val dateformat = SimpleDateFormat("yyyyMMdd")
+                        val time = simpledateformat.format(getDate)
+                        val getMonth = time.substring(5, 7)
+                        val date = dateformat.format(getDate)
+                        val codeViewModel: AddEventViewModel by lazy {
+                            ViewModelProviders.of(activity!!).get(AddEventViewModel::class.java)
+                        }
+                        if (it.text != null) {
+                            this.findNavController()
+                                .navigate(QrCodeFragmentDirections.actionGlobalAddEventFragment())
+                            codeViewModel.someDay.value = time
+                            codeViewModel.getPrice.value = price
+                            codeViewModel.getMonth.value = getMonth
+                            codeViewModel.getTime.value = date
+                        }
                     }
-                    if (it.text != null) {
-                        this.findNavController()
-                            .navigate(QrCodeFragmentDirections.actionGlobalAddEventFragment())
-                        codeViewModel.someDay.value = time
-                        codeViewModel.getPrice.value = price
-                        codeViewModel.getMonth.value = getMonth
-                        codeViewModel.getTime.value = date
-                    }
-
                 }
             }
+            codeScanner.startPreview()
+        }
+
+        binding.surfaceView.setOnClickListener {
             codeScanner.startPreview()
         }
 
@@ -131,16 +156,67 @@ class QrCodeFragment : Fragment() {
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
                 } else {
-                    findNavController()
-                        .navigate(R.id.action_global_homeFragment)
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(this.requireActivity(),
+                            Manifest.permission.CAMERA)) {
+                        camera = 1
+                        warning()
+                        // now, user has denied permission (but not permanently!)
+                    }else {
+                        camera = 2
+                        warning()
+                        // now, user has denied permission permanently!
+                    }
                 }
                 return
             }
+
             // Add other 'when' lines to check for other
             // permissions this app might request.
             else -> {
                 // Ignore all other requests.
+//                Toast.makeText(this.context,"不要忽略我啦",Toast.LENGTH_LONG).show()
             }
         }
     }
+
+    private fun warning() {
+        var warning = Dialog(this.requireContext())
+        var bindingCheck = DialogCheckBinding.inflate(layoutInflater)
+        warning.setContentView(bindingCheck.root)
+        warning.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        GlobalScope.launch(context = Dispatchers.Main) {
+            when (camera) {
+                1 -> bindingCheck.checkContent.text = "這是為了掃 QR code，並不會發生什麼事情，請允許開啟權限!"
+                2 -> bindingCheck.checkContent.text = "相機權限尚未開啟，請至設定開啟!"
+            }
+
+            if (camera == 2) {
+                bindingCheck.imageCancel.visibility = View.GONE
+                bindingCheck.imageSave.visibility = View.GONE
+                warning.show()
+                delay(1500)
+                warning.dismiss()
+                delay(1000)
+                findNavController()
+                    .navigate(EditEventFragmentDirections.actionGlobalHomeFragment())
+            }
+            if (camera == 1) {
+                warning.show()
+                bindingCheck.imageSave.setOnClickListener {
+                    warning.dismiss()
+                    requestPermissions(arrayOf(Manifest.permission.CAMERA), 50)
+                }
+                bindingCheck.imageCancel.setOnClickListener {
+                    warning.dismiss()
+                    findNavController()
+                        .navigate(EditEventFragmentDirections.actionGlobalHomeFragment())
+
+                }
+            }
+
+        }
+    }
+
+
+
 }

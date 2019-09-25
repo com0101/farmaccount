@@ -27,7 +27,7 @@
                 android:layout_width="26dp"
                 android:layout_height="29dp"
                 android:id="@+id/image_back_state"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginStart="25dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:srcCompat="@drawable/back"
@@ -63,7 +63,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:id="@+id/tag_list"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="16dp" android:layout_marginTop="2dp">
+                android:layout_marginStart="16dp" android:layout_marginTop="5dp">
         </androidx.recyclerview.widget.RecyclerView>
 
         <com.google.android.material.appbar.AppBarLayout

@@ -123,7 +123,6 @@ dependencies {
     // Qr Code
     implementation 'com.budiyev.android:code-scanner:2.1.0'
 
-
     // numberPicker
     implementation 'com.github.ShawnLin013:NumberPicker:2.4.8'
 

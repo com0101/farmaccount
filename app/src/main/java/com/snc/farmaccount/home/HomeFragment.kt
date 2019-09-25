@@ -237,7 +237,7 @@ class HomeFragment : Fragment() {
     private fun goToToday() {
         currentDayCode = todayDayCode
         setViewPager()
-        note()
+//        note()
     }
 
     private fun showDialog() {

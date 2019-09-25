@@ -206,15 +206,15 @@ class BudgetFragment : Fragment() {
 
     private fun addBudget() {
         budget.add(Budget(R.drawable.type1, R.drawable.rangelow, "10000", "15000","",0,"",1))
-        budget.add(Budget(R.drawable.type2, R.drawable.rangemiddle, "10000", "20000","",1,"",1))
-        budget.add(Budget(R.drawable.type3, R.drawable.rangehigh, "10000", "25000","",2,"",1))
+        budget.add(Budget(R.drawable.type2, R.drawable.rangemiddle, "10000", "25000","",1,"",1))
+        budget.add(Budget(R.drawable.type3, R.drawable.rangehigh, "10000", "35000","",2,"",1))
         viewModel.budgetType.value = budget
     }
 
     private fun unEditBudget() {
         budgetUnselect.add(Budget(R.drawable.type1un, R.drawable.rangelow_un, "10000", "15000","",0,"",1))
-        budgetUnselect.add(Budget(R.drawable.type2un, R.drawable.rangemiddle_un, "10000", "20000","",1,"",1))
-        budgetUnselect.add(Budget(R.drawable.type3un, R.drawable.ranghigh_un, "10000", "25000","",2,"",1))
+        budgetUnselect.add(Budget(R.drawable.type2un, R.drawable.rangemiddle_un, "10000", "25000","",1,"",1))
+        budgetUnselect.add(Budget(R.drawable.type3un, R.drawable.ranghigh_un, "10000", "35000","",2,"",1))
     }
 
     fun numberPicker() {

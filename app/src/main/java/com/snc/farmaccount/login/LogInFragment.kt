@@ -135,21 +135,21 @@ class LogInFragment : Fragment() {
             it?.let {
                 Log.i("Sophie_test", "${viewModel.checkFirst}")
                 if(viewModel.checkFirst.value == true) {
-                    CoroutineScope(Dispatchers.IO).launch {
-                        findNavController()
-                            .navigate(R.id.action_global_loadingFragment)
-                        delay(2000)
+//                    CoroutineScope(Dispatchers.IO).launch {
+//                        findNavController()
+//                            .navigate(R.id.action_global_loadingFragment)
+//                        delay(2000)
                         findNavController()
                             .navigate(R.id.action_global_chooseFragment)
-                    }
+//                    }
                 } else {
-                    CoroutineScope(Dispatchers.IO).launch {
-                        findNavController()
-                            .navigate(R.id.action_global_loadingFragment)
-                        delay(2000)
+//                    CoroutineScope(Dispatchers.IO).launch {
+//                        findNavController()
+//                            .navigate(R.id.action_global_loadingFragment)
+//                        delay(2000)
                         findNavController()
                             .navigate(R.id.action_global_homeFragment)
-                    }
+//                    }
                 }
             }
         })
