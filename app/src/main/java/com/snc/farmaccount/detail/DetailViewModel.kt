@@ -81,19 +81,6 @@ class DetailViewModel(product: Event, app: Application) : AndroidViewModel(app) 
                                         updateOverage()
                                     }
                                 }
-//                                var price = detail.value!!.price!!.toLong()
-//                                var overageInt = overagePrice.value?.toLong()
-//                                if (detail.value!!.status == true) {
-//                                    overagePrice.value = (overageInt?.minus(price)).toString()
-//                                } else {
-//                                    overagePrice.value = (overageInt?.plus(price)).toString()
-//                                }
-//                                db.collection("User").document("${UserManager.userToken}").collection("Budget")
-//                                    .document("${UserManager.userToken}")
-//                                    .update("overage","${overagePrice.value}")
-//                                    .addOnSuccessListener { Log.d("Sophie_budget_edit", "DocumentSnapshot successfully written!") }
-//                                    .addOnFailureListener { e -> Log.w("Sophie_budget_edit", "Error writing document", e) }
-
                             }
                             .addOnFailureListener { e -> Log.w("Sophie_add_fail", "Error adding document", e) }
                     }

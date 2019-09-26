@@ -34,6 +34,7 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
     var tagStatus = MutableLiveData<Boolean>()
     var category = MutableLiveData<String>()
     var thisDate = MutableLiveData<Long>()
+    var eventId = MutableLiveData<Long>()
 
     private val _tag = MutableLiveData<List<Tag>>()
     val tag: LiveData<List<Tag>>
@@ -72,6 +73,7 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
             tagStatus.value = detail.value?.status
             category.value = detail.value?.catalog
         }
+        event["id"] = currentTimestamp
         event["price"] = priceInput.value!!
         event["tag"] = tagName.value.toString()
         event["description"] = infoInput.value!!

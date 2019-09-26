@@ -61,6 +61,7 @@ class AddEventViewModel : ViewModel() {
         var timeStamp = System.currentTimeMillis()
         // Create a new user with a first and last name
         val event = HashMap<String,Any>()
+        event["id"] = timeStamp
         event["price"] = priceInput.value!!
         event["tag"] = chooseTag.value!!.tag_name
         event["description"] = infoInput.value!!

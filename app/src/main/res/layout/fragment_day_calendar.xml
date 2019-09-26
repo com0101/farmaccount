@@ -53,7 +53,7 @@
                     android:overScrollMode="never"
                     tools:listitem="@layout/item_add_event"
                     tools:itemCount="7"
-                    app:listEvent="@{viewModel.event}"
+                    app:listEvent="@{viewModel.getFirebase}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

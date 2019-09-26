@@ -2,6 +2,7 @@ package com.snc.farmaccount.home
 
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -34,7 +35,7 @@ class DayCalendarFragment : Fragment() {
         binding.textDate.text = title
         viewModel.currentDate.value = title
         viewModel.getCurrentDate()
-        viewModel.getFirebase()
+//        viewModel.getFirebase()
 
         binding.eventList.adapter = DayEventAdapter(DayEventAdapter.OnClickListener {
             viewModel.displayPropertyDetails(it)
@@ -48,7 +49,18 @@ class DayCalendarFragment : Fragment() {
             }
         })
 
-        viewModel.event.observe(this, Observer {
+//        viewModel.event.observe(this, Observer {
+//            if (it.isEmpty()) {
+//                binding.spendHint.visibility = View.VISIBLE
+//            } else {
+//                binding.spendHint.visibility = View.GONE
+//
+//            }
+//        })
+
+        viewModel.getFirebase.observe(this, Observer {
+            Log.i("Sophie_filter","$it")
+            (binding.eventList.adapter as DayEventAdapter).submitList(it)
             if (it.isEmpty()) {
                 binding.spendHint.visibility = View.VISIBLE
             } else {
@@ -60,17 +72,6 @@ class DayCalendarFragment : Fragment() {
         return binding.root
     }
 
-//    private fun arrowButtons(){
-//
-//        binding.imageArrowRight.setOnClickListener {
-//            navListener?.goRight()
-//        }
-//
-//        binding.imageArrowLeft.setOnClickListener {
-//            navListener?.goLeft()
-//        }
-//
-//    }
 
     fun updateCalendar() {
 //        val startTimes = Format.getDayStartTS(date)
