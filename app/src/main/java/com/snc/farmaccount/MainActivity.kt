@@ -1,6 +1,7 @@
 package com.snc.farmaccount
 
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
@@ -8,11 +9,15 @@ import com.snc.farmaccount.databinding.ActivityMainBinding
 import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.os.Build
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Button
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.crashlytics.android.Crashlytics
 import io.fabric.sdk.android.Fabric
 
@@ -52,7 +57,34 @@ class MainActivity : AppCompatActivity(){
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         viewModel.getCircle()
+        navigationToHome()
+        Fabric.with(this, Crashlytics())
+    }
 
+    private fun navigationToHome() {
+        if (viewModel.checkLogIn.value == true) {
+            checkBudgetStatus()
+        } else {
+            this.findNavController(R.id.myNavHostFragment)
+                .navigate(R.id.action_global_logInFragment)
+        }
+    }
+
+    private fun checkBudgetStatus() {
+        viewModel.checkBudget.observe(this, Observer {
+            it?.let {
+                if (viewModel.checkBudget.value == false) {
+                    this.findNavController(R.id.myNavHostFragment)
+                        .navigate(R.id.action_global_homeFragment)
+                    Log.i("Sophie_getBudget~~", "${viewModel.checkBudget.value}")
+                } else {
+                    this. findNavController(R.id.myNavHostFragment)
+                        .navigate(R.id.action_global_chooseFragment)
+                    Log.i("Sophie_getBudget", "${viewModel.checkBudget.value}")
+                }
+
+            }
+        })
     }
 
 }

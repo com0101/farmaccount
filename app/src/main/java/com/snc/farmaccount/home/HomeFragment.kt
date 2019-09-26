@@ -27,6 +27,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import android.content.Intent
+import com.snc.farmaccount.MainActivity
 
 
 class HomeFragment : Fragment() {
@@ -64,6 +66,12 @@ class HomeFragment : Fragment() {
         arrowButtons()
         viewModel.getOverage()
         var buttonSense = false
+
+        mainViewModel.activityRestart.observe(this, androidx.lifecycle.Observer {
+            it.let {
+                restart()
+            }
+        })
 
         binding.buttonSetting.setOnClickListener {
             buttonSense = if (!buttonSense) {
@@ -263,4 +271,8 @@ class HomeFragment : Fragment() {
         (binding.dayViewpager.adapter as? DayViewPagerAdapter)?.updateCalendars(binding.dayViewpager.currentItem)
     }
 
+    private fun restart(){
+        val intent = Intent(this.context, MainActivity::class.java)
+        startActivity(intent)
+    }
 }

@@ -57,14 +57,12 @@ class LogInFragment : Fragment() {
         googleSignInClient = GoogleSignIn.getClient(ApplicationContext.applicationContext(), googleSignInOptions)
         logIn()
 
-        navigationToHome()
         return binding.root
     }
 
     private fun logIn() {
         binding.signInButton.setOnClickListener {
             signInGoogle()
-
         }
     }
 
@@ -105,6 +103,7 @@ class LogInFragment : Fragment() {
                         editor.putString("Token", user.uid ).apply()
                         editor.putString("Name", user.displayName ).apply()
                         editor.putString("email", user.email ).apply()
+                        viewModel.getBudget()
                         viewModel.getProfile()
                         checkUserStatus()
                     }
@@ -117,43 +116,35 @@ class LogInFragment : Fragment() {
             }
     }
 
-
-
-    private fun navigationToHome() {
-        if (viewModel.checkLogIn.value == true) {
-            findNavController()
-                .navigate(R.id.action_global_homeFragment)
-        }
-    }
-
     private fun checkUserStatus() {
-        Log.i("Sophie_test", "TTTTest")
-
         Log.i("Sophie_test", "${viewModel.checkFirst}")
         viewModel.checkFirst.observe(this, Observer {
-            Log.i("Sophie_test", "${viewModel.checkFirst}")
+            Log.i("Sophie_test", "${viewModel.checkFirst.value}")
             it?.let {
-                Log.i("Sophie_test", "${viewModel.checkFirst}")
+                Log.i("Sophie_test", "${viewModel.checkFirst.value}")
                 if(viewModel.checkFirst.value == true) {
-//                    CoroutineScope(Dispatchers.IO).launch {
-//                        findNavController()
-//                            .navigate(R.id.action_global_loadingFragment)
-//                        delay(2000)
                         findNavController()
                             .navigate(R.id.action_global_chooseFragment)
-//                    }
                 } else {
-//                    CoroutineScope(Dispatchers.IO).launch {
-//                        findNavController()
-//                            .navigate(R.id.action_global_loadingFragment)
-//                        delay(2000)
-                        findNavController()
-                            .navigate(R.id.action_global_homeFragment)
-//                    }
+                    viewModel.checkBudget.observe(this, Observer {getBudget ->
+                        getBudget?.let { budget ->
+                            if (!budget) {
+                                findNavController()
+                                    .navigate(R.id.action_global_homeFragment)
+                            } else {
+                                findNavController()
+                                    .navigate(R.id.action_global_chooseFragment)
+                            }
+                        }
+
+                    })
+
                 }
             }
         })
 
     }
+
+
 
 }

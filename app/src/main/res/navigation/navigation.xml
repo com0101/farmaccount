@@ -3,7 +3,7 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/navigation"
-            app:startDestination="@id/logInFragment">
+            app:startDestination="@id/loadingFragment">
 
     <fragment android:id="@+id/homeFragment"
               android:name="com.snc.farmaccount.home.HomeFragment"

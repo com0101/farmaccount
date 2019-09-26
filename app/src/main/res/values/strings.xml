@@ -15,6 +15,7 @@
 
     //title
     <string name="expand_title">支出金額</string>
+    <string name="income_title">收入金額</string>
     <string name="budget_range_title">預算金額</string>
     <string name="title_price">金額</string>
     <string name="title_date">日期</string>
@@ -51,6 +52,9 @@
     <string name="no_spend">尚無此類別的花費及收入</string>
     <string name="no_event">尚無新增帳目</string>
     <string name="scan_hint">請對準左邊條碼</string>
+
+    //check info
+    <string name="check_edit">更改資訊尚未儲存，確定要離開嗎?</string>
 
 
 </resources>

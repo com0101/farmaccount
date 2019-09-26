@@ -21,15 +21,9 @@ import kotlinx.coroutines.*
 class LogInViewModel :  ViewModel() {
     var checkLogIn = MutableLiveData<Boolean>()
     var checkFirst = MutableLiveData<Boolean>()
-    var idCheck = MutableLiveData<String>()
-    var chaneFragment = MutableLiveData<Boolean>()
-
-    private var viewModelJob = Job()
-    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.IO)
-
+    var checkBudget = MutableLiveData<Boolean>()
 
     init {
-        Log.i("Sophie_token", "${UserManager.userToken}+${UserManager.userEmail}+${UserManager.userName}")
         if (UserManager.userToken != null) {
             checkLogIn.value = true
         } else {
@@ -45,7 +39,6 @@ class LogInViewModel :  ViewModel() {
         user["name"] = UserManager.userName!!
         user["email"] = UserManager.userEmail!!
 
-        idCheck.value = UserManager.userToken!!.substring(0,20)
         // Add a new document with a generated ID
         db.collection("User")
             .get()
@@ -73,43 +66,26 @@ class LogInViewModel :  ViewModel() {
             }
     }
 
+    fun getBudget() {
+        val db = FirebaseFirestore.getInstance()
+        db.collection("User").document("${UserManager.userToken}")
+            .collection("Budget").document("${UserManager.userToken}")
+            .get()
+            .addOnSuccessListener { document ->
+                if (document.data != null) {
+                    checkBudget.value = false
+                    Log.d("Sophie", "DocumentSnapshot data: ${document.data}")
+                    Log.d("Sophie", "${checkBudget.value}")
 
-
-
-
-
-
-//    fun getUserStatus() {
-//        CoroutineScope(Dispatchers.IO).launch {
-//            val deferredUser = GlobalScope.async {getProfile()}
-//            deferredUser.invokeOnCompletion {
-//                val user = deferredUser.isActive
-//                Log.i("Sophie_profile", "${user}")
-//                if(user) {
-////                                viewModel.getProfile()
-//                    Log.i("Sophie_profile", "${checkFirst.value}")
-//
-//                }
-//
-//            }
-//        }
-//
-//    }
-
-
-
-    override fun onCleared() {
-        super.onCleared()
-        viewModelJob.cancel()
+                } else {
+                    checkBudget.value = true
+                    Log.d("Sophie", "No such document")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d("Sophie", "get failed with ", exception)
+            }
     }
-
-//
-//    fun getRes(callback: (Any)->String){
-//        callback(getProfile())
-//    }
-
-
-
 
 
 }

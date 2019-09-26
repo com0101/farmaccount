@@ -20,6 +20,9 @@ import com.snc.farmaccount.`object`.Tag
 import com.snc.farmaccount.databinding.DialogCheckBinding
 import com.snc.farmaccount.databinding.FragmentEditEventBinding
 import com.snc.farmaccount.detail.DetailFragmentDirections
+import kotlinx.android.synthetic.main.dialog_check.*
+import kotlinx.android.synthetic.main.fragment_add_event.*
+import kotlinx.android.synthetic.main.fragment_add_event.image_save
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -51,14 +54,24 @@ class EditEventFragment : Fragment() {
         binding.viewModel = viewModel
 
         binding.imageBackState.setOnClickListener {
-            findNavController()
-                .navigate(AddEventFragmentDirections.actionGlobalHomeFragment())
+            when {
+                viewModel.priceInput.value != viewModel.detail.value?.price -> checkEdit()
+                viewModel.infoInput.value != viewModel.detail.value?.description -> checkEdit()
+                viewModel.chooseTag.value?.tag_name != viewModel.detail.value?.tag -> checkEdit()
+                else -> findNavController()
+                          .navigate(AddEventFragmentDirections.actionGlobalHomeFragment())
+            }
         }
 
         binding.tagList.adapter = TagEditAdapter(TagEditAdapter.OnClickListener {
             viewModel.chooseTag.value = it
             if (viewModel.detail.value?.tag != it.tag_name) {
                 (binding.tagList.adapter as TagEditAdapter).select = false
+            }
+            if (it.tag_status) {
+                binding.textExpendTitle.setText(R.string.income_title)
+            } else {
+                binding.textExpendTitle.setText(R.string.expand_title)
             }
 
         },viewModel)
@@ -110,8 +123,13 @@ class EditEventFragment : Fragment() {
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 // 做你要的事，這邊是跳轉首頁
-                findNavController().
-                    navigate(R.id.action_global_homeFragment)
+                when {
+                    viewModel.priceInput.value != viewModel.detail.value?.price -> checkEdit()
+                    viewModel.infoInput.value != viewModel.detail.value?.description -> checkEdit()
+                    viewModel.chooseTag.value?.tag_name != viewModel.detail.value?.tag -> checkEdit()
+                    else -> findNavController()
+                        .navigate(AddEventFragmentDirections.actionGlobalHomeFragment())
+                }
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
@@ -140,6 +158,25 @@ class EditEventFragment : Fragment() {
             warning.show()
             delay(1000)
             warning.dismiss()
+        }
+    }
+
+    private fun checkEdit() {
+        var checkEdit = Dialog(this.requireContext())
+        var bindingCheck = DialogCheckBinding.inflate(layoutInflater)
+        checkEdit.setContentView(bindingCheck.root)
+        checkEdit.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        GlobalScope.launch(context = Dispatchers.Main) {
+            bindingCheck.checkContent.setText(R.string.check_edit)
+            checkEdit.show()
+            checkEdit.image_save.setOnClickListener {
+                checkEdit.dismiss()
+                findNavController().
+                    navigate(R.id.action_global_homeFragment)
+            }
+            checkEdit.image_cancel.setOnClickListener {
+                checkEdit.dismiss()
+            }
         }
     }
 

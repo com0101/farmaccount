@@ -31,11 +31,21 @@ class MainViewModel: ViewModel() {
     var maxDay = MutableLiveData<Int>()
     var tagStatus = MutableLiveData<Boolean>()
     var allPrice = 0L
+    var activityRestart = MutableLiveData<Boolean>()
+    var checkLogIn = MutableLiveData<Boolean>()
+    var checkBudget = MutableLiveData<Boolean>()
 
     init {
         pickdate.value = 1
-//        week()
         updateOverage()
+        checkLogIn.value = false
+        Log.i("Sophie_token_activity", "${UserManager.userToken}+${UserManager.userEmail}+${UserManager.userName}")
+        if (UserManager.userToken != null) {
+            checkLogIn.value = true
+            getBudget()
+        } else {
+            checkLogIn.value = null
+        }
     }
 
     fun postCircleDay() {
@@ -59,7 +69,6 @@ class MainViewModel: ViewModel() {
                 if (document != null) {
                     pickdate.value = document.data?.get("circleDay")?.toInt()
                     week()
-
                 }
             }
     }
@@ -282,4 +291,27 @@ class MainViewModel: ViewModel() {
         Log.i("today","$endTime + $startTime")
         updateOverage()
     }
+
+    fun getBudget() {
+        val db = FirebaseFirestore.getInstance()
+        db.collection("User").document("${UserManager.userToken}")
+            .collection("Budget").document("${UserManager.userToken}")
+            .get()
+            .addOnSuccessListener { document ->
+                if (document.data != null) {
+                    checkBudget.value = false
+                    Log.d("Sophie", "DocumentSnapshot data: ${document.data}")
+                    Log.d("Sophie", "${checkBudget.value}")
+
+                } else {
+                    checkBudget.value = true
+                    Log.d("Sophie", "No such document")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d("Sophie", "get failed with ", exception)
+            }
+    }
+
+
 }
