@@ -151,7 +151,7 @@ class HomeFragment : Fragment() {
                 }
                 if (status == 2) {
                     when {
-                        it > 1000 -> binding.imageFarm.setBackgroundResource(R.drawable.rich)
+                        it > 1000 -> binding.imageFarm.setBackgroundResource(R.drawable.richnew)
                         it < 0 -> {
                             binding.imageFarm.setBackgroundResource(R.drawable.rich3)
                             showWarning()

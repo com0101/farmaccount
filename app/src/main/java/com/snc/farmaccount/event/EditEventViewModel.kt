@@ -53,7 +53,7 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
         time.value = detail.value?.time
         tagName.value = detail.value?.tag
         getOverage()
-        Log.i("tag","${detail.value?.status}")
+        Log.i("tag","${infoInput.value}")
     }
 
 

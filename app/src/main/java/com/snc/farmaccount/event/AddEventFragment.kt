@@ -32,6 +32,7 @@ class AddEventFragment : Fragment() {
     val tag = ArrayList<Tag>()
     var REQUEST_EVALUATE = 0X110
     var inputCheck = 0
+    var isClick = false
 
     private val viewModel: AddEventViewModel by lazy {
         ViewModelProviders.of(this).get(AddEventViewModel::class.java)
@@ -95,6 +96,7 @@ class AddEventFragment : Fragment() {
         binding.imageSave.setOnClickListener {
             var dialog = Dialog(this.requireContext())
             var bindingCheck = DialogCheckBinding.inflate(layoutInflater)
+            isClick = true
             dialog.setContentView(bindingCheck.root)
             dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
             when {
@@ -117,16 +119,20 @@ class AddEventFragment : Fragment() {
                 }
 
             }
+
             if (viewModel.priceInput.value != null &&
                 viewModel.chooseTag.value != null &&
                 viewModel.infoInput.value != null) {
                 viewModel.addFirebase()
-
+                binding.imageSave.setImageResource(R.drawable.save_press)
+                binding.imageSave.isClickable = false
                 GlobalScope.launch(context = Dispatchers.Main) {
                     bindingCheck.checkContent.text = "新增完成!"
                     bindingCheck.imageCancel.visibility = View.GONE
                     bindingCheck.imageSave.visibility = View.GONE
                     dialog.show()
+                    binding.imageSave.setImageResource(R.drawable.save)
+                    binding.imageSave.isClickable = true
                     delay(1500)
                     dialog.dismiss()
                     findNavController()
@@ -162,6 +168,7 @@ class AddEventFragment : Fragment() {
         tagList()
         viewModel.mark.value = tag
         viewModel.getTag()
+
         // Inflate the layout for this fragment
         return binding.root
     }
@@ -171,6 +178,7 @@ class AddEventFragment : Fragment() {
         val qrCodeFragment = QrCodeFragment()
         qrCodeFragment.setTargetFragment(this, REQUEST_EVALUATE)
     }
+
 
     private fun warning() {
         var warning = Dialog(this.requireContext())
