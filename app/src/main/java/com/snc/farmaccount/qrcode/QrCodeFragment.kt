@@ -30,6 +30,10 @@ import java.text.SimpleDateFormat
 import android.content.DialogInterface
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Intent
+import android.os.Build
+import androidx.fragment.app.FragmentTransaction
+import com.snc.farmaccount.MainActivity
 import com.snc.farmaccount.databinding.DialogCheckBinding
 import com.snc.farmaccount.event.EditEventFragmentDirections
 import kotlinx.coroutines.Dispatchers
@@ -129,6 +133,10 @@ class QrCodeFragment : Fragment() {
 
         binding.surfaceView.setOnClickListener {
             codeScanner.startPreview()
+
+        }
+        binding.scanText.setOnClickListener {
+            restart()
         }
 
     }
@@ -178,7 +186,13 @@ class QrCodeFragment : Fragment() {
             }
         }
     }
-
+    private fun restart(){
+        var fragment = fragmentManager?.beginTransaction()
+        if (Build.VERSION.SDK_INT >= 26) {
+            fragment?.setReorderingAllowed(false)
+        }
+        fragment?.detach(this)?.attach(this)?.commit()
+    }
     private fun warning() {
         var warning = Dialog(this.requireContext())
         var bindingCheck = DialogCheckBinding.inflate(layoutInflater)

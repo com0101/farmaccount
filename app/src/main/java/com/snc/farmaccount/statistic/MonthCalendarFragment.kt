@@ -94,7 +94,7 @@ class MonthCalendarFragment : Fragment() {
                         var percent= Math.round((viewModel.eventByEatPrice.value!!.toFloat()/total)*100)
                         pieData.add(SliceValue(viewModel.eventByEatPrice.value!!.toFloat(),
                             context!!.getColor(R.color.yellow)
-                        ).setLabel("食: $percent %"))
+                        ).setLabel("食：$percent %"))
 
                     }
                     sumEvent.add(SumEvent(R.drawable.cutlery,getString(R.string.catalog_eat),false,viewModel.eventByEatPrice.value.toString()))
@@ -109,7 +109,7 @@ class MonthCalendarFragment : Fragment() {
                         var percent= Math.round((viewModel.eventByClothPrice.value!!.toFloat()/total)*100)
                         pieData.add(SliceValue(viewModel.eventByClothPrice.value!!.toFloat(),
                             context!!.getColor(R.color.yellow_2)
-                        ).setLabel("衣: $percent %"))
+                        ).setLabel("衣：$percent %"))
                     }
                 }
             })
@@ -122,7 +122,7 @@ class MonthCalendarFragment : Fragment() {
                         var percent= Math.round((viewModel.eventByLivePrice.value!!.toFloat()/total)*100)
                         pieData.add(SliceValue(viewModel.eventByLivePrice.value!!.toFloat(),
                             context!!.getColor(R.color.yellow_3)
-                        ).setLabel("住: $percent %"))
+                        ).setLabel("住：$percent %"))
                     }
                 }
             })
@@ -135,20 +135,21 @@ class MonthCalendarFragment : Fragment() {
                         var percent= Math.round((viewModel.eventByTrafficPrice.value!!.toFloat()/total)*100)
                         pieData.add(SliceValue(viewModel.eventByTrafficPrice.value!!.toFloat(),
                             context!!.getColor(R.color.yellow_4)
-                        ).setLabel("行: $percent %"))
+                        ).setLabel("行：$percent %"))
                     }
                 }
             })
 
             viewModel.eventByFunPrice.observe(this, Observer { it ->
                 Log.i("Sophie_fun", "$it")
+
                 it?.let {
                     sumEvent.add(SumEvent(R.drawable.kite,getString(R.string.catalog_fun),false,viewModel.eventByFunPrice.value.toString()))
                     if (it != 0) {
                         var percent= Math.round((viewModel.eventByFunPrice.value!!.toFloat()/total)*100)
                         pieData.add(SliceValue(viewModel.eventByFunPrice.value!!.toFloat(),
                             context!!.getColor(R.color.green)
-                            ).setLabel("樂: $percent %"))
+                            ).setLabel("樂：$percent %"))
                     }
                 }
             })
@@ -162,14 +163,14 @@ class MonthCalendarFragment : Fragment() {
                         var percent= Math.round((viewModel.eventByIncomePrice.value!!.toFloat()/total)*100)
                         pieData.add(SliceValue(viewModel.eventByIncomePrice.value!!.toFloat(),
                             context!!.getColor(R.color.green_2)
-                        ).setLabel("收入: $percent %"))
+                        ).setLabel("收入：$percent %"))
                     }
                     pieChart()
                 }
             })
 
             if (price == 0) {
-                pieData.add(SliceValue(100f, Color.argb(100,148,148,148)).setLabel("沒有費用喔"))
+                pieData.add(SliceValue(100f, Color.argb(100,148,148,148)).setLabel(""))
             }
         })
         binding.totalList.adapter = StatisticCatagoryAdapter(StatisticCatagoryAdapter.OnClickListener {
@@ -182,8 +183,18 @@ class MonthCalendarFragment : Fragment() {
 
     private fun pieChart() {
         val pieChartData = PieChartData(pieData)
+        var expand = total - viewModel.eventByIncomePrice.value!!
         pieChartData.setHasLabels(true).valueLabelTextSize = 14
+        pieChartData.valueLabelBackgroundColor = resources.getColor(R.color.expend_title)
         pieChartData.setHasCenterCircle(true)
+//        pieChartData.setHasLabelsOutside(true)
+        binding.dynamicArcView.isChartRotationEnabled = false
+        pieChartData.centerCircleScale = 0.5F
+        pieChartData.centerText2Typeface = resources.getFont(R.font.gen_normal)
+        pieChartData.centerText1Typeface = resources.getFont(R.font.gen_normal)
+        pieChartData.centerText1 = "$$expand"
+        pieChartData.centerText1FontSize = 28
+        pieChartData.centerText1Color = resources.getColor(R.color.expend_title)
         binding.dynamicArcView.pieChartData = pieChartData
     }
 

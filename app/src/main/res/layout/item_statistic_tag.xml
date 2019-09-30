@@ -18,14 +18,14 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginBottom="12dp"
                 app:layout_constraintBottom_toBottomOf="parent"
+                android:stateListAnimator="@null"
                 android:layout_marginTop="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"/>
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"/>
         <TextView
                 android:text="@string/statistic_tag"
-                android:layout_width="wrap_content"
+                android:layout_width="35dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/statistic_catalog"
                 android:textSize="16sp"
@@ -36,7 +36,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/image_catalog"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="2dp" android:textColor="@color/expend_title"/>
+                android:textColor="@color/expend_title"
+                android:gravity="center" android:layout_marginTop="2dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

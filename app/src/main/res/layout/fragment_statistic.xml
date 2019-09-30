@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".statistic.StatisticFragment">
+            tools:context=".statistic.StatisticFragment" android:background="@color/egg_yellow">
 
 
         <ImageView
@@ -63,19 +63,20 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:id="@+id/tag_list"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="16dp" android:layout_marginTop="5dp">
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="5dp"
+                android:foregroundGravity="center_horizontal">
         </androidx.recyclerview.widget.RecyclerView>
-
         <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 android:id="@+id/appBarLayout"
+                android:stateListAnimator="@null"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tag_list"
-        >
+                app:layout_constraintTop_toBottomOf="@+id/tag_list">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -100,7 +101,7 @@
                         android:layout_weight="0.2"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginTop="260dp" android:background="@drawable/arrow"/>
+                        android:layout_marginTop="276dp" android:background="@drawable/arrow"/>
                 <ImageView
                         android:id="@+id/image_arrow_right"
                         android:layout_width="26dp"
@@ -109,7 +110,7 @@
                         android:layout_weight="0.2"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginTop="260dp" android:background="@drawable/arrow"
+                        android:layout_marginTop="276dp" android:background="@drawable/arrow"
                         android:rotation="@dimen/arrow_rotate_180"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 

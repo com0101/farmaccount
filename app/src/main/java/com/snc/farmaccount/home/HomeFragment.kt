@@ -39,8 +39,6 @@ class HomeFragment : Fragment() {
     private var todayDayCode = ""
     private var currentDayCode = ""
 
-
-
     private val viewModel: DayViewModel by lazy {
         ViewModelProviders.of(this).get(DayViewModel::class.java)
     }
@@ -59,7 +57,6 @@ class HomeFragment : Fragment() {
         binding.viewModel = viewModel
         currentDayCode= viewModel.DATE_MODE
         todayDayCode = viewModel.DATE_MODE
-//        mainViewModel.getCircle()
         binding.dayViewpager.id = (System.currentTimeMillis() % 100000).toInt()
         setViewPager()
         refreshEvents()
@@ -78,11 +75,13 @@ class HomeFragment : Fragment() {
                 binding.buttonBudget.animate().translationY(180f).start() // move away
                 binding.buttonStatistic.animate().translationY(360f).start()
                 binding.buttonScan.animate().translationY(540f).start()
+                binding.buttonSetting.animate().rotation(360f).start()
                 true
             } else {
                 binding.buttonBudget.animate().translationY(0f).start()
                 binding.buttonStatistic.animate().translationY(0f).start()
                 binding.buttonScan.animate().translationY(0f).start()
+                binding.buttonSetting.animate().rotation(0f).start()
                 false
             }
         }
@@ -196,7 +195,6 @@ class HomeFragment : Fragment() {
         }
     }
 
-
     private fun setViewPager() {
         val codes = getDays(currentDayCode)
         val dailyAdapter = DayViewPagerAdapter(childFragmentManager, codes, viewModel)
@@ -268,7 +266,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun refreshEvents() {
-        (binding.dayViewpager.adapter as? DayViewPagerAdapter)?.updateCalendars(binding.dayViewpager.currentItem)
+        (binding.dayViewpager.adapter as DayViewPagerAdapter).updateCalendars(binding.dayViewpager.currentItem)
     }
 
     private fun restart(){

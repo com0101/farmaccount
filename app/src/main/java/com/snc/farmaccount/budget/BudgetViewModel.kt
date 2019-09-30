@@ -86,13 +86,13 @@ class BudgetViewModel: ViewModel() {
         }
 
         when {
-            postPrice.value?.toInt()!! > rangeEnd.value!!.toInt() -> {
-                newBudget.value?.budgetPrice = rangeEnd.value!!
+            postPrice.value?.toInt()!! > getBudgetType.value?.rangeEnd!!.toInt() -> {
+                newBudget.value?.budgetPrice = getBudgetType.value?.rangeEnd!!
                 amountCheck.value = true
                 Log.i("Sophie_amount", "${amountCheck.value}")
             }
-            postPrice.value?.toInt()!! < rangeStart.value!!.toInt() -> {
-                newBudget.value?.budgetPrice = rangeStart.value!!
+            postPrice.value?.toInt()!! < getBudgetType.value?.rangeStart!!.toInt() -> {
+                newBudget.value?.budgetPrice = getBudgetType.value?.rangeStart!!
                 amountCheck.value = false
                 Log.i("Sophie_amount", "${amountCheck.value}")
             }

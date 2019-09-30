@@ -111,13 +111,12 @@ class EditEventFragment : Fragment() {
                 binding.imageSave.setImageResource(R.drawable.save_press)
                 binding.imageSave.isClickable = false
                 GlobalScope.launch(context = Dispatchers.Main) {
-                    delay(1000)
+                    binding.imageSave.setImageResource(R.drawable.save)
+                    binding.imageSave.isClickable = true
                     bindingCheck.checkContent.text = "編輯完成!"
                     bindingCheck.imageCancel.visibility = View.GONE
                     bindingCheck.imageSave.visibility = View.GONE
                     dialog.show()
-                    binding.imageSave.setImageResource(R.drawable.save)
-                    binding.imageSave.isClickable = true
                     delay(1000)
                     dialog.dismiss()
                     findNavController()
@@ -132,7 +131,7 @@ class EditEventFragment : Fragment() {
                 when {
                     viewModel.priceInput.value != viewModel.detail.value?.price -> checkEdit()
                     viewModel.infoInput.value != viewModel.detail.value?.description -> checkEdit()
-                    viewModel.tagName.value != viewModel.detail.value?.tag -> checkEdit()
+                    viewModel.chooseTag.value?.tag_name != viewModel.detail.value?.tag -> checkEdit()
                     viewModel.priceInput.value == viewModel.detail.value?.price &&
                     viewModel.infoInput.value == viewModel.detail.value?.description &&
                     viewModel.tagName.value == viewModel.detail.value?.tag ->
@@ -142,7 +141,6 @@ class EditEventFragment : Fragment() {
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
-
         tagList()
         viewModel.mark.value = tag
         viewModel.getTag()
