@@ -88,6 +88,7 @@ class MonthCalendarFragment : Fragment() {
 
         viewModel.eventByTotalPrice.observe(this, Observer { price ->
             total = price
+            Log.i("Sophie_ttal","$total")
             viewModel.eventByEatPrice.observe(this, Observer { it ->
                 it?.let {
                     if (it != 0) {
@@ -183,7 +184,8 @@ class MonthCalendarFragment : Fragment() {
 
     private fun pieChart() {
         val pieChartData = PieChartData(pieData)
-        var expand = total - viewModel.eventByIncomePrice.value!!
+        var expand = total - 2*viewModel.eventByIncomePrice.value!!
+        Log.i("Sophie_expand","$total+${viewModel.eventByIncomePrice.value!!}")
         pieChartData.setHasLabels(true).valueLabelTextSize = 14
         pieChartData.valueLabelBackgroundColor = resources.getColor(R.color.expend_title)
         pieChartData.setHasCenterCircle(true)

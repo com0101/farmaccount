@@ -60,16 +60,16 @@ class DetailViewModel(product: Event, app: Application) : AndroidViewModel(app) 
                                     "DocumentSnapshot added with ID: $documentReference"
                                 )
                                 when {
-                                    thisDate.value!!.toInt() in (lastTime + 1) until (futureTime-1) -> {
-                                        if (time.value!!.toInt() in (lastTime + 1) until (futureTime-1)) {
+                                    thisDate.value!!.toInt() in lastTime  until futureTime -> {
+                                        if (time.value!!.toInt() in lastTime until futureTime) {
                                             price = detail.value!!.price!!.toLong()
                                             updateOverage()
                                             Log.d("Sophie_budget_over",
                                                 "in!")
                                         }
                                     }
-                                    thisDate.value!!.toInt() in (startTime + 1) until (endTime-1) -> {
-                                        if (time.value!!.toInt() in (startTime + 1) until (endTime-1)) {
+                                    thisDate.value!!.toInt() in startTime until endTime -> {
+                                        if (time.value!!.toInt() in startTime until endTime) {
                                             price = detail.value!!.price!!.toLong()
                                             updateOverage()
                                             Log.d("Sophie_budget_over",
@@ -119,10 +119,10 @@ class DetailViewModel(product: Event, app: Application) : AndroidViewModel(app) 
                         val year = c.get(Calendar.YEAR)
                         val monthly = c.get(Calendar.MONTH)
                         val day = c.get(Calendar.DATE)
-                        val thisMonth = Date(year-1900, monthly, circleDay.value!!.minus(1))
-                        val nextMonth = Date(year-1900, monthly+1, circleDay.value!!)
-                        val lastMonth = Date(year-1900, monthly-1,circleDay.value!!.minus(1))
-                        val futureDay = Date(year-1900, monthly, circleDay.value!!)
+                        val thisMonth = Date(year-1900, monthly, circleDay.value!!)
+                        val nextMonth = Date(year-1900, monthly+1, circleDay.value!!.minus(1))
+                        val lastMonth = Date(year-1900, monthly-1,circleDay.value!!)
+                        val futureDay = Date(year-1900, monthly, circleDay.value!!.minus(1))
                         val today = Date(year-1900, monthly, day)
                         val timeformat = SimpleDateFormat("yyyyMMdd")
                         startTime = timeformat.format(thisMonth).toInt()

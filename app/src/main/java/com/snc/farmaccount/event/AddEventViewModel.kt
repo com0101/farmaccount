@@ -48,7 +48,7 @@ class AddEventViewModel : ViewModel() {
     init {
         week()
         getOverage()
-        Log.i("Sophie_today","${today.value}")
+        Log.i("Sophie_today","addevent-${today.value}")
 
     }
 
@@ -88,34 +88,33 @@ class AddEventViewModel : ViewModel() {
                     .addOnSuccessListener {document ->
                         if (document != null) {
                             circleDay.value = document.data?.get("circleDay")!!.toInt()
-                            val thisMonth = Date(year-1900, month, circleDay.value!!.minus(1))
-                            val nextMonth = Date(year-1900, month+1, circleDay.value!!)
-                            val lastMonth = Date(year-1900, month-1,circleDay.value!!.minus(1))
-                            val futureDay = Date(year-1900, month, circleDay.value!!)
+                            val thisMonth = Date(year-1900, month, circleDay.value!!)
+                            val nextMonth = Date(year-1900, month+1, circleDay.value!!.minus(1))
+                            val lastMonth = Date(year-1900, month-1,circleDay.value!!)
+                            val futureDay = Date(year-1900, month, circleDay.value!!.minus(1))
                             val timeformat = SimpleDateFormat("yyyyMMdd")
                             startTime = timeformat.format(thisMonth).toInt()
                             endTime = timeformat.format(nextMonth).toInt()
                             lastTime = timeformat.format(lastMonth).toInt()
                             futureTime = timeformat.format(futureDay).toInt()
                             Log.d("Sophie_budget_time",
-                                "$startTime + $endTime + $lastTime + $futureTime +${time.value}")
+                                "$startTime + $endTime + $lastTime + $futureTime +${time.value}+${thisDate.value}")
                         }
 
                         when {
-                            thisDate.value!! in (lastTime + 1) until (futureTime-1) -> {
-                                if (time.value!!.toInt() in (lastTime + 1) until (futureTime-1)) {
+                            thisDate.value!! in lastTime until futureTime -> {
+                                if (time.value!!.toInt() in lastTime until futureTime) {
                                     price = priceInput.value!!.toLong()
                                     updateOverage()
                                     Log.d("Sophie_budget_over",
-                                        "in!")
+                                        "$lastTime+$futureTime")
                                 }
                             }
-                            thisDate.value!! in (startTime + 1) until (endTime-1) -> {
-                                if (time.value!!.toInt() in (startTime + 1) until (endTime-1)) {
+                            thisDate.value!! in startTime until endTime -> {
+                                if (time.value!!.toInt() in startTime until endTime) {
                                     price = priceInput.value!!.toLong()
                                     updateOverage()
-                                    Log.d("Sophie_budget_over",
-                                        "inagain!")
+                                    Log.d("Sophie_budget_over", "$startTime+$endTime")
                                 }
                             }
                             else -> {

@@ -84,29 +84,23 @@ class MainViewModel: ViewModel() {
                 .whereEqualTo("date","$DATE_MODE")
                 .get()
                 .addOnSuccessListener { documents ->
-                    if (documents != null) {
-                        Log.d("Sophie", "DocumentSnapshot data: ${documents.documents}")
-                        if (documents.documents.isEmpty()) {
-                            totalPrice.value = 0
-
-                        } else {
-                            for (document in documents) {
-                                Log.d("Sophie", "${document.id} => ${document.data}")
-                                tagStatus.value = document.data["status"]?.toBoolean()
-
-                                if (tagStatus.value == false) {
-                                  allPrice = document.data["price"]!!.toString().toLong()
-                                }
-                                if (tagStatus.value == true)  {
-                                  allPrice = 0-document.data["price"]!!.toString().toLong()
-                                }
-                                priceList.add(allPrice)
-                                Log.i("Sophie_minus", "$priceList")
-                                totalPrice.value = priceList.sum()
-                                Log.d("Sophie_list", "${totalPrice.value}")
-                            }
+                    for (document in documents) {
+                        Log.d("Sophie", "${document.id} => ${document.data}")
+                        tagStatus.value = document.data["status"]?.toBoolean()
+                        if (tagStatus.value == false) {
+                            allPrice = document.data["price"]!!.toString().toLong()
                         }
-
+                        if (tagStatus.value == true)  {
+                            allPrice = 0-document.data["price"]!!.toString().toLong()
+                        }
+                        priceList.add(allPrice)
+                        if (priceList.isEmpty()) {
+                            totalPrice.value = 0
+                        } else {
+                            Log.i("Sophie_minus", "$priceList")
+                            totalPrice.value = priceList.sum()
+                        }
+                        Log.d("Sophie_list_same", "${totalPrice.value}")
                         db.collection("User").document("${UserManager.userToken}").collection("Budget")
                             .get()
                             .addOnCompleteListener { task ->
@@ -114,16 +108,11 @@ class MainViewModel: ViewModel() {
                                     for (document in task.result!!) {
                                         Log.d("Sophie_db", "${document.id} => ${document.data}")
                                         if (document.data != null) {
-                                            Log.d("Sophie_list", "${totalPrice.value}")
                                             overagePrice.value = (document.data["budgetPrice"]!!.toInt()- totalPrice.value!!).toString()
-                                            Log.d("Sophie_ overagePrice.value", "${overagePrice.value}")
                                             db.collection("User").document("${UserManager.userToken}").collection("Budget")
                                                 .document("${UserManager.userToken}")
                                                 .update("overage", "${overagePrice.value}")
-                                                .addOnSuccessListener {
-                                                    Log.d("Sophie_list", "${overagePrice.value}")
-                                                    Log.d("Sophie_budget_edit", "DocumentSnapshot successfully written!")
-                                                }
+                                                .addOnSuccessListener { Log.d("Sophie_budget_edit", "DocumentSnapshot successfully written!") }
                                                 .addOnFailureListener { e -> Log.w("Sophie_budget_edit", "Error writing document", e) }
                                         } else {
                                             Log.d("Sophie_db", "no data")
