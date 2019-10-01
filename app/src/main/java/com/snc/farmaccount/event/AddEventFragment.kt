@@ -179,7 +179,6 @@ class AddEventFragment : Fragment() {
         qrCodeFragment.setTargetFragment(this, REQUEST_EVALUATE)
     }
 
-
     private fun warning() {
         var warning = Dialog(this.requireContext())
         var bindingCheck = DialogCheckBinding.inflate(layoutInflater)
