@@ -20,7 +20,6 @@ class DetailViewModel(product: Event, app: Application) : AndroidViewModel(app) 
     var lastTime = 0
     var futureTime = 0
     var price = 0L
-    var infoInput = MutableLiveData<String>()
     var overagePrice = MutableLiveData<String>()
     var circleDay = MutableLiveData<Int>()
     var time = MutableLiveData<Long>()
@@ -34,7 +33,6 @@ class DetailViewModel(product: Event, app: Application) : AndroidViewModel(app) 
 
     init {
         _detail.value = product
-        infoInput.value = detail.value?.description
         time.value = detail.value?.time
         getOverage()
     }
@@ -50,7 +48,7 @@ class DetailViewModel(product: Event, app: Application) : AndroidViewModel(app) 
                         Log.d("Sophie_db_id", "${document.id} => ${document.data}")
                         db.collection("User").document("${UserManager.userToken}")
                             .collection("Event")
-                            .document("${document.id}")
+                            .document(document.id)
                             .delete()
                             .addOnSuccessListener { documentReference ->
                                 Log.d(
@@ -116,7 +114,6 @@ class DetailViewModel(product: Event, app: Application) : AndroidViewModel(app) 
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     for (document in task.result!!) {
-                        Log.d("Sophie_db", "${document.id} => ${document.data["overage"]}")
                         overagePrice.value = document.data["overage"].toString()
                         circleDay.value = document.data["cycleDay"]?.toInt()
                         timeFormat()

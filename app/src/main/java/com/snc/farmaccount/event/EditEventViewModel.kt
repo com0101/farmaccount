@@ -33,7 +33,7 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
     var time = MutableLiveData<Long>()
     var thisDate = MutableLiveData<Long>()
     var cycleDay = MutableLiveData<Int>()
-    var tagStatus = MutableLiveData<Boolean>()
+    var isRevenue = MutableLiveData<Boolean>()
     private val db = FirebaseFirestore.getInstance()
     private val currentTimestamp = System.currentTimeMillis()
     private val calendar = Calendar.getInstance()
@@ -63,11 +63,11 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
 
         if (chooseTag.value != null) {
             tagName.value = chooseTag.value?.tag_name
-            tagStatus.value = chooseTag.value?.tag_status
+            isRevenue.value = chooseTag.value?.tag_status
             category.value = chooseTag.value?.tag_catalog
         } else {
             tagName.value = detail.value?.tag
-            tagStatus.value = detail.value?.status
+            isRevenue.value = detail.value?.status
             category.value = detail.value?.catalog
         }
 
@@ -77,7 +77,7 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
         event["description"] = infoInput.value!!
         event["date"] = today.value!!
         event["time"] = time.value!!
-        event["status"] = tagStatus.value?:true
+        event["status"] = isRevenue.value?:true
         event["month"] = month
         event["catalog"] = category.value.toString()
 
@@ -91,7 +91,7 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
                         Log.d("Sophie_db", "${document.id} => ${document.data}")
                         db.collection("User").document("${UserManager.userToken}")
                             .collection("Event")
-                            .document("${document.id}")
+                            .document(document.id)
                             .update(event)
                             .addOnSuccessListener { documentReference ->
                                 Log.d(
@@ -124,8 +124,8 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
     }
 
     private fun compareWithPrice() {
-        var overageInt = overagePrice.value?.toInt()
-        if (tagStatus.value != detail.value?.status) {
+        val overageInt = overagePrice.value?.toInt()
+        if (isRevenue.value != detail.value?.status) {
 
             if (priceInput.value != detail.value?.price) {
 
@@ -152,7 +152,7 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
             if (priceInput.value != detail.value?.price) {
 
                 priceChange = priceInput.value!!.toLong()-detail.value?.price!!.toLong()
-                if (tagStatus.value == true) {
+                if (isRevenue.value == true) {
                     overagePrice.value = (overageInt?.plus(priceChange)).toString()
                 } else {
                     overagePrice.value = (overageInt?.minus(priceChange)).toString()
@@ -215,7 +215,7 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
         thisDate.value = timeFormat.format(today).toLong()
     }
 
-    fun getTag() {
+    fun setTag() {
         _tag.value = mark.value
     }
 

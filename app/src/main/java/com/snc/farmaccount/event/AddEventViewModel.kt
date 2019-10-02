@@ -50,7 +50,7 @@ class AddEventViewModel : ViewModel() {
         get() = _tag
 
     init {
-        week()
+        setCurrentDate()
         getOverage()
     }
 
@@ -86,7 +86,7 @@ class AddEventViewModel : ViewModel() {
             }
     }
 
-    fun getBudget() {
+    private fun getBudget() {
         db.collection("User").document("${UserManager.userToken}")
             .collection("Budget")
             .document("${UserManager.userToken}")
@@ -125,7 +125,7 @@ class AddEventViewModel : ViewModel() {
     }
 
     private fun updateOverage() {
-        var overageInt = overagePrice.value?.toInt()
+        val overageInt = overagePrice.value?.toInt()
         if (chooseTag.value?.tag_status == true) {
             overagePrice.value = (overageInt?.plus(price)).toString()
         } else {
@@ -162,7 +162,7 @@ class AddEventViewModel : ViewModel() {
     }
 
     @SuppressLint("SimpleDateFormat")
-    private fun week() {
+    private fun setCurrentDate() {
         year = calendar.get(Calendar.YEAR)
         month = calendar.get(Calendar.MONTH)
         day = calendar.get(Calendar.DAY_OF_MONTH)

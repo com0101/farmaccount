@@ -76,7 +76,7 @@ class AddEventFragment : Fragment() {
                 codeViewModel.getTime.value = null
             }
         })
-        
+
         binding.tagList.adapter = TagAdapter(TagAdapter.OnClickListener {
             viewModel.chooseTag.value = it
             Log.i("Sophie_tag","$it")

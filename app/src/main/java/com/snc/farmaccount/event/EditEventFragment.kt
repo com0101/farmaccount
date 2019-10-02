@@ -137,7 +137,7 @@ class EditEventFragment : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
         tagList()
         viewModel.mark.value = tag
-        viewModel.getTag()
+        viewModel.setTag()
 
         return binding.root
     }

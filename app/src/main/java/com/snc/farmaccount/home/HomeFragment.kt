@@ -1,7 +1,7 @@
 package com.snc.farmaccount.home
 
 
-import android.app.AlertDialog
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
-import com.snc.farmaccount.helper.NavigationListener
 import com.snc.farmaccount.R
 import com.snc.farmaccount.databinding.FragmentHomeBinding
 import com.snc.farmaccount.helper.Format
@@ -19,10 +18,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 import android.app.DatePickerDialog
 import android.app.Dialog
-import android.view.animation.TranslateAnimation
 import com.snc.farmaccount.MainViewModel
 import com.snc.farmaccount.databinding.DialogCheckBinding
-import com.snc.farmaccount.event.EditEventFragmentDirections
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -34,10 +31,14 @@ import com.snc.farmaccount.MainActivity
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
+    private lateinit var warningDialog: Dialog
+    private lateinit var bindingCheck: DialogCheckBinding
     private val PREFILLED_DAYS = 251
     private var defaultDailyPage = 0
     private var todayDayCode = ""
     private var currentDayCode = ""
+    private val calendar = Calendar.getInstance()
+    private var buttonSense = false
 
     private val viewModel: DayViewModel by lazy {
         ViewModelProviders.of(this).get(DayViewModel::class.java)
@@ -52,17 +53,15 @@ class HomeFragment : Fragment() {
     ): View? {
 
         binding = FragmentHomeBinding.inflate(inflater)
-
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-        currentDayCode= viewModel.DATE_MODE
-        todayDayCode = viewModel.DATE_MODE
+        currentDayCode= viewModel.dateMode
+        todayDayCode = viewModel.dateMode
         binding.dayViewpager.id = (System.currentTimeMillis() % 100000).toInt()
         setViewPager()
         refreshEvents()
         arrowButtons()
         viewModel.getOverage()
-        var buttonSense = false
 
         mainViewModel.activityRestart.observe(this, androidx.lifecycle.Observer {
             it.let {
@@ -87,19 +86,16 @@ class HomeFragment : Fragment() {
         }
 
         binding.buttonBudget.setOnClickListener {
-            Log.i("Sophie_click","click")
             findNavController()
                 .navigate(R.id.action_global_budgetFragment)
         }
 
         binding.buttonStatistic.setOnClickListener {
-            Log.i("Sophie_click","click")
             findNavController()
                 .navigate(R.id.action_global_statisticFragment)
         }
 
         binding.buttonScan.setOnClickListener {
-            Log.i("Sophie_click","click")
             findNavController()
                 .navigate(R.id.action_global_qrCodeFragment)
         }
@@ -110,7 +106,7 @@ class HomeFragment : Fragment() {
         }
 
         binding.buttonDatePicker.setOnClickListener {
-            showDialog()
+            datePickerDialog()
         }
 
         binding.buttonDateToday.setOnClickListener {
@@ -119,10 +115,6 @@ class HomeFragment : Fragment() {
 
         viewModel.overagePrice.observe(this, androidx.lifecycle.Observer {
             binding.textBudget.text = it
-        })
-
-        viewModel.date.observe(this, androidx.lifecycle.Observer {
-
         })
 
         viewModel.postPrice.observe(this, androidx.lifecycle.Observer {
@@ -166,32 +158,18 @@ class HomeFragment : Fragment() {
     }
 
     private fun showWarning() {
-        var dialog = Dialog(this.requireContext())
-        var bindingCheck = DialogCheckBinding.inflate(layoutInflater)
-        dialog.setContentView(bindingCheck.root)
-        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        warningDialog = Dialog(this.requireContext())
+        bindingCheck = DialogCheckBinding.inflate(layoutInflater)
+        warningDialog.setContentView(bindingCheck.root)
+        warningDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
         bindingCheck.checkContent.text = "這個月透支了，農場被查封，宣告破產!!"
         bindingCheck.imageCancel.visibility = View.GONE
         bindingCheck.imageSave.visibility = View.GONE
-        GlobalScope.launch(context = Dispatchers.Main) {
-            dialog.show()
-            delay(2500)
-            dialog.dismiss()
-        }
-    }
 
-    private fun note() {
-        var dialog = Dialog(this.requireContext())
-        var bindingCheck = DialogCheckBinding.inflate(layoutInflater)
-        dialog.setContentView(bindingCheck.root)
-        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        bindingCheck.checkContent.text = "跳至今日已完成"
-        bindingCheck.imageCancel.visibility = View.GONE
-        bindingCheck.imageSave.visibility = View.GONE
         GlobalScope.launch(context = Dispatchers.Main) {
-            dialog.show()
-            delay(1000)
-            dialog.dismiss()
+            warningDialog.show()
+            delay(2500)
+            warningDialog.dismiss()
         }
     }
 
@@ -206,12 +184,12 @@ class HomeFragment : Fragment() {
                 override fun onPageScrollStateChanged(state: Int) {
                 }
 
-                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                override fun onPageScrolled(position: Int, positionOffset: Float,
+                                            positionOffsetPixels: Int) {
                 }
 
                 override fun onPageSelected(position: Int) {
                     currentDayCode = codes[position]
-                    Log.i("Sophie_position","${viewModel.date.value}")
                 }
             })
             currentItem = defaultDailyPage
@@ -228,7 +206,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun arrowButtons(){
-
         binding.imageArrowRight.setOnClickListener {
             binding.dayViewpager.currentItem = binding.dayViewpager.currentItem + 1
         }
@@ -236,37 +213,34 @@ class HomeFragment : Fragment() {
         binding.imageArrowLeft.setOnClickListener {
             binding.dayViewpager.currentItem = binding.dayViewpager.currentItem - 1
         }
-
     }
-
 
     private fun goToToday() {
         currentDayCode = todayDayCode
         setViewPager()
-//        note()
     }
 
-    private fun showDialog() {
-        val calendar = Calendar.getInstance()
-        val simpledateformat = SimpleDateFormat("EEEE")
-        val datePickdialog = DatePickerDialog(
+    @SuppressLint("SimpleDateFormat")
+    private fun datePickerDialog() {
+        val simpleDateFormat = SimpleDateFormat("EEEE")
+        val datePickerDialog = DatePickerDialog(
             this.context!!, R.style.my_dialog_theme,
             DatePickerDialog.OnDateSetListener { _, year, month, day ->
                 // Display Selected date in Toast
                 val date = Date(year, month, day-1)
-                val dayOfWeek = simpledateformat.format(date)
+                val dayOfWeek = simpleDateFormat.format(date)
                 currentDayCode = "$year.${month+1}.$day ($dayOfWeek)"
                 setViewPager()
-                Log.i("Sophie_date","$year.$month.$day ($dayOfWeek)")
             },
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH))
-        datePickdialog.show()
+        datePickerDialog.show()
     }
 
     private fun refreshEvents() {
-        (binding.dayViewpager.adapter as DayViewPagerAdapter).updateCalendars(binding.dayViewpager.currentItem)
+        (binding.dayViewpager.adapter as DayViewPagerAdapter)
+            .updateCalendars(binding.dayViewpager.currentItem)
     }
 
     private fun restart(){

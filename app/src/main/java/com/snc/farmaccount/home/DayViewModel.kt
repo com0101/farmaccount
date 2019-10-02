@@ -16,20 +16,20 @@ import kotlin.collections.ArrayList
 
 class DayViewModel: ViewModel() {
 
-    private var year: Int = 0
-    private var month:Int = 0
-    private var day:Int = 0
-    private var week:Int = 0
-    private var weekName = ""
-    private var pickDate = MutableLiveData<String>()
-    lateinit var firebaseEvent : Event
+    var year = 0
+    var month = 0
+    var day = 0
+    var week = 0
+    var weekName = ""
+    var dateMode = ""
     var currentDate = MutableLiveData<String>()
-    var date = MutableLiveData<String>()
     var postPrice = MutableLiveData<Long>()
     var overagePrice = MutableLiveData<String>()
     var farmStatus = MutableLiveData<Int>()
-    var dataList = ArrayList<Event>()
-    var DATE_MODE = ""
+    var eventList = ArrayList<Event>()
+    private val calendar = Calendar.getInstance()
+    private val db = FirebaseFirestore.getInstance()
+    lateinit var firebaseEvent : Event
 
     private val _event = MutableLiveData<List<Event>>()
     val event: LiveData<List<Event>>
@@ -40,44 +40,19 @@ class DayViewModel: ViewModel() {
         get() = _navigateToDetail
 
     init {
-        pickDate
-        week()
+        setCurrentDate()
         getOrderBy()
-//        getBudget()
-
     }
 
-    val getFirebase: LiveData<List<Event>> = Transformations.map(event) { it ->
+    val sortByTime: LiveData<List<Event>> = Transformations.map(event) { it ->
         it.filter {
-            it.date == "${pickDate.value}"
+            it.date == "${currentDate.value}"
         }
     }
 
-//    fun getFirebase() {
-//        val db = FirebaseFirestore.getInstance()
-//        db.collection("User").document("${UserManager.userToken}").collection("Event")
-//            .whereEqualTo("date","${pickDate.value}")
-//            .get()
-//            .addOnCompleteListener { task ->
-//                if (task.isSuccessful) {
-//                    for (document in task.result!!) {
-//                        Log.d("Sophie_db", "${document.id} => ${document.data}")
-//                        if (document.data != null) {
-//                            firebaseEvent = document.toObject(Event::class.java)
-//                            dataList.add(firebaseEvent)
-//                        } else {
-//                            Log.d("Sophie_db", "no data")
-//                        }
-//                    }
-//                }
-//                _event.value = dataList
-//                Log.w("Sophie_db_list", "$dataList")
-//            }
-//    }
-
-    fun getOrderBy() {
-        val db = FirebaseFirestore.getInstance()
-        db.collection("User").document("${UserManager.userToken}").collection("Event")
+    private fun getOrderBy() {
+        db.collection("User").document("${UserManager.userToken}")
+            .collection("Event")
             .orderBy("id", Query.Direction.DESCENDING)
             .get()
             .addOnCompleteListener { task ->
@@ -86,23 +61,21 @@ class DayViewModel: ViewModel() {
                         Log.d("Sophie_db", "${document.id} => ${document.data}")
                         if (document.data != null) {
                             firebaseEvent = document.toObject(Event::class.java)
-                            dataList.add(firebaseEvent)
-                            Log.d("Sophie_order", "no data")
+                            eventList.add(firebaseEvent)
                         } else {
                             Log.d("Sophie_db", "no data")
                         }
                     }
                 }
-                _event.value = dataList
-                Log.w("Sophie_db_list", "$dataList")
+                _event.value = eventList
+                Log.w("Sophie_db_list", "$eventList")
             }
     }
 
-
     fun getOverage() {
-        val db = FirebaseFirestore.getInstance()
         val decimalFormat = DecimalFormat("#,###")
-        db.collection("User").document("${UserManager.userToken}").collection("Budget")
+        db.collection("User").document("${UserManager.userToken}")
+            .collection("Budget")
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -116,16 +89,12 @@ class DayViewModel: ViewModel() {
             }
     }
 
-    fun getCurrentDate() {
-        pickDate.value = currentDate.value
-    }
 
-    private fun week() {
-        val c = Calendar.getInstance()
-        year = c.get(Calendar.YEAR)
-        month = c.get(Calendar.MONTH)
-        day = c.get(Calendar.DAY_OF_MONTH)
-        week = c.get(Calendar.DAY_OF_WEEK)
+    private fun setCurrentDate() {
+        year = calendar.get(Calendar.YEAR)
+        month = calendar.get(Calendar.MONTH)
+        day = calendar.get(Calendar.DAY_OF_MONTH)
+        week = calendar.get(Calendar.DAY_OF_WEEK)
 
         if (week==1) {
             weekName = "星期日"
@@ -149,8 +118,7 @@ class DayViewModel: ViewModel() {
             weekName = "星期六"
         }
 
-        DATE_MODE = "$year.${month+1}.$day ($weekName)"
-//        Log.i("today","$dayMode")
+        dateMode = "$year.${month+1}.$day ($weekName)"
 
     }
 

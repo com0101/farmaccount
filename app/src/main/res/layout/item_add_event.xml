@@ -5,6 +5,7 @@
 
     <data>
         <variable name="event" type="com.snc.farmaccount.object.Event"/>
+        <variable name="viewModel" type="com.snc.farmaccount.home.DayViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

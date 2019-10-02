@@ -53,7 +53,7 @@
                     android:overScrollMode="never"
                     tools:listitem="@layout/item_add_event"
                     tools:itemCount="7"
-                    app:listEvent="@{viewModel.getFirebase}"
+                    app:listEvent="@{viewModel.sortByTime}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -61,7 +61,8 @@
                     app:layout_constraintTop_toBottomOf="@+id/date"
                     android:layout_marginTop="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintVertical_bias="0.0" android:layout_marginStart="8dp"
+                    app:layout_constraintVertical_bias="0.0"
+                    android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp">
             </androidx.recyclerview.widget.RecyclerView>
             <TextView
