@@ -87,11 +87,11 @@ class AddEventViewModel : ViewModel() {
                     .get()
                     .addOnSuccessListener {document ->
                         if (document != null) {
-                            circleDay.value = document.data?.get("cycleDay")!!.toInt()
-                            val thisMonth = Date(year-1900, month, circleDay.value!!)
-                            val nextMonth = Date(year-1900, month+1, circleDay.value!!.minus(1))
-                            val lastMonth = Date(year-1900, month-1,circleDay.value!!)
-                            val futureDay = Date(year-1900, month, circleDay.value!!.minus(1))
+                            circleDay.value = document.data?.get("cycleDay")?.toInt()
+                            val thisMonth = Date(year-1900, month, circleDay.value?:0)
+                            val nextMonth = Date(year-1900, month+1, circleDay.value?:0.minus(1))
+                            val lastMonth = Date(year-1900, month-1,circleDay.value?:0)
+                            val futureDay = Date(year-1900, month, circleDay.value?:0.minus(1))
                             val timeformat = SimpleDateFormat("yyyyMMdd")
                             startTime = timeformat.format(thisMonth).toInt()
                             endTime = timeformat.format(nextMonth).toInt()

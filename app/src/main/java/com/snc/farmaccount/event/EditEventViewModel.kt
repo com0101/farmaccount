@@ -20,7 +20,7 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
     var endTime = 0
     var lastTime = 0
     var futureTime = 0
-    var price = 0L
+    var priceChange = 0L
     var mark = MutableLiveData<List<Tag>>()
     var chooseTag = MutableLiveData<Tag>()
     var priceInput = MutableLiveData<String>()
@@ -35,8 +35,9 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
     var tagStatus = MutableLiveData<Boolean>()
     private val db = FirebaseFirestore.getInstance()
     private val currentTimestamp = System.currentTimeMillis()
-    
-    
+    private val calendar = Calendar.getInstance()
+    val event = HashMap<String,Any>()
+
     private val _tag = MutableLiveData<List<Tag>>()
     val tag: LiveData<List<Tag>>
         get() = _tag
@@ -58,7 +59,6 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
     }
 
     fun editEvent() {
-        val event = HashMap<String,Any>()
 
         if (chooseTag.value != null) {
             tagName.value = chooseTag.value?.tag_name
@@ -69,7 +69,7 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
             tagStatus.value = detail.value?.status
             category.value = detail.value?.catalog
         }
-        
+
         event["id"] = currentTimestamp
         event["price"] = priceInput.value!!
         event["tag"] = tagName.value.toString()
@@ -79,7 +79,6 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
         event["status"] = tagStatus.value?:true
         event["month"] = month
         event["catalog"] = category.value.toString()
-        // Add a new document with a generated ID
 
         db.collection("User").document("${UserManager.userToken}")
             .collection("Event")
@@ -98,19 +97,7 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
                                     "Sophie_update",
                                     "DocumentSnapshot added with ID: $documentReference"
                                 )
-                                when {
-                                    thisDate.value!!.toInt() in lastTime until futureTime -> {
-                                       if (time.value!!.toInt() in lastTime until futureTime) {
-                                           updateOverage()
-                                       }
-
-                                    }
-                                    thisDate.value!!.toInt() in startTime until endTime -> {
-                                       if (time.value!!.toInt() in startTime until endTime) {
-                                           updateOverage()
-                                       }
-                                    }
-                                }
+                                compareWithCycle()
                             }
                             .addOnFailureListener { e ->
                                 Log.w("Sophie_add_fail", "Error adding document", e)
@@ -120,39 +107,64 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
             }
     }
 
-    private fun updateOverage() {
+    private fun compareWithCycle() {
+        when {
+            thisDate.value!!.toInt() in lastTime until futureTime -> {
+                if (time.value!!.toInt() in lastTime until futureTime) {
+                    updateOverage()
+                }
+            }
+            thisDate.value!!.toInt() in startTime until endTime -> {
+                if (time.value!!.toInt() in startTime until endTime) {
+                    updateOverage()
+                }
+            }
+        }
+    }
+
+    private fun compareWithPrice() {
         var overageInt = overagePrice.value?.toInt()
         if (tagStatus.value != detail.value?.status) {
 
             if (priceInput.value != detail.value?.price) {
-                price = (detail.value?.price!!.toLong())*2+
+
+                priceChange = (detail.value?.price!!.toLong())*2+
                         (priceInput.value!!.toLong()-detail.value?.price!!.toLong())
                 if (chooseTag.value?.tag_status == true) {
-                    overagePrice.value = (overageInt?.plus(price)).toString()
+                    overagePrice.value = (overageInt?.plus(priceChange)).toString()
                 } else {
-                    overagePrice.value = (overageInt?.minus(price)).toString()
+                    overagePrice.value = (overageInt?.minus(priceChange)).toString()
                 }
+
             } else {
-                price = priceInput.value!!.toLong()
+
+                priceChange = priceInput.value!!.toLong()
                 if (chooseTag.value?.tag_status == true) {
-                    overagePrice.value = (overageInt?.plus(price*2)).toString()
+                    overagePrice.value = (overageInt?.plus(priceChange*2)).toString()
                 } else {
-                    overagePrice.value = (overageInt?.minus(price*2)).toString()
+                    overagePrice.value = (overageInt?.minus(priceChange*2)).toString()
                 }
+
             }
 
         } else {
             if (priceInput.value != detail.value?.price) {
-                price = priceInput.value!!.toLong()-detail.value?.price!!.toLong()
+
+                priceChange = priceInput.value!!.toLong()-detail.value?.price!!.toLong()
                 if (tagStatus.value == true) {
-                    overagePrice.value = (overageInt?.plus(price)).toString()
+                    overagePrice.value = (overageInt?.plus(priceChange)).toString()
                 } else {
-                    overagePrice.value = (overageInt?.minus(price)).toString()
+                    overagePrice.value = (overageInt?.minus(priceChange)).toString()
                 }
+
             } else {
                 overagePrice.value = overageInt.toString()
             }
         }
+    }
+
+    private fun updateOverage() {
+        compareWithPrice()
         db.collection("User").document("${UserManager.userToken}")
             .collection("Budget")
             .document("${UserManager.userToken}")
@@ -166,7 +178,6 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
             .addOnFailureListener { e ->
                 Log.w("Sophie_budget_edit", "Error writing document", e)
             }
-
     }
 
     private fun getOverage() {
@@ -179,28 +190,28 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
                         Log.d("Sophie_db", "${document.id} => ${document.data["overage"]}")
                         overagePrice.value = document.data["overage"].toString()
                         cycleDay.value = document.data["cycleDay"]?.toInt()
-                        val c = Calendar.getInstance()
-                        val year = c.get(Calendar.YEAR)
-                        val monthly = c.get(Calendar.MONTH)
-                        val day = c.get(Calendar.DATE)
-                        val thisMonth = Date(year-1900, monthly, cycleDay.value!!)
-                        val nextMonth = Date(year-1900, monthly+1, cycleDay.value!!.minus(1))
-                        val lastMonth = Date(year-1900, monthly-1,cycleDay.value!!)
-                        val futureDay = Date(year-1900, monthly, cycleDay.value!!.minus(1))
-                        val today = Date(year-1900, monthly, day)
-                        val timeformat = SimpleDateFormat("yyyyMMdd")
-                        startTime = timeformat.format(thisMonth).toInt()
-                        endTime = timeformat.format(nextMonth).toInt()
-                        lastTime = timeformat.format(lastMonth).toInt()
-                        futureTime = timeformat.format(futureDay).toInt()
-                        thisDate.value = timeformat.format(today).toLong()
-                        Log.d("Sophie_budget_time",
-                            "$startTime + $endTime + $lastTime + $futureTime +${time.value}")
+                        timeFormat()
                     }
                 }
             }
     }
 
+    private fun timeFormat() {
+        val year = calendar.get(Calendar.YEAR)
+        val monthly = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DATE)
+        val thisMonth = Date(year-1900, monthly, cycleDay.value?:0)
+        val nextMonth = Date(year-1900, monthly+1, cycleDay.value?:0.minus(1))
+        val lastMonth = Date(year-1900, monthly-1,cycleDay.value?:0)
+        val futureDay = Date(year-1900, monthly, cycleDay.value?:0.minus(1))
+        val today = Date(year-1900, monthly, day)
+        val timeFormat = SimpleDateFormat("yyyyMMdd")
+        startTime = timeFormat.format(thisMonth).toInt()
+        endTime = timeFormat.format(nextMonth).toInt()
+        lastTime = timeFormat.format(lastMonth).toInt()
+        futureTime = timeFormat.format(futureDay).toInt()
+        thisDate.value = timeFormat.format(today).toLong()
+    }
 
     fun getTag() {
         _tag.value = mark.value

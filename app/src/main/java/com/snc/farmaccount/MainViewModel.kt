@@ -155,7 +155,7 @@ class MainViewModel: ViewModel() {
         }
     }
 
-    fun getPriceSum() {
+    private fun getPriceSum() {
         priceList.add(allPrice)
         if (priceList.isEmpty()) {
             totalPrice.value = 0
