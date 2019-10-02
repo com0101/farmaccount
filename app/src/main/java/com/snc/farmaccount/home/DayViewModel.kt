@@ -150,7 +150,7 @@ class DayViewModel: ViewModel() {
         }
 
         DATE_MODE = "$year.${month+1}.$day ($weekName)"
-//        Log.i("today","$DATE_MODE")
+//        Log.i("today","$dayMode")
 
     }
 

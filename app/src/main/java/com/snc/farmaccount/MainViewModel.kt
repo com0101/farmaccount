@@ -1,5 +1,6 @@
 package com.snc.farmaccount
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -23,7 +24,7 @@ class MainViewModel: ViewModel() {
     var futureTime = 0L
     var allPrice = 0L
     var weekName = ""
-    var DATE_MODE = ""
+    var dayMode = ""
     var overagePrice = MutableLiveData<String>()
     var totalPrice = MutableLiveData<Long>()
     var priceList = ArrayList<Long>()
@@ -77,15 +78,14 @@ class MainViewModel: ViewModel() {
     }
 
     private fun compareWithCycle() {
-        var today = calendar.get(Calendar.DAY_OF_MONTH)
+        val today = calendar.get(Calendar.DAY_OF_MONTH)
         maxDay.value = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
-        Log.d("Sophie_today", "$today+${pickdate.value}+$DATE_MODE")
 
         when {
             today == pickdate.value -> {
                 db.collection("User").document("${UserManager.userToken}")
                     .collection("Event")
-                    .whereEqualTo("date","$DATE_MODE")
+                    .whereEqualTo("date", dayMode)
                     .get()
                     .addOnSuccessListener { documents ->
                         for (document in documents) {
@@ -176,11 +176,16 @@ class MainViewModel: ViewModel() {
                         Log.d("Sophie_db", "${document.id} => ${document.data}")
                         if (document.data != null) {
                             overagePrice.value = (document.data["budgetPrice"]!!.toInt()- totalPrice.value!!).toString()
-                            db.collection("User").document("${UserManager.userToken}").collection("Budget")
+                            db.collection("User").document("${UserManager.userToken}")
+                                .collection("Budget")
                                 .document("${UserManager.userToken}")
                                 .update("overage", "${overagePrice.value}")
-                                .addOnSuccessListener { Log.d("Sophie_budget_edit", "DocumentSnapshot successfully written!") }
-                                .addOnFailureListener { e -> Log.w("Sophie_budget_edit", "Error writing document", e) }
+                                .addOnSuccessListener {
+                                    Log.d("Sophie_budget_edit", "DocumentSnapshot successfully written!")
+                                }
+                                .addOnFailureListener { e ->
+                                    Log.w("Sophie_budget_edit", "Error writing document", e)
+                                }
                         } else {
                             Log.d("Sophie_db", "no data")
                         }
@@ -211,6 +216,7 @@ class MainViewModel: ViewModel() {
             }
     }
 
+    @SuppressLint("SimpleDateFormat")
     private fun week() {
         year = calendar.get(Calendar.YEAR)
         month = calendar.get(Calendar.MONTH)
@@ -255,7 +261,7 @@ class MainViewModel: ViewModel() {
 
         val getDate = Date(year-1900, month, day)
         val simpleDateFormat = SimpleDateFormat("yyyy.MM.dd (EEEE)")
-        DATE_MODE = simpleDateFormat.format(getDate)
+        dayMode = simpleDateFormat.format(getDate)
         compareWithCycle()
     }
 

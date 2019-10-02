@@ -1,5 +1,6 @@
 package com.snc.farmaccount.detail
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
@@ -23,7 +24,6 @@ class DetailViewModel(product: Event, app: Application) : AndroidViewModel(app) 
     var overagePrice = MutableLiveData<String>()
     var circleDay = MutableLiveData<Int>()
     var time = MutableLiveData<Long>()
-    var eventId = MutableLiveData<Long>()
     var thisDate = MutableLiveData<Long>()
     private val db = FirebaseFirestore.getInstance()
     private val calendar = Calendar.getInstance()
@@ -36,21 +36,20 @@ class DetailViewModel(product: Event, app: Application) : AndroidViewModel(app) 
         _detail.value = product
         infoInput.value = detail.value?.description
         time.value = detail.value?.time
-        eventId.value = detail.value?.id
-        Log.i("Sophie_id","${eventId.value}")
         getOverage()
     }
 
     fun deleteEvent() {
         db.collection("User").document("${UserManager.userToken}")
             .collection("Event")
-            .whereEqualTo("id",detail.value?.id)
+            .whereEqualTo("id", detail.value?.id)
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     for (document in task.result!!) {
                         Log.d("Sophie_db_id", "${document.id} => ${document.data}")
-                        db.collection("User").document("${UserManager.userToken}").collection("Event")
+                        db.collection("User").document("${UserManager.userToken}")
+                            .collection("Event")
                             .document("${document.id}")
                             .delete()
                             .addOnSuccessListener { documentReference ->
@@ -60,7 +59,9 @@ class DetailViewModel(product: Event, app: Application) : AndroidViewModel(app) 
                                 )
                                 compareWithCycle()
                             }
-                            .addOnFailureListener { e -> Log.w("Sophie_add_fail", "Error adding document", e) }
+                            .addOnFailureListener { e ->
+                                Log.w("Sophie_add_fail", "Error adding document", e)
+                            }
                     }
                 }
             }
@@ -89,7 +90,7 @@ class DetailViewModel(product: Event, app: Application) : AndroidViewModel(app) 
     }
 
     private fun updateOverage() {
-        var overageInt = overagePrice.value?.toLong()
+        val overageInt = overagePrice.value?.toLong()
         if (detail.value!!.status == true) {
             overagePrice.value = (overageInt?.minus(price)).toString()
         } else {
@@ -109,7 +110,6 @@ class DetailViewModel(product: Event, app: Application) : AndroidViewModel(app) 
     }
 
     private fun getOverage() {
-        val db = FirebaseFirestore.getInstance()
         db.collection("User").document("${UserManager.userToken}")
             .collection("Budget")
             .get()
@@ -125,6 +125,7 @@ class DetailViewModel(product: Event, app: Application) : AndroidViewModel(app) 
             }
     }
 
+    @SuppressLint("SimpleDateFormat")
     private fun timeFormat() {
         val year = calendar.get(Calendar.YEAR)
         val monthly = calendar.get(Calendar.MONTH)

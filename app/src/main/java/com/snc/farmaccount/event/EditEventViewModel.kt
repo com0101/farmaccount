@@ -1,5 +1,6 @@
 package com.snc.farmaccount.event
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
@@ -82,7 +83,7 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
 
         db.collection("User").document("${UserManager.userToken}")
             .collection("Event")
-            .whereEqualTo("description","${detail.value?.description}")
+            .whereEqualTo("id", detail.value?.id)
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -196,6 +197,7 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
             }
     }
 
+    @SuppressLint("SimpleDateFormat")
     private fun timeFormat() {
         val year = calendar.get(Calendar.YEAR)
         val monthly = calendar.get(Calendar.MONTH)
