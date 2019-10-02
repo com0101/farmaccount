@@ -55,7 +55,7 @@ class BudgetViewModel: ViewModel() {
                     rangeStart.value = document.data?.get("rangeStart").toString()
                     rangeEnd.value = document.data?.get("rangeEnd").toString()
                     overage.value = document.data?.get("overage").toString()
-                    circle.value = document.data?.get("circleDay")?.toInt()
+                    circle.value = document.data?.get("cycleDay")?.toInt()
                     Log.d("Sophie_db", "${position.value}")
                 } else {
                     Log.d("Sophie_db", "No such document")
@@ -119,7 +119,7 @@ class BudgetViewModel: ViewModel() {
             budget["budgetPrice"] = postPrice.value!!
             budget["position"] = newBudget.value?.position!!
             budget["overage"] = newOverage.toString()
-            budget["circleDay"] = circle.value!!
+            budget["cycleDay"] = circle.value!!
 
 
             // Add a new document with a generated ID

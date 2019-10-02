@@ -3,25 +3,19 @@ package com.snc.farmaccount.event
 
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
 import androidx.activity.OnBackPressedCallback
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
 
 import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.Tag
 import com.snc.farmaccount.databinding.DialogCheckBinding
 import com.snc.farmaccount.databinding.FragmentEditEventBinding
-import com.snc.farmaccount.detail.DetailFragmentDirections
 import kotlinx.android.synthetic.main.dialog_check.*
-import kotlinx.android.synthetic.main.fragment_add_event.*
 import kotlinx.android.synthetic.main.fragment_add_event.image_save
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -107,7 +101,7 @@ class EditEventFragment : Fragment() {
             if (viewModel.priceInput.value!!.isNotEmpty() &&
                 viewModel.tagName.value != null &&
                 viewModel.infoInput.value!!.isNotEmpty()) {
-                viewModel.editFirebase()
+                viewModel.editEvent()
                 binding.imageSave.setImageResource(R.drawable.save_press)
                 binding.imageSave.isClickable = false
                 GlobalScope.launch(context = Dispatchers.Main) {

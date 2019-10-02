@@ -2,22 +2,18 @@ package com.snc.farmaccount.budget
 
 
 import android.app.Dialog
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.snackbar.Snackbar
-import com.snc.farmaccount.ApplicationContext
 import com.snc.farmaccount.MainViewModel
 import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.Budget
@@ -25,9 +21,6 @@ import com.snc.farmaccount.databinding.DialogCheckBinding
 import com.snc.farmaccount.databinding.DialogNumberpickBinding
 import com.snc.farmaccount.databinding.FragmentBudgetBinding
 import com.snc.farmaccount.dialog.AmountInputDialogDirections
-import com.snc.farmaccount.event.EditEventFragmentDirections
-import com.snc.farmaccount.statistic.StatisticViewModel
-import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -235,8 +228,8 @@ class BudgetFragment : Fragment() {
                     _, _, newVal ->
                 bindingCheck.save.setOnClickListener {
                     mainViewModel.pickdate.value = newVal
-                    mainViewModel.postCircleDay()
-                    getViewModel.getCircle()
+                    mainViewModel.postCycleDay()
+                    getViewModel.getCycleDay()
                     binding.numberTitle.text = "每個月 ${mainViewModel.pickdate.value} 號結算"
 
                     dialog.dismiss()

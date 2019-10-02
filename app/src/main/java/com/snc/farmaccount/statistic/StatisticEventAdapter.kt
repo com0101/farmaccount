@@ -9,13 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.Event
-import com.snc.farmaccount.`object`.StatisticCatalog
 import com.snc.farmaccount.databinding.ItemAddEventBinding
-import com.snc.farmaccount.databinding.ItemStatisticEventBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 class StatisticEventAdapter(var onClickListener: OnClickListener,var viewModel: StatisticViewModel):

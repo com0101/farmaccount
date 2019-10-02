@@ -6,7 +6,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FirebaseFirestore
-import com.simplemobiletools.commons.extensions.toBoolean
 import com.simplemobiletools.commons.extensions.toInt
 import com.snc.farmaccount.`object`.Event
 import com.snc.farmaccount.`object`.Tag
@@ -16,26 +15,28 @@ import java.util.*
 
 class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(app) {
 
-    var mark = MutableLiveData<List<Tag>>()
-    var priceInput = MutableLiveData<String>()
-    var infoInput = MutableLiveData<String>()
-    var chooseTag = MutableLiveData<Tag>()
-    var today = MutableLiveData<String>()
     var month :String = ""
-    var overagePrice = MutableLiveData<String>()
-    var time = MutableLiveData<Long>()
-    var circleDay = MutableLiveData<Int>()
     var startTime = 0
     var endTime = 0
     var lastTime = 0
     var futureTime = 0
     var price = 0L
-    var tagName = MutableLiveData<String>()
-    var tagStatus = MutableLiveData<Boolean>()
+    var mark = MutableLiveData<List<Tag>>()
+    var chooseTag = MutableLiveData<Tag>()
+    var priceInput = MutableLiveData<String>()
+    var infoInput = MutableLiveData<String>()
     var category = MutableLiveData<String>()
+    var tagName = MutableLiveData<String>()
+    var today = MutableLiveData<String>()
+    var overagePrice = MutableLiveData<String>()
+    var time = MutableLiveData<Long>()
     var thisDate = MutableLiveData<Long>()
-    var eventId = MutableLiveData<Long>()
-
+    var cycleDay = MutableLiveData<Int>()
+    var tagStatus = MutableLiveData<Boolean>()
+    private val db = FirebaseFirestore.getInstance()
+    private val currentTimestamp = System.currentTimeMillis()
+    
+    
     private val _tag = MutableLiveData<List<Tag>>()
     val tag: LiveData<List<Tag>>
         get() = _tag
@@ -49,19 +50,14 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
         priceInput.value = detail.value?.price
         infoInput.value = detail.value?.description
         today.value = detail.value?.date
-        month = detail.value?.month!!
+        month = detail.value?.month?:""
         time.value = detail.value?.time
         tagName.value = detail.value?.tag
         getOverage()
         Log.i("tag","${infoInput.value}")
     }
 
-
-
-    fun editFirebase() {
-        val db = FirebaseFirestore.getInstance()
-        val currentTimestamp = System.currentTimeMillis()
-        // Create a new user with a first and last name
+    fun editEvent() {
         val event = HashMap<String,Any>()
 
         if (chooseTag.value != null) {
@@ -73,6 +69,7 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
             tagStatus.value = detail.value?.status
             category.value = detail.value?.catalog
         }
+        
         event["id"] = currentTimestamp
         event["price"] = priceInput.value!!
         event["tag"] = tagName.value.toString()
@@ -84,14 +81,16 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
         event["catalog"] = category.value.toString()
         // Add a new document with a generated ID
 
-        db.collection("User").document("${UserManager.userToken}").collection("Event")
+        db.collection("User").document("${UserManager.userToken}")
+            .collection("Event")
             .whereEqualTo("description","${detail.value?.description}")
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     for (document in task.result!!) {
                         Log.d("Sophie_db", "${document.id} => ${document.data}")
-                        db.collection("User").document("${UserManager.userToken}").collection("Event")
+                        db.collection("User").document("${UserManager.userToken}")
+                            .collection("Event")
                             .document("${document.id}")
                             .update(event)
                             .addOnSuccessListener { documentReference ->
@@ -103,28 +102,25 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
                                     thisDate.value!!.toInt() in lastTime until futureTime -> {
                                        if (time.value!!.toInt() in lastTime until futureTime) {
                                            updateOverage()
-                                           Log.d("Sophie_budget_over",
-                                               "in!")
                                        }
 
                                     }
                                     thisDate.value!!.toInt() in startTime until endTime -> {
                                        if (time.value!!.toInt() in startTime until endTime) {
                                            updateOverage()
-                                           Log.d("Sophie_budget_over",
-                                               "inagain!")
                                        }
                                     }
                                 }
                             }
-                            .addOnFailureListener { e -> Log.w("Sophie_add_fail", "Error adding document", e) }
+                            .addOnFailureListener { e ->
+                                Log.w("Sophie_add_fail", "Error adding document", e)
+                            }
                     }
                 }
             }
     }
 
     private fun updateOverage() {
-        val db = FirebaseFirestore.getInstance()
         var overageInt = overagePrice.value?.toInt()
         if (tagStatus.value != detail.value?.status) {
 
@@ -157,7 +153,8 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
                 overagePrice.value = overageInt.toString()
             }
         }
-        db.collection("User").document("${UserManager.userToken}").collection("Budget")
+        db.collection("User").document("${UserManager.userToken}")
+            .collection("Budget")
             .document("${UserManager.userToken}")
             .update("overage", "${overagePrice.value}")
             .addOnSuccessListener {
@@ -166,28 +163,30 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
                     "DocumentSnapshot successfully written!"
                 )
             }
-            .addOnFailureListener { e -> Log.w("Sophie_budget_edit", "Error writing document", e) }
+            .addOnFailureListener { e ->
+                Log.w("Sophie_budget_edit", "Error writing document", e)
+            }
 
     }
 
     private fun getOverage() {
-        val db = FirebaseFirestore.getInstance()
-        db.collection("User").document("${UserManager.userToken}").collection("Budget")
+        db.collection("User").document("${UserManager.userToken}")
+            .collection("Budget")
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     for (document in task.result!!) {
                         Log.d("Sophie_db", "${document.id} => ${document.data["overage"]}")
                         overagePrice.value = document.data["overage"].toString()
-                        circleDay.value = document.data["circleDay"]?.toInt()
+                        cycleDay.value = document.data["cycleDay"]?.toInt()
                         val c = Calendar.getInstance()
                         val year = c.get(Calendar.YEAR)
                         val monthly = c.get(Calendar.MONTH)
                         val day = c.get(Calendar.DATE)
-                        val thisMonth = Date(year-1900, monthly, circleDay.value!!)
-                        val nextMonth = Date(year-1900, monthly+1, circleDay.value!!.minus(1))
-                        val lastMonth = Date(year-1900, monthly-1,circleDay.value!!)
-                        val futureDay = Date(year-1900, monthly, circleDay.value!!.minus(1))
+                        val thisMonth = Date(year-1900, monthly, cycleDay.value!!)
+                        val nextMonth = Date(year-1900, monthly+1, cycleDay.value!!.minus(1))
+                        val lastMonth = Date(year-1900, monthly-1,cycleDay.value!!)
+                        val futureDay = Date(year-1900, monthly, cycleDay.value!!.minus(1))
                         val today = Date(year-1900, monthly, day)
                         val timeformat = SimpleDateFormat("yyyyMMdd")
                         startTime = timeformat.format(thisMonth).toInt()

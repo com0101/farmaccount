@@ -1,7 +1,6 @@
 package com.snc.farmaccount
 
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
@@ -11,13 +10,10 @@ import android.graphics.Color
 import android.os.Build
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.Button
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import com.crashlytics.android.Crashlytics
 import io.fabric.sdk.android.Fabric
 
@@ -25,7 +21,6 @@ import io.fabric.sdk.android.Fabric
 class MainActivity : AppCompatActivity(){
 
     private lateinit var binding: ActivityMainBinding
-
 
     private val viewModel: MainViewModel by lazy {
         ViewModelProviders.of(this).get(MainViewModel::class.java)
@@ -56,7 +51,7 @@ class MainActivity : AppCompatActivity(){
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-        viewModel.getCircle()
+        viewModel.getCycleDay()
         navigationToHome()
         Fabric.with(this, Crashlytics())
     }
@@ -76,11 +71,9 @@ class MainActivity : AppCompatActivity(){
                 if (viewModel.checkBudget.value == false) {
                     this.findNavController(R.id.myNavHostFragment)
                         .navigate(R.id.action_global_homeFragment)
-                    Log.i("Sophie_getBudget~~", "${viewModel.checkBudget.value}")
                 } else {
                     this. findNavController(R.id.myNavHostFragment)
                         .navigate(R.id.action_global_chooseFragment)
-                    Log.i("Sophie_getBudget", "${viewModel.checkBudget.value}")
                 }
 
             }

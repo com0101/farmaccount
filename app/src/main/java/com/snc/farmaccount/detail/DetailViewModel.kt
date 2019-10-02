@@ -6,7 +6,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FirebaseFirestore
-import com.simplemobiletools.commons.extensions.toBoolean
 import com.simplemobiletools.commons.extensions.toInt
 import com.snc.farmaccount.`object`.Event
 import com.snc.farmaccount.helper.UserManager
@@ -114,7 +113,7 @@ class DetailViewModel(product: Event, app: Application) : AndroidViewModel(app) 
                     for (document in task.result!!) {
                         Log.d("Sophie_db", "${document.id} => ${document.data["overage"]}")
                         overagePrice.value = document.data["overage"].toString()
-                        circleDay.value = document.data["circleDay"]?.toInt()
+                        circleDay.value = document.data["cycleDay"]?.toInt()
                         val c = Calendar.getInstance()
                         val year = c.get(Calendar.YEAR)
                         val monthly = c.get(Calendar.MONTH)
