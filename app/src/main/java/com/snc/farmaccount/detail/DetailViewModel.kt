@@ -48,7 +48,7 @@ class DetailViewModel(product: Event, app: Application) : AndroidViewModel(app) 
                         Log.d("Sophie_db_id", "${document.id} => ${document.data}")
                         db.collection("User").document("${UserManager.userToken}")
                             .collection("Event")
-                            .document(document.id)
+                            .document("${document.id}")
                             .delete()
                             .addOnSuccessListener { documentReference ->
                                 Log.d(

@@ -18,15 +18,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.firestore.FirebaseFirestore
 import com.snc.farmaccount.ApplicationContext
-import com.snc.farmaccount.MainActivity
 import com.snc.farmaccount.R
 import com.snc.farmaccount.databinding.FragmentLogInBinding
-import com.snc.farmaccount.helper.UserManager
-import kotlinx.coroutines.*
 
 
 class LogInFragment : Fragment() {
@@ -54,7 +49,11 @@ class LogInFragment : Fragment() {
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
-        googleSignInClient = GoogleSignIn.getClient(ApplicationContext.applicationContext(), googleSignInOptions)
+
+        googleSignInClient = GoogleSignIn.getClient(
+            ApplicationContext.applicationContext(),
+            googleSignInOptions)
+
         logIn()
 
         return binding.root
@@ -86,9 +85,10 @@ class LogInFragment : Fragment() {
 
         }
     }
+
     private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
         Log.d("Sophie_fire_google", "firebaseAuthWithGoogle:" + account.id!!)
-        var firebaseAuth = FirebaseAuth.getInstance()
+        val firebaseAuth = FirebaseAuth.getInstance()
         val credential = GoogleAuthProvider.getCredential(account.idToken, null)
         firebaseAuth.signInWithCredential(credential)
             .addOnCompleteListener { task ->
@@ -96,13 +96,13 @@ class LogInFragment : Fragment() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("Sophie_fire_google", "signInWithCredential:success")
                     val user = firebaseAuth.currentUser
-                    if (user != null) {
+                    user?.let {
                         val usersToken = ApplicationContext.applicationContext()
                             .getSharedPreferences("Token", Context.MODE_PRIVATE)
                         val editor = usersToken!!.edit()
-                        editor.putString("Token", user.uid ).apply()
-                        editor.putString("Name", user.displayName ).apply()
-                        editor.putString("email", user.email ).apply()
+                        editor.putString("Token", it.uid ).apply()
+                        editor.putString("Name", it.displayName ).apply()
+                        editor.putString("email", it.email ).apply()
                         viewModel.getBudget()
                         viewModel.getProfile()
                         checkUserStatus()
@@ -117,17 +117,16 @@ class LogInFragment : Fragment() {
     }
 
     private fun checkUserStatus() {
-        Log.i("Sophie_test", "${viewModel.checkFirst}")
-        viewModel.checkFirst.observe(this, Observer {
-            Log.i("Sophie_test", "${viewModel.checkFirst.value}")
+        viewModel.hasNewUser.observe(this, Observer {
             it?.let {
-                Log.i("Sophie_test", "${viewModel.checkFirst.value}")
-                if(viewModel.checkFirst.value == true) {
+
+                if (viewModel.hasNewUser.value == true) {
                         findNavController()
                             .navigate(R.id.action_global_chooseFragment)
                 } else {
-                    viewModel.checkBudget.observe(this, Observer {getBudget ->
+                    viewModel.hasBudget.observe(this, Observer { getBudget ->
                         getBudget?.let { budget ->
+
                             if (!budget) {
                                 findNavController()
                                     .navigate(R.id.action_global_homeFragment)
@@ -135,16 +134,17 @@ class LogInFragment : Fragment() {
                                 findNavController()
                                     .navigate(R.id.action_global_chooseFragment)
                             }
+
                         }
 
                     })
 
                 }
+
             }
         })
 
     }
-
 
 
 }

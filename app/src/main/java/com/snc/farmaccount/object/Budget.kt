@@ -12,5 +12,5 @@ data class Budget (
     var budgetPrice: String,
     var position: Int,
     var overage: String,
-    var circleDay: Long
+    var cycleDay: Long
 ): Parcelable

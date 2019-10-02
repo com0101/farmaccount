@@ -15,7 +15,6 @@ import java.util.HashMap
 class AmountViewModel(budget: Budget, app: Application) : AndroidViewModel(app) {
 
     private val _detail = MutableLiveData<Budget>()
-
     val detail: LiveData<Budget>
         get() = _detail
 
@@ -23,26 +22,27 @@ class AmountViewModel(budget: Budget, app: Application) : AndroidViewModel(app) 
     var rangeEnd = ""
     var amount = MutableLiveData<String>()
     var amountCheck = MutableLiveData<Boolean>()
+    private val db = FirebaseFirestore.getInstance()
+    val budget = HashMap<String,Any>()
 
     init {
         _detail.value = budget
     }
 
     fun getInput() {
-            when {
-                amount.value?.toInt()!! > rangeEnd.toInt() -> {
-                    detail.value?.budgetPrice = rangeEnd
-                    amountCheck.value = true
-                    Log.i("Sophie_amount", "${amountCheck.value}")
-                }
-                amount.value?.toInt()!! < rangeStart.toInt() -> {
-                    detail.value?.budgetPrice = rangeStart
-                    amountCheck.value = false
-                    Log.i("Sophie_amount", "${amountCheck.value}")
-                }
-                else -> detail.value?.budgetPrice = amount.value!!
+        when {
+            amount.value?.toInt()!! > rangeEnd.toInt() -> {
+                detail.value?.budgetPrice = rangeEnd
+                amountCheck.value = true
+                Log.i("Sophie_amount", "${amountCheck.value}")
             }
-        Log.i("Sophie_input", "${detail.value?.budgetPrice} + $rangeEnd + $rangeStart")
+            amount.value?.toInt()!! < rangeStart.toInt() -> {
+                detail.value?.budgetPrice = rangeStart
+                amountCheck.value = false
+                Log.i("Sophie_amount", "${amountCheck.value}")
+            }
+            else -> detail.value?.budgetPrice = amount.value!!
+        }
     }
 
     fun getRange(msg: Budget) {
@@ -51,9 +51,6 @@ class AmountViewModel(budget: Budget, app: Application) : AndroidViewModel(app) 
     }
 
     fun addBudget() {
-        val db = FirebaseFirestore.getInstance()
-        // Create a new user with a first and last name
-        val budget = HashMap<String,Any>()
         budget["farmImage"] = detail.value?.farmImage!!
         budget["farmtype"] = detail.value?.farmtype!!
         budget["rangeStart"] = detail.value?.rangeStart!!
@@ -61,8 +58,8 @@ class AmountViewModel(budget: Budget, app: Application) : AndroidViewModel(app) 
         budget["budgetPrice"] = detail.value?.budgetPrice!!
         budget["position"] = detail.value?.position!!
         budget["overage"] = detail.value?.budgetPrice!!
-        budget["cycleDay"] = detail.value?.circleDay!!
-        // Add a new document with a generated ID
+        budget["cycleDay"] = detail.value?.cycleDay!!
+
         db.collection("User").document("${UserManager.userToken}")
             .collection("Budget").document("${UserManager.userToken}")
             .set(budget)
@@ -72,7 +69,9 @@ class AmountViewModel(budget: Budget, app: Application) : AndroidViewModel(app) 
                     "DocumentSnapshot added with ID: $documentReference"
                 )
             }
-            .addOnFailureListener { e -> Log.w("Sophie_add_fail", "Error adding document", e) }
+            .addOnFailureListener { e ->
+                Log.w("Sophie_add_fail", "Error adding document", e)
+            }
     }
 
 }

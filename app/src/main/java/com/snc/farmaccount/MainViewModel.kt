@@ -32,21 +32,18 @@ class MainViewModel: ViewModel() {
     var maxDay = MutableLiveData<Int>()
     var tagStatus = MutableLiveData<Boolean>()
     var activityRestart = MutableLiveData<Boolean>()
-    var checkLogIn = MutableLiveData<Boolean>()
-    var checkBudget = MutableLiveData<Boolean>()
+    var isLogIn = MutableLiveData<Boolean>()
+    var hasBudget = MutableLiveData<Boolean>()
     private val db = FirebaseFirestore.getInstance()
     private val calendar = Calendar.getInstance()
 
     init {
         pickdate.value = 1
-        checkLogIn.value = false
         compareWithCycle()
 
-        if (UserManager.userToken != null) {
-            checkLogIn.value = true
+        UserManager.userToken?.let {
+            isLogIn.value = true
             getBudget()
-        } else {
-            checkLogIn.value = null
         }
     }
 
@@ -72,7 +69,7 @@ class MainViewModel: ViewModel() {
             .addOnSuccessListener { document ->
                 if (document != null) {
                     pickdate.value = document.data?.get("cycleDay")?.toInt()
-                    week()
+                    setCurrentDate()
                 }
             }
     }
@@ -196,18 +193,18 @@ class MainViewModel: ViewModel() {
             }
     }
 
-    fun getBudget() {
+    private fun getBudget() {
         db.collection("User").document("${UserManager.userToken}")
             .collection("Budget").document("${UserManager.userToken}")
             .get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {
-                    checkBudget.value = false
+                    hasBudget.value = false
                     Log.d("Sophie", "DocumentSnapshot data: ${document.data}")
-                    Log.d("Sophie", "${checkBudget.value}")
+                    Log.d("Sophie", "${hasBudget.value}")
 
                 } else {
-                    checkBudget.value = true
+                    hasBudget.value = true
                     Log.d("Sophie", "No such document")
                 }
             }
@@ -217,7 +214,7 @@ class MainViewModel: ViewModel() {
     }
 
     @SuppressLint("SimpleDateFormat")
-    private fun week() {
+    private fun setCurrentDate() {
         year = calendar.get(Calendar.YEAR)
         month = calendar.get(Calendar.MONTH)
         day = calendar.get(Calendar.DAY_OF_MONTH)

@@ -8,7 +8,6 @@ import com.snc.farmaccount.databinding.ActivityMainBinding
 import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.os.Build
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.lifecycle.Observer
@@ -57,7 +56,7 @@ class MainActivity : AppCompatActivity(){
     }
 
     private fun navigationToHome() {
-        if (viewModel.checkLogIn.value == true) {
+        if (viewModel.isLogIn.value == true) {
             checkBudgetStatus()
         } else {
             this.findNavController(R.id.myNavHostFragment)
@@ -66,9 +65,9 @@ class MainActivity : AppCompatActivity(){
     }
 
     private fun checkBudgetStatus() {
-        viewModel.checkBudget.observe(this, Observer {
+        viewModel.hasBudget.observe(this, Observer {
             it?.let {
-                if (viewModel.checkBudget.value == false) {
+                if (viewModel.hasBudget.value == false) {
                     this.findNavController(R.id.myNavHostFragment)
                         .navigate(R.id.action_global_homeFragment)
                 } else {
