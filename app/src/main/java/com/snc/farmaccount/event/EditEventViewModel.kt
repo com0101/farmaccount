@@ -10,7 +10,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.simplemobiletools.commons.extensions.toInt
 import com.snc.farmaccount.`object`.Event
 import com.snc.farmaccount.`object`.Tag
-import com.snc.farmaccount.helper.UserManager
+import com.snc.farmaccount.helper.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -56,52 +56,55 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
         time.value = detail.value?.time
         tagName.value = detail.value?.tag
         getOverage()
-        Log.i("tag","${infoInput.value}")
     }
 
     fun editEvent() {
+        when {
+            chooseTag.value != null -> {
+                tagName.value = chooseTag.value?.tag_name
+                isRevenue.value = chooseTag.value?.tag_status
+                category.value = chooseTag.value?.tag_catalog
+            }
 
-        if (chooseTag.value != null) {
-            tagName.value = chooseTag.value?.tag_name
-            isRevenue.value = chooseTag.value?.tag_status
-            category.value = chooseTag.value?.tag_catalog
-        } else {
-            tagName.value = detail.value?.tag
-            isRevenue.value = detail.value?.status
-            category.value = detail.value?.catalog
+            else -> {
+                tagName.value = detail.value?.tag
+                isRevenue.value = detail.value?.status
+                category.value = detail.value?.catalog
+            }
         }
 
-        event["id"] = currentTimestamp
-        event["price"] = priceInput.value!!
-        event["tag"] = tagName.value.toString()
-        event["description"] = infoInput.value!!
-        event["date"] = today.value!!
-        event["time"] = time.value!!
-        event["status"] = isRevenue.value?:true
-        event["month"] = month
-        event["catalog"] = category.value.toString()
+        event[ID] = currentTimestamp
+        event[PRICE] = priceInput.value.toString()
+        event[TAG] = tagName.value.toString()
+        event[DESCRIPTION] = infoInput.value.toString()
+        event[DATE] = today.value.toString()
+        event[TIME] = time.value?:0L
+        event[STATUS] = isRevenue.value?:true
+        event[MONTH] = month
+        event[CATALOG] = category.value.toString()
 
-        db.collection("User").document("${UserManager.userToken}")
-            .collection("Event")
-            .whereEqualTo("id", detail.value?.id)
+        db.collection(USER).document("${UserManager.userToken}")
+            .collection(EVENT)
+            .whereEqualTo(ID, detail.value?.id)
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     for (document in task.result!!) {
-                        Log.d("Sophie_db", "${document.id} => ${document.data}")
-                        db.collection("User").document("${UserManager.userToken}")
-                            .collection("Event")
+                        Log.d(SOPHIE, "editEvent:${document.id} => ${document.data}")
+
+                        db.collection(USER).document("${UserManager.userToken}")
+                            .collection(EVENT)
                             .document(document.id)
                             .update(event)
                             .addOnSuccessListener { documentReference ->
                                 Log.d(
-                                    "Sophie_update",
-                                    "DocumentSnapshot added with ID: $documentReference"
+                                    SOPHIE,
+                                    "DocumentSnapshot editEvent with ID: $documentReference"
                                 )
                                 compareWithCycle()
                             }
                             .addOnFailureListener { e ->
-                                Log.w("Sophie_add_fail", "Error adding document", e)
+                                Log.w(SOPHIE, "Error editEvent document", e)
                             }
                     }
                 }
@@ -110,13 +113,14 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
 
     private fun compareWithCycle() {
         when {
-            thisDate.value!!.toInt() in lastTime until futureTime -> {
-                if (time.value!!.toInt() in lastTime until futureTime) {
+            thisDate.value?:0 in lastTime until futureTime -> {
+                if (time.value?:0 in lastTime until futureTime) {
                     updateOverage()
                 }
             }
-            thisDate.value!!.toInt() in startTime until endTime -> {
-                if (time.value!!.toInt() in startTime until endTime) {
+
+            thisDate.value?:0 in startTime until endTime -> {
+                if (time.value?:0 in startTime until endTime) {
                     updateOverage()
                 }
             }
@@ -125,72 +129,78 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
 
     private fun compareWithPrice() {
         val overageInt = overagePrice.value?.toInt()
+
         if (isRevenue.value != detail.value?.status) {
+            when {
+                priceInput.value != detail.value?.price -> {
+                    priceChange = (detail.value?.price!!.toLong())*2+
+                            (priceInput.value!!.toLong()-detail.value?.price!!.toLong())
 
-            if (priceInput.value != detail.value?.price) {
+                    if (chooseTag.value?.tag_status == true) {
+                        overagePrice.value = (overageInt?.plus(priceChange)).toString()
+                    } else {
+                        overagePrice.value = (overageInt?.minus(priceChange)).toString()
+                    }
 
-                priceChange = (detail.value?.price!!.toLong())*2+
-                        (priceInput.value!!.toLong()-detail.value?.price!!.toLong())
-                if (chooseTag.value?.tag_status == true) {
-                    overagePrice.value = (overageInt?.plus(priceChange)).toString()
-                } else {
-                    overagePrice.value = (overageInt?.minus(priceChange)).toString()
                 }
 
-            } else {
+                else -> {
+                    priceChange = priceInput.value!!.toLong()
 
-                priceChange = priceInput.value!!.toLong()
-                if (chooseTag.value?.tag_status == true) {
-                    overagePrice.value = (overageInt?.plus(priceChange*2)).toString()
-                } else {
-                    overagePrice.value = (overageInt?.minus(priceChange*2)).toString()
+                    if (chooseTag.value?.tag_status == true) {
+                        overagePrice.value = (overageInt?.plus(priceChange*2)).toString()
+                    } else {
+                        overagePrice.value = (overageInt?.minus(priceChange*2)).toString()
+                    }
+
                 }
-
             }
 
         } else {
-            if (priceInput.value != detail.value?.price) {
+            when {
+                priceInput.value != detail.value?.price -> {
+                    priceChange = priceInput.value!!.toLong()-detail.value?.price!!.toLong()
 
-                priceChange = priceInput.value!!.toLong()-detail.value?.price!!.toLong()
-                if (isRevenue.value == true) {
-                    overagePrice.value = (overageInt?.plus(priceChange)).toString()
-                } else {
-                    overagePrice.value = (overageInt?.minus(priceChange)).toString()
+                    if (isRevenue.value == true) {
+                        overagePrice.value = (overageInt?.plus(priceChange)).toString()
+                    } else {
+                        overagePrice.value = (overageInt?.minus(priceChange)).toString()
+                    }
+
                 }
 
-            } else {
-                overagePrice.value = overageInt.toString()
+                else -> overagePrice.value = overageInt.toString()
             }
         }
     }
 
     private fun updateOverage() {
         compareWithPrice()
-        db.collection("User").document("${UserManager.userToken}")
-            .collection("Budget")
+        db.collection(USER).document("${UserManager.userToken}")
+            .collection(BUDGET)
             .document("${UserManager.userToken}")
-            .update("overage", "${overagePrice.value}")
+            .update(OVERAGE, "${overagePrice.value}")
             .addOnSuccessListener {
                 Log.d(
-                    "Sophie_budget_edit",
-                    "DocumentSnapshot successfully written!"
+                    SOPHIE,
+                    "DocumentSnapshot successfully updateOverage!"
                 )
             }
             .addOnFailureListener { e ->
-                Log.w("Sophie_budget_edit", "Error writing document", e)
+                Log.w(SOPHIE, "Error updateOverage document", e)
             }
     }
 
     private fun getOverage() {
-        db.collection("User").document("${UserManager.userToken}")
-            .collection("Budget")
+        db.collection(USER).document("${UserManager.userToken}")
+            .collection(BUDGET)
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     for (document in task.result!!) {
-                        Log.d("Sophie_db", "${document.id} => ${document.data["overage"]}")
-                        overagePrice.value = document.data["overage"].toString()
-                        cycleDay.value = document.data["cycleDay"]?.toInt()
+                        Log.d(SOPHIE, "${document.id} => ${document.data[OVERAGE]}")
+                        overagePrice.value = document.data[OVERAGE].toString()
+                        cycleDay.value = document.data[CYCLE_DAY]?.toInt()
                         timeFormat()
                     }
                 }

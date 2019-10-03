@@ -151,6 +151,7 @@ class EditEventFragment : Fragment() {
                     bindingCheck.checkContent.setText(R.string.edit_complete)
                     binding.imageSave.setImageResource(R.drawable.save)
                     binding.imageSave.isClickable = true
+                    delay(500)
                     findNavController()
                         .navigate(R.id.action_global_homeFragment)
                 }

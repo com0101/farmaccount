@@ -72,7 +72,7 @@ class AddEventFragment : Fragment() {
 
         codeViewModel.getTime.observe(viewLifecycleOwner, Observer {
             if (codeViewModel.getTime.value != null) {
-                viewModel.time.value = it
+                viewModel.time.value = it.toLong()
                 codeViewModel.getTime.value = null
             }
         })
@@ -185,12 +185,13 @@ class AddEventFragment : Fragment() {
                     bindingCheck.checkContent.setText(R.string.add_complete)
                     binding.imageSave.setImageResource(R.drawable.save)
                     binding.imageSave.isClickable = true
+                    delay(1000)
                     findNavController()
                         .navigate(EditEventFragmentDirections.actionGlobalHomeFragment())
                 }
             }
             checkDialog.show()
-            delay(1500)
+            delay(1000)
             checkDialog.dismiss()
         }
     }

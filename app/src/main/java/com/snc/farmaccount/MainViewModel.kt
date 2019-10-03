@@ -7,7 +7,8 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.simplemobiletools.commons.extensions.toBoolean
 import com.simplemobiletools.commons.extensions.toInt
-import com.snc.farmaccount.helper.UserManager
+import com.snc.farmaccount.budget.BudgetViewModel
+import com.snc.farmaccount.helper.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -48,27 +49,27 @@ class MainViewModel: ViewModel() {
     }
 
     fun postCycleDay() {
-        db.collection("User").document("${UserManager.userToken}")
-            .collection("Budget")
+        db.collection(USER).document("${UserManager.userToken}")
+            .collection(BUDGET)
             .document("${UserManager.userToken}")
-            .update("cycleDay", "${pickdate.value}")
+            .update(CYCLE_DAY, "${pickdate.value}")
             .addOnSuccessListener {
-                Log.d("Sophie_circle_edit", "DocumentSnapshot successfully written!")
+                Log.d(SOPHIE, "DocumentSnapshot successfully postCycleDay!")
             }
             .addOnFailureListener { e ->
-                Log.w("Sophie_circle_edit", "Error writing document", e)
+                Log.w(SOPHIE, "Error postCycleDay document", e)
             }
     }
 
     fun getCycleDay() {
         maxDay.value = calendar .getActualMaximum(Calendar.DAY_OF_MONTH)
-        db.collection("User").document("${UserManager.userToken}")
-            .collection("Budget")
+        db.collection(USER).document("${UserManager.userToken}")
+            .collection(BUDGET)
             .document("${UserManager.userToken}")
             .get()
             .addOnSuccessListener { document ->
                 if (document != null) {
-                    pickdate.value = document.data?.get("cycleDay")?.toInt()
+                    pickdate.value = document.data?.get(CYCLE_DAY)?.toInt()
                     setCurrentDate()
                 }
             }
@@ -80,73 +81,67 @@ class MainViewModel: ViewModel() {
 
         when {
             today == pickdate.value -> {
-                db.collection("User").document("${UserManager.userToken}")
-                    .collection("Event")
-                    .whereEqualTo("date", dayMode)
+                db.collection(USER).document("${UserManager.userToken}")
+                    .collection(EVENT)
+                    .whereEqualTo(DATE, dayMode)
                     .get()
                     .addOnSuccessListener { documents ->
                         for (document in documents) {
-                            Log.d("Sophie", "${document.id} => ${document.data}")
-                            tagStatus.value = document.data["status"]?.toBoolean()
-                            if (tagStatus.value == false) {
-                                allPrice = document.data["price"]!!.toString().toLong()
-                            }
-                            if (tagStatus.value == true)  {
-                                allPrice = 0-document.data["price"]!!.toString().toLong()
+                            tagStatus.value = document.data[STATUS]?.toBoolean()
+
+                            when(tagStatus.value) {
+                                false -> allPrice = document.data[PRICE]!!.toString().toLong()
+                                true -> allPrice = 0-document.data[PRICE]!!.toString().toLong()
                             }
                             getPriceSum()
                         }
                     }
                     .addOnFailureListener { exception ->
-                        Log.w("Sophie", "Error getting documents: ", exception)
+                        Log.w(SOPHIE, "Error getting event documents: ", exception)
                     }
             }
 
             today > pickdate.value!! -> {
-                db.collection("User").document("${UserManager.userToken}")
-                    .collection("Event")
-                    .whereGreaterThan("time", startTime)
-                    .whereLessThan("time", endTime)
+                db.collection(USER).document("${UserManager.userToken}")
+                    .collection(EVENT)
+                    .whereGreaterThan(TIME, startTime)
+                    .whereLessThan(TIME, endTime)
                     .get()
                     .addOnSuccessListener { documents ->
                         for (document in documents) {
-                            Log.d("Sophie", "${document.id} => ${document.data}")
-                            tagStatus.value = document.data["status"]?.toBoolean()
-                            if (tagStatus.value == false) {
-                                allPrice = document.data["price"]!!.toString().toLong()
-                            }
-                            if (tagStatus.value == true)  {
-                                allPrice = 0-document.data["price"]!!.toString().toLong()
+                            tagStatus.value = document.data[STATUS]?.toBoolean()
+
+                            when(tagStatus.value) {
+                                false -> allPrice = document.data[PRICE]!!.toString().toLong()
+                                true -> allPrice = 0-document.data[PRICE]!!.toString().toLong()
                             }
                             getPriceSum()
                         }
                     }
                     .addOnFailureListener { exception ->
-                        Log.w("Sophie", "Error getting documents: ", exception)
+                        Log.w(SOPHIE, "Error getting event documents: ", exception)
                     }
             }
 
             today < pickdate.value!! -> {
-                db.collection("User").document("${UserManager.userToken}")
-                    .collection("Event")
-                    .whereGreaterThan("time", lastTime)
-                    .whereLessThan("time", futureTime)
+                db.collection(USER).document("${UserManager.userToken}")
+                    .collection(EVENT)
+                    .whereGreaterThan(TIME, lastTime)
+                    .whereLessThan(TIME, futureTime)
                     .get()
                     .addOnSuccessListener { documents ->
                         for (document in documents) {
-                            Log.d("Sophie", "${document.id} => ${document.data}")
-                            tagStatus.value = document.data["status"]?.toBoolean()
-                            if (tagStatus.value == false) {
-                                allPrice = document.data["price"]!!.toString().toLong()
-                            }
-                            if (tagStatus.value == true)  {
-                                allPrice = 0-document.data["price"]!!.toString().toLong()
+                            tagStatus.value = document.data[STATUS]?.toBoolean()
+
+                            when(tagStatus.value) {
+                                false -> allPrice = document.data[PRICE]!!.toString().toLong()
+                                true -> allPrice = 0-document.data[PRICE]!!.toString().toLong()
                             }
                             getPriceSum()
                         }
                     }
                     .addOnFailureListener { exception ->
-                        Log.w("Sophie", "Error getting documents: ", exception)
+                        Log.w(SOPHIE, "Error getting event documents: ", exception)
                     }
             }
         }
@@ -154,37 +149,35 @@ class MainViewModel: ViewModel() {
 
     private fun getPriceSum() {
         priceList.add(allPrice)
-        if (priceList.isEmpty()) {
-            totalPrice.value = 0
-        } else {
-            Log.i("Sophie_minus", "$priceList")
-            totalPrice.value = priceList.sum()
+
+        when {
+            priceList.isEmpty() -> totalPrice.value = 0
+            else -> totalPrice.value = priceList.sum()
         }
         updateOverage()
     }
 
     private fun updateOverage() {
-        db.collection("User").document("${UserManager.userToken}")
-            .collection("Budget")
+        db.collection(USER).document("${UserManager.userToken}")
+            .collection(BUDGET)
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     for (document in task.result!!) {
-                        Log.d("Sophie_db", "${document.id} => ${document.data}")
-                        if (document.data != null) {
-                            overagePrice.value = (document.data["budgetPrice"]!!.toInt()- totalPrice.value!!).toString()
-                            db.collection("User").document("${UserManager.userToken}")
-                                .collection("Budget")
+                        document.data.let {
+                            overagePrice.value =
+                                (document.data[BUDGET_PRICE]!!.toInt()-totalPrice.value!!).toString()
+
+                            db.collection(USER).document("${UserManager.userToken}")
+                                .collection(BUDGET)
                                 .document("${UserManager.userToken}")
-                                .update("overage", "${overagePrice.value}")
+                                .update(OVERAGE, "${overagePrice.value}")
                                 .addOnSuccessListener {
-                                    Log.d("Sophie_budget_edit", "DocumentSnapshot successfully written!")
+                                    Log.d(SOPHIE, "DocumentSnapshot successfully updateOverage!")
                                 }
                                 .addOnFailureListener { e ->
-                                    Log.w("Sophie_budget_edit", "Error writing document", e)
+                                    Log.w(SOPHIE, "Error updateOverage document", e)
                                 }
-                        } else {
-                            Log.d("Sophie_db", "no data")
                         }
                     }
 
@@ -194,22 +187,21 @@ class MainViewModel: ViewModel() {
     }
 
     private fun getBudget() {
-        db.collection("User").document("${UserManager.userToken}")
-            .collection("Budget").document("${UserManager.userToken}")
+        db.collection(USER).document("${UserManager.userToken}")
+            .collection(BUDGET).document("${UserManager.userToken}")
             .get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {
                     hasBudget.value = false
-                    Log.d("Sophie", "DocumentSnapshot data: ${document.data}")
-                    Log.d("Sophie", "${hasBudget.value}")
+                    Log.d(SOPHIE, "DocumentSnapshot getBudget data: ${document.data}")
 
                 } else {
                     hasBudget.value = true
-                    Log.d("Sophie", "No such document")
+                    Log.d(SOPHIE, "No such document")
                 }
             }
             .addOnFailureListener { exception ->
-                Log.d("Sophie", "get failed with ", exception)
+                Log.d(SOPHIE, "getBudget failed with ", exception)
             }
     }
 
@@ -220,26 +212,26 @@ class MainViewModel: ViewModel() {
         day = calendar.get(Calendar.DAY_OF_MONTH)
         week = calendar.get(Calendar.DAY_OF_WEEK)
 
-        if (week==1) {
-            weekName = "星期日"
+        if (week == 1) {
+            weekName = ApplicationContext.applicationContext().getString(R.string.sunday)
         }
-        if (week==2) {
-            weekName = "星期一"
+        if (week == 2) {
+            weekName = ApplicationContext.applicationContext().getString(R.string.monday)
         }
-        if (week==3) {
-            weekName = "星期二"
+        if (week == 3) {
+            weekName = ApplicationContext.applicationContext().getString(R.string.tuesday)
         }
-        if (week==4) {
-            weekName = "星期三"
+        if (week == 4) {
+            weekName = ApplicationContext.applicationContext().getString(R.string.wednesday)
         }
-        if (week==5) {
-            weekName = "星期四"
+        if (week == 5) {
+            weekName = ApplicationContext.applicationContext().getString(R.string.thursday)
         }
-        if (week==6) {
-            weekName = "星期五"
+        if (week == 6) {
+            weekName = ApplicationContext.applicationContext().getString(R.string.friday)
         }
-        if (week==7) {
-            weekName = "星期六"
+        if (week == 7) {
+            weekName = ApplicationContext.applicationContext().getString(R.string.sunday)
         }
 
         if (pickdate.value == null) {

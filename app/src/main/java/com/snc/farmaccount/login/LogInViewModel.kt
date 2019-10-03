@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
-import com.snc.farmaccount.helper.UserManager
+import com.snc.farmaccount.helper.*
 
 class LogInViewModel :  ViewModel() {
 
@@ -14,17 +14,17 @@ class LogInViewModel :  ViewModel() {
     val user = HashMap<String, Any>()
 
     fun getProfile() {
-        db.collection("User")
+        db.collection(USER)
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     for (document in task.result!!) {
-                        Log.d("Sophie_db", "${document.id} => ${document.data}")
+                        Log.d(SOPHIE, "getProfile:${document.id} => ${document.data}")
                         if (document.id == UserManager.userToken) {
                             hasNewUser.value = false
                             break
                         } else {
-                            Log.d("Sophie_profile", "not such file: ")
+                            Log.d(SOPHIE, "not such file: ")
                             setUser()
                         }
                     }
@@ -34,39 +34,37 @@ class LogInViewModel :  ViewModel() {
     }
 
     private fun setUser() {
-        user["id"] = UserManager.userToken!!
-        user["name"] = UserManager.userName!!
-        user["email"] = UserManager.userEmail!!
+        user[ID] = UserManager.userToken!!
+        user[NAME] = UserManager.userName!!
+        user[EMAIL] = UserManager.userEmail!!
 
-        db.collection("User").document("${UserManager.userToken}")
+        db.collection(USER).document("${UserManager.userToken}")
             .set(user)
             .addOnSuccessListener {
-                Log.d("Sophie_profile_add", "DocumentSnapshot successfully written!")
+                Log.d(SOPHIE, "DocumentSnapshot successfully setUser!")
             }
             .addOnFailureListener { e ->
-                Log.w("Sophie_profile_add", "Error writing document", e)
+                Log.w(SOPHIE, "Error setUser document", e)
             }
         hasNewUser.value = true
-        Log.i("Sophie_check","${hasNewUser.value}")
     }
 
     fun getBudget() {
-        val db = FirebaseFirestore.getInstance()
-        db.collection("User").document("${UserManager.userToken}")
-            .collection("Budget").document("${UserManager.userToken}")
+        db.collection(USER).document("${UserManager.userToken}")
+            .collection(BUDGET).document("${UserManager.userToken}")
             .get()
             .addOnSuccessListener { document ->
                 if (document.data != null) {
                     hasBudget.value = false
-                    Log.d("Sophie", "DocumentSnapshot data: ${document.data}")
+                    Log.d(SOPHIE, "DocumentSnapshot getBudget data: ${document.data}")
 
                 } else {
                     hasBudget.value = true
-                    Log.d("Sophie", "No such document")
+                    Log.d(SOPHIE, "No such getBudget document")
                 }
             }
             .addOnFailureListener { exception ->
-                Log.d("Sophie", "get failed with ", exception)
+                Log.d(SOPHIE, "getBudget failed with ", exception)
             }
     }
 

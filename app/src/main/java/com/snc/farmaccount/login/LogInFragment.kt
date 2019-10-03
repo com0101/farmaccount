@@ -22,6 +22,10 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.snc.farmaccount.ApplicationContext
 import com.snc.farmaccount.R
 import com.snc.farmaccount.databinding.FragmentLogInBinding
+import com.snc.farmaccount.helper.EMAIL
+import com.snc.farmaccount.helper.NAME
+import com.snc.farmaccount.helper.TOKEN
+import kotlin.math.E
 
 
 class LogInFragment : Fragment() {
@@ -98,11 +102,11 @@ class LogInFragment : Fragment() {
                     val user = firebaseAuth.currentUser
                     user?.let {
                         val usersToken = ApplicationContext.applicationContext()
-                            .getSharedPreferences(getString(R.string.token), Context.MODE_PRIVATE)
+                            .getSharedPreferences(TOKEN, Context.MODE_PRIVATE)
                         val editor = usersToken!!.edit()
-                        editor.putString(getString(R.string.token), it.uid ).apply()
-                        editor.putString(getString(R.string.name), it.displayName ).apply()
-                        editor.putString(getString(R.string.email), it.email ).apply()
+                        editor.putString(TOKEN, it.uid ).apply()
+                        editor.putString(NAME, it.displayName ).apply()
+                        editor.putString(EMAIL, it.email ).apply()
                         viewModel.getBudget()
                         viewModel.getProfile()
                         checkUserStatus()

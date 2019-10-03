@@ -9,7 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FirebaseFirestore
 import com.simplemobiletools.commons.extensions.toInt
 import com.snc.farmaccount.`object`.Event
-import com.snc.farmaccount.helper.UserManager
+import com.snc.farmaccount.helper.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -38,27 +38,28 @@ class DetailViewModel(product: Event, app: Application) : AndroidViewModel(app) 
     }
 
     fun deleteEvent() {
-        db.collection("User").document("${UserManager.userToken}")
-            .collection("Event")
-            .whereEqualTo("id", detail.value?.id)
+        db.collection(USER).document("${UserManager.userToken}")
+            .collection(EVENT)
+            .whereEqualTo(ID, detail.value?.id)
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     for (document in task.result!!) {
-                        Log.d("Sophie_db_id", "${document.id} => ${document.data}")
-                        db.collection("User").document("${UserManager.userToken}")
-                            .collection("Event")
+                        Log.d(SOPHIE, "deleteEvent:${document.id} => ${document.data}")
+
+                        db.collection(USER).document("${UserManager.userToken}")
+                            .collection(EVENT)
                             .document(document.id)
                             .delete()
                             .addOnSuccessListener { documentReference ->
                                 Log.d(
-                                    "Sophie_update",
-                                    "DocumentSnapshot added with ID: $documentReference"
+                                    SOPHIE,
+                                    "DocumentSnapshot delete with ID: $documentReference"
                                 )
                                 compareWithCycle()
                             }
                             .addOnFailureListener { e ->
-                                Log.w("Sophie_add_fail", "Error adding document", e)
+                                Log.w("SOPHIE", "Error delete document", e)
                             }
                     }
                 }
@@ -68,18 +69,20 @@ class DetailViewModel(product: Event, app: Application) : AndroidViewModel(app) 
 
     private fun compareWithCycle() {
         when {
-            thisDate.value!!.toInt() in lastTime  until futureTime -> {
-                if (time.value!!.toInt() in lastTime until futureTime) {
+            thisDate.value?:0 in lastTime  until futureTime -> {
+                if (time.value?:0 in lastTime until futureTime) {
                     price = detail.value!!.price!!.toLong()
                     updateOverage()
                 }
             }
-            thisDate.value!!.toInt() in startTime until endTime -> {
-                if (time.value!!.toInt() in startTime until endTime) {
+
+            thisDate.value?:0 in startTime until endTime -> {
+                if (time.value?:0 in startTime until endTime) {
                     price = detail.value!!.price!!.toLong()
                     updateOverage()
                 }
             }
+
             else -> {
                 price = 0
                 updateOverage()
@@ -95,27 +98,27 @@ class DetailViewModel(product: Event, app: Application) : AndroidViewModel(app) 
             else -> overagePrice.value = (overageInt?.plus(price)).toString()
         }
 
-        db.collection("User").document("${UserManager.userToken}")
-            .collection("Budget")
+        db.collection(USER).document("${UserManager.userToken}")
+            .collection(BUDGET)
             .document("${UserManager.userToken}")
-            .update("overage","${overagePrice.value}")
+            .update(OVERAGE,"${overagePrice.value}")
             .addOnSuccessListener {
-                Log.d("Sophie_budget_edit", "DocumentSnapshot successfully written!")
+                Log.d(SOPHIE, "DocumentSnapshot successfully updateOverage!")
             }
             .addOnFailureListener { e ->
-                Log.w("Sophie_budget_edit", "Error writing document", e)
+                Log.w(SOPHIE, "Error updateOverage document", e)
             }
     }
 
     private fun getOverage() {
-        db.collection("User").document("${UserManager.userToken}")
-            .collection("Budget")
+        db.collection(USER).document("${UserManager.userToken}")
+            .collection(BUDGET)
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     for (document in task.result!!) {
-                        overagePrice.value = document.data["overage"].toString()
-                        circleDay.value = document.data["cycleDay"]?.toInt()
+                        overagePrice.value = document.data[OVERAGE].toString()
+                        circleDay.value = document.data[CYCLE_DAY]?.toInt()
                         timeFormat()
                     }
                 }

@@ -2,7 +2,6 @@ package com.snc.farmaccount.dialog
 
 
 import android.app.Dialog
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,7 +12,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import com.snc.farmaccount.ApplicationContext
 import com.snc.farmaccount.R
 import com.snc.farmaccount.budget.AmountViewModelFactory
 import com.snc.farmaccount.databinding.DialogAmountInputBinding
@@ -44,9 +42,9 @@ class AmountInputDialog : DialogFragment() {
         binding.imageSave.setOnClickListener {
             viewModel.getInput()
             when {
-                viewModel.amountCheck.value == true ->
+                viewModel.isPriceMoreThan.value == true ->
                     Toast.makeText(context, getString(R.string.price_over_check), Toast.LENGTH_SHORT).show()
-                viewModel.amountCheck.value == false ->
+                viewModel.isPriceMoreThan.value == false ->
                     Toast.makeText(context, getString(R.string.price_less_check), Toast.LENGTH_SHORT).show()
                 else -> findNavController()
                     .navigate(R.id.action_global_homeFragment)

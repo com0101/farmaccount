@@ -2,19 +2,17 @@ package com.snc.farmaccount.home
 
 import android.util.Log
 import androidx.lifecycle.*
+import com.firebase.ui.auth.data.model.User
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.simplemobiletools.commons.extensions.toInt
 import com.snc.farmaccount.ApplicationContext
 import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.Event
-import com.snc.farmaccount.helper.UserManager
+import com.snc.farmaccount.helper.*
 import java.text.DecimalFormat
 import java.util.*
 import kotlin.collections.ArrayList
-
-
-
 
 class DayViewModel: ViewModel() {
 
@@ -53,44 +51,39 @@ class DayViewModel: ViewModel() {
     }
 
     private fun getOrderBy() {
-        db.collection("User").document("${UserManager.userToken}")
-            .collection("Event")
-            .orderBy("id", Query.Direction.DESCENDING)
+        db.collection(USER).document("${UserManager.userToken}")
+            .collection(EVENT)
+            .orderBy(ID, Query.Direction.DESCENDING)
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     for (document in task.result!!) {
-                        Log.d("Sophie_db", "${document.id} => ${document.data}")
-                        if (document.data != null) {
-                            firebaseEvent = document.toObject(Event::class.java)
-                            eventList.add(firebaseEvent)
-                        } else {
-                            Log.d("Sophie_db", "no data")
-                        }
+                        Log.d(SOPHIE, "getOrderBy:${document.id} => ${document.data}")
+                        firebaseEvent = document.toObject(Event::class.java)
+                        eventList.add(firebaseEvent)
                     }
                 }
                 _event.value = eventList
-                Log.w("Sophie_db_list", "$eventList")
+                Log.w(SOPHIE, "getOrderBy:$eventList")
             }
     }
 
     fun getOverage() {
         val decimalFormat = DecimalFormat("#,###")
-        db.collection("User").document("${UserManager.userToken}")
-            .collection("Budget")
+        db.collection(USER).document("${UserManager.userToken}")
+            .collection(BUDGET)
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     for (document in task.result!!) {
-                        overagePrice.value = decimalFormat.format(document.data["overage"].toString().toDouble())
-                        postPrice.value = document.data["overage"].toString().toLong()
-                        farmStatus.value = document.data["position"]?.toInt()
+                        overagePrice.value = decimalFormat.format(
+                            document.data[OVERAGE].toString().toDouble())
+                        postPrice.value = document.data[OVERAGE].toString().toLong()
+                        farmStatus.value = document.data[POSITION]?.toInt()
                     }
                 }
-                Log.d("Sophie_db", "overagePrice.value = ${farmStatus.value}")
             }
     }
-
 
     private fun setCurrentDate() {
         year = calendar.get(Calendar.YEAR)
@@ -98,25 +91,25 @@ class DayViewModel: ViewModel() {
         day = calendar.get(Calendar.DAY_OF_MONTH)
         week = calendar.get(Calendar.DAY_OF_WEEK)
 
-        if (week==1) {
+        if (week == 1) {
             weekName = ApplicationContext.applicationContext().getString(R.string.sunday)
         }
-        if (week==2) {
+        if (week == 2) {
             weekName = ApplicationContext.applicationContext().getString(R.string.monday)
         }
-        if (week==3) {
+        if (week == 3) {
             weekName = ApplicationContext.applicationContext().getString(R.string.tuesday)
         }
-        if (week==4) {
+        if (week == 4) {
             weekName = ApplicationContext.applicationContext().getString(R.string.wednesday)
         }
-        if (week==5) {
+        if (week == 5) {
             weekName = ApplicationContext.applicationContext().getString(R.string.thursday)
         }
-        if (week==6) {
+        if (week == 6) {
             weekName = ApplicationContext.applicationContext().getString(R.string.friday)
         }
-        if (week==7) {
+        if (week == 7) {
             weekName = ApplicationContext.applicationContext().getString(R.string.sunday)
         }
 

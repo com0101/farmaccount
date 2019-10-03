@@ -11,7 +11,7 @@ import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.Event
 import com.snc.farmaccount.`object`.StatisticCatalog
 import com.snc.farmaccount.`object`.SumEvent
-import com.snc.farmaccount.helper.UserManager
+import com.snc.farmaccount.helper.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -129,21 +129,19 @@ class StatisticViewModel : ViewModel() {
 
     fun getEvent() {
         val db = FirebaseFirestore.getInstance()
-        db.collection("User").document("${UserManager.userToken}")
-            .collection("Event")
-            .whereEqualTo("month","${pickMonth.value}")
+        db.collection(USER).document("${UserManager.userToken}")
+            .collection(EVENT)
+            .whereEqualTo(MONTH,"${pickMonth.value}")
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     for (document in task.result!!) {
-                        Log.d("Sophie_db", "${document.id} => ${document.data}")
-                        if (document.data != null) {
+                        Log.d(SOPHIE, "getEvent:${document.id} => ${document.data}")
+
+                        document.data.let {
                             firebaseEvent = document.toObject(Event::class.java)
                             eventList.add(firebaseEvent)
-                        } else {
-                            Log.d("Sophie_db", "no data")
                         }
-
                     }
                 }
                 _event.value = eventList

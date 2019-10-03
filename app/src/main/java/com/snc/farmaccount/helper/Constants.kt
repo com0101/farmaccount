@@ -9,17 +9,7 @@ const val EVENTS_LIST_VIEW = 3
 const val WEEKLY_VIEW = 4
 const val DAILY_VIEW = 5
 const val LAST_VIEW = 6
-
 const val REMINDER_OFF = -1
-
-const val ITEM_EVENT = 0
-const val ITEM_EVENT_SIMPLE = 1
-const val ITEM_HEADER = 2
-
-const val DAY = 86400
-const val WEEK = 604800
-const val MONTH = 2592001    // exact value not taken into account, Joda is used for adding months and years
-const val YEAR = 31536000
 
 // Shared Preferences
 const val WEEK_NUMBERS = "week_numbers"
@@ -50,6 +40,35 @@ const val LAST_VIBRATE_ON_REMINDER = "last_vibrate_on_reminder"
 const val DEFAULT_START_TIME = "default_start_time"
 const val DEFAULT_DURATION = "default_duration"
 const val DEFAULT_EVENT_TYPE_ID = "default_event_type_id"
+const val TOKEN = "Token"
+const val NAME = "Name"
+const val EMAIL = "email"
+
+// firebase key value
+const val ID = "id"
+const val PRICE = "price"
+const val TAG = "tag"
+const val DESCRIPTION = "description"
+const val DATE = "date"
+const val TIME = "time"
+const val STATUS = "status"
+const val MONTH = "month"
+const val CATALOG = "catalog"
+const val FARM_IMAGE = "farmImage"
+const val FARM_TYPE = "farmtype"
+const val RANGE_START = "rangeStart"
+const val RANGE_END = "rangeEnd"
+const val BUDGET_PRICE = "budgetPrice"
+const val POSITION = "position"
+const val OVERAGE = "overage"
+const val CYCLE_DAY = "cycleDay"
+const val TAG_IMAGE = "tagImage"
+const val TAG_TYPE = "tagType"
+const val TOTAL_PRICE = "totalPrice"
+const val USER = "User"
+const val EVENT = "Event"
+const val BUDGET = "Budget"
+const val SOPHIE = "Sophie"
 
 
 // font sizes

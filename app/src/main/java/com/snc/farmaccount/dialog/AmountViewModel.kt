@@ -7,8 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FirebaseFirestore
 import com.snc.farmaccount.`object`.Budget
-import com.snc.farmaccount.helper.UserManager
-import java.text.DecimalFormat
+import com.snc.farmaccount.helper.*
 import java.util.HashMap
 
 
@@ -21,7 +20,7 @@ class AmountViewModel(budget: Budget, app: Application) : AndroidViewModel(app) 
     var rangeStart = ""
     var rangeEnd = ""
     var amount = MutableLiveData<String>()
-    var amountCheck = MutableLiveData<Boolean>()
+    var isPriceMoreThan = MutableLiveData<Boolean>()
     private val db = FirebaseFirestore.getInstance()
     val budget = HashMap<String,Any>()
 
@@ -33,14 +32,16 @@ class AmountViewModel(budget: Budget, app: Application) : AndroidViewModel(app) 
         when {
             amount.value?.toInt()!! > rangeEnd.toInt() -> {
                 detail.value?.budgetPrice = rangeEnd
-                amountCheck.value = true
-                Log.i("Sophie_amount", "${amountCheck.value}")
+                isPriceMoreThan.value = true
+                Log.i(SOPHIE, "getInput:${isPriceMoreThan.value}")
             }
+
             amount.value?.toInt()!! < rangeStart.toInt() -> {
                 detail.value?.budgetPrice = rangeStart
-                amountCheck.value = false
-                Log.i("Sophie_amount", "${amountCheck.value}")
+                isPriceMoreThan.value = false
+                Log.i(SOPHIE, "getInput:${isPriceMoreThan.value}")
             }
+
             else -> detail.value?.budgetPrice = amount.value!!
         }
     }
@@ -51,26 +52,26 @@ class AmountViewModel(budget: Budget, app: Application) : AndroidViewModel(app) 
     }
 
     fun addBudget() {
-        budget["farmImage"] = detail.value?.farmImage!!
-        budget["farmtype"] = detail.value?.farmtype!!
-        budget["rangeStart"] = detail.value?.rangeStart!!
-        budget["rangeEnd"] = detail.value?.rangeEnd!!
-        budget["budgetPrice"] = detail.value?.budgetPrice!!
-        budget["position"] = detail.value?.position!!
-        budget["overage"] = detail.value?.budgetPrice!!
-        budget["cycleDay"] = detail.value?.cycleDay!!
+        budget[FARM_IMAGE] = detail.value?.farmImage?:0
+        budget[FARM_TYPE] = detail.value?.farmtype?:0
+        budget[RANGE_START] = detail.value?.rangeStart?:0
+        budget[RANGE_END] = detail.value?.rangeEnd?:0
+        budget[BUDGET_PRICE] = detail.value?.budgetPrice?:0
+        budget[POSITION] = detail.value?.position?:0
+        budget[OVERAGE] = detail.value?.budgetPrice?:0
+        budget[CYCLE_DAY] = detail.value?.cycleDay?:0
 
-        db.collection("User").document("${UserManager.userToken}")
-            .collection("Budget").document("${UserManager.userToken}")
+        db.collection(USER).document("${UserManager.userToken}")
+            .collection(BUDGET).document("${UserManager.userToken}")
             .set(budget)
             .addOnSuccessListener { documentReference ->
                 Log.d(
-                    "Sophie_add",
-                    "DocumentSnapshot added with ID: $documentReference"
+                    SOPHIE,
+                    "DocumentSnapshot addBudget with ID: $documentReference"
                 )
             }
             .addOnFailureListener { e ->
-                Log.w("Sophie_add_fail", "Error adding document", e)
+                Log.w(SOPHIE, "Error addBudget document", e)
             }
     }
 

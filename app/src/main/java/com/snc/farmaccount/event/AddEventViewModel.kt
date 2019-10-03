@@ -11,7 +11,7 @@ import com.simplemobiletools.commons.extensions.toInt
 import com.snc.farmaccount.ApplicationContext
 import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.Tag
-import com.snc.farmaccount.helper.UserManager
+import com.snc.farmaccount.helper.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -38,7 +38,7 @@ class AddEventViewModel : ViewModel() {
     var monthly = MutableLiveData<String>()
     var getMonth = MutableLiveData<String>()
     var overagePrice = MutableLiveData<String>()
-    var time = MutableLiveData<String>()
+    var time = MutableLiveData<Long>()
     var getTime = MutableLiveData<String>()
     var cycleDay = MutableLiveData<Int>()
     var thisDate = MutableLiveData<Long>()
@@ -62,40 +62,40 @@ class AddEventViewModel : ViewModel() {
 
     fun addEvent() {
         // Create a new user with a first and last name
-        event["id"] = timeStamp
-        event["price"] = priceInput.value!!
-        event["tag"] = chooseTag.value!!.tag_name
-        event["description"] = infoInput.value!!
-        event["date"] = today.value!!
-        event["time"] = time.value!!.toLong()
-        event["status"] = chooseTag.value!!.tag_status
-        event["month"] = monthly.value.toString()
-        event["catalog"] = chooseTag.value!!.tag_catalog
+        event[ID] = timeStamp
+        event[PRICE] = priceInput.value.toString()
+        event[TAG] = chooseTag.value?.tag_name.toString()
+        event[DESCRIPTION] = infoInput.value.toString()
+        event[DATE] = today.value.toString()
+        event[TIME] = time.value?:0L
+        event[STATUS] = chooseTag.value?.tag_status?:true
+        event[MONTH] = monthly.value.toString()
+        event[CATALOG] = chooseTag.value?.tag_catalog.toString()
 
-        db.collection("User").document("${UserManager.userToken}")
-            .collection("Event")
+        db.collection(USER).document("${UserManager.userToken}")
+            .collection(EVENT)
             .document("$timeStamp")
             .set(event)
             .addOnSuccessListener { documentReference ->
                 Log.d(
-                    "Sophie_add",
-                    "DocumentSnapshot added with ID: $documentReference"
+                    SOPHIE,
+                    "DocumentSnapshot addEvent with ID: $documentReference"
                 )
                 getBudget()
             }
             .addOnFailureListener { e ->
-                Log.w("Sophie_add_fail", "Error adding document", e)
+                Log.w(SOPHIE, "Error addEvent document", e)
             }
     }
 
     private fun getBudget() {
-        db.collection("User").document("${UserManager.userToken}")
-            .collection("Budget")
+        db.collection(USER).document("${UserManager.userToken}")
+            .collection(BUDGET)
             .document("${UserManager.userToken}")
             .get()
             .addOnSuccessListener {document ->
                 if (document != null) {
-                    cycleDay.value = document.data?.get("cycleDay")?.toInt()
+                    cycleDay.value = document.data?.get(CYCLE_DAY)?.toInt()
                     timeFormat()
                 }
                 compareWithCycle()
@@ -104,21 +104,20 @@ class AddEventViewModel : ViewModel() {
 
     private fun compareWithCycle() {
         when {
-            thisDate.value!! in lastTime until futureTime -> {
-                if (time.value!!.toInt() in lastTime until futureTime) {
+            thisDate.value?:0 in lastTime until futureTime -> {
+                if (time.value?:0 in lastTime until futureTime) {
                     price = priceInput.value!!.toLong()
                     updateOverage()
-                    Log.d("Sophie_budget_over",
-                        "$lastTime+$futureTime")
                 }
             }
-            thisDate.value!! in startTime until endTime -> {
-                if (time.value!!.toInt() in startTime until endTime) {
+
+            thisDate.value?:0 in startTime until endTime -> {
+                if (time.value?:0 in startTime until endTime) {
                     price = priceInput.value!!.toLong()
                     updateOverage()
-                    Log.d("Sophie_budget_over", "$startTime+$endTime")
                 }
             }
+
             else -> {
                 price = 0
                 updateOverage()
@@ -128,36 +127,37 @@ class AddEventViewModel : ViewModel() {
 
     private fun updateOverage() {
         val overageInt = overagePrice.value?.toInt()
+
         if (chooseTag.value?.tag_status == true) {
             overagePrice.value = (overageInt?.plus(price)).toString()
         } else {
             overagePrice.value = (overageInt?.minus(price)).toString()
         }
-        db.collection("User").document("${UserManager.userToken}")
-            .collection("Budget")
+
+        db.collection(USER).document("${UserManager.userToken}")
+            .collection(BUDGET)
             .document("${UserManager.userToken}")
-            .update("overage", "${overagePrice.value}")
+            .update(OVERAGE, "${overagePrice.value}")
             .addOnSuccessListener {
                 Log.d(
-                    "Sophie_budget_edit",
-                    "DocumentSnapshot successfully written!"
+                    SOPHIE,
+                    "DocumentSnapshot successfully updateOverage!"
                 )
             }
             .addOnFailureListener { e ->
-                Log.w("Sophie_budget_edit", "Error writing document", e)
+                Log.w(SOPHIE, "Error updateOverage document", e)
             }
-
     }
 
     private fun getOverage() {
-        db.collection("User").document("${UserManager.userToken}")
-            .collection("Budget")
+        db.collection(USER).document("${UserManager.userToken}")
+            .collection(BUDGET)
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     for (document in task.result!!) {
-                        Log.d("Sophie_db", "${document.id} => ${document.data["overage"]}")
-                        overagePrice.value = document.data["overage"].toString()
+                        Log.d(SOPHIE, "getOverage:${document.id} => ${document.data[OVERAGE]}")
+                        overagePrice.value = document.data[OVERAGE].toString()
                     }
                 }
             }
@@ -170,35 +170,35 @@ class AddEventViewModel : ViewModel() {
         day = calendar.get(Calendar.DAY_OF_MONTH)
         week = calendar.get(Calendar.DAY_OF_WEEK)
 
-        if (week==1) {
+        if (week == 1) {
             weekName = ApplicationContext.applicationContext().getString(R.string.sunday)
         }
-        if (week==2) {
+        if (week == 2) {
             weekName = ApplicationContext.applicationContext().getString(R.string.monday)
         }
-        if (week==3) {
+        if (week == 3) {
             weekName = ApplicationContext.applicationContext().getString(R.string.tuesday)
         }
-        if (week==4) {
+        if (week == 4) {
             weekName = ApplicationContext.applicationContext().getString(R.string.wednesday)
         }
-        if (week==5) {
+        if (week == 5) {
             weekName = ApplicationContext.applicationContext().getString(R.string.thursday)
         }
-        if (week==6) {
+        if (week == 6) {
             weekName = ApplicationContext.applicationContext().getString(R.string.friday)
         }
-        if (week==7) {
+        if (week == 7) {
             weekName = ApplicationContext.applicationContext().getString(R.string.sunday)
         }
 
-
         val getDate = Date(year-1900, month, day)
+        val simpleDateFormat = SimpleDateFormat("yyyy.MM.dd (EEEE)")
         val monthFormat = SimpleDateFormat("MM")
         val dateFormat = SimpleDateFormat("yyyyMMdd")
         monthly.value = monthFormat.format(getDate)
-        today.value = "$year.${month+1}.$day ($weekName)"
-        time.value = dateFormat.format(getDate)
+        today.value = simpleDateFormat.format(getDate)
+        time.value = dateFormat.format(getDate).toLong()
         thisDate.value = dateFormat.format(getDate).toLong()
 
     }
