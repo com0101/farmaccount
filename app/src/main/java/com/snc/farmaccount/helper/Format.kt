@@ -1,6 +1,8 @@
 package com.snc.farmaccount.helper
 
+import android.annotation.SuppressLint
 import android.content.Context
+import com.snc.farmaccount.ApplicationContext
 import com.snc.farmaccount.R
 import com.snc.farmaccount.extensions.config
 import com.snc.farmaccount.extensions.seconds
@@ -8,14 +10,20 @@ import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
 import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
+import java.text.DecimalFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 object Format {
     const val DAYCODE_PATTERN = "yyyy.MM.dd (EEEE)"
+    const val DATE_PATTERN = "yyyyMMdd"
     const val YEAR_PATTERN = "YYYY"
     const val TIME_PATTERN = "HHmmss"
+    const val MONTH_PATTERN = "MM"
+    private var weekName: String = ""
     private const val DAY_PATTERN = "d"
-    private const val DAY_OF_WEEK_PATTERN = "EEE"
+    private const val DAY_OF_WEEK_PATTERN = "EEEE"
     private const val LONGEST_PATTERN = "MMMM d YYYY (EEEE)"
     private const val PATTERN_TIME_12 = "hh:mm a"
     private const val PATTERN_TIME_24 = "HH:mm"
@@ -35,6 +43,38 @@ object Format {
         if (year != DateTime().toString(YEAR_PATTERN))
             date += " $year"
         return date
+    }
+
+    fun getCurrentDate(): String {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val week = calendar.get(Calendar.DAY_OF_WEEK)
+
+        if (week == 1) {
+            weekName = ApplicationContext.applicationContext().getString(R.string.sunday)
+        }
+        if (week == 2) {
+            weekName = ApplicationContext.applicationContext().getString(R.string.monday)
+        }
+        if (week == 3) {
+            weekName = ApplicationContext.applicationContext().getString(R.string.tuesday)
+        }
+        if (week == 4) {
+            weekName = ApplicationContext.applicationContext().getString(R.string.wednesday)
+        }
+        if (week == 5) {
+            weekName = ApplicationContext.applicationContext().getString(R.string.thursday)
+        }
+        if (week == 6) {
+            weekName = ApplicationContext.applicationContext().getString(R.string.friday)
+        }
+        if (week == 7) {
+            weekName = ApplicationContext.applicationContext().getString(R.string.sunday)
+        }
+
+        return "$year.${month+1}.$day ($weekName)"
     }
 
     fun getDayTitle(context: Context, dayCode: String, addDayOfWeek: Boolean = true): String {
@@ -58,6 +98,20 @@ object Format {
         val month = getMonthName(context, monthIndex)
         return "$month $day $year"
     }
+
+    @SuppressLint("SimpleDateFormat")
+    fun getSimpleDateFormat(date: Date) = SimpleDateFormat(DAYCODE_PATTERN).format(date)
+
+    @SuppressLint("SimpleDateFormat")
+    fun getDateFormat(date: Date) = SimpleDateFormat(DATE_PATTERN).format(date)
+
+    @SuppressLint("SimpleDateFormat")
+    fun getMonthFormat(date: Date) = SimpleDateFormat(MONTH_PATTERN).format(date)
+
+    @SuppressLint("SimpleDateFormat")
+    fun datePicker(date: Date) = SimpleDateFormat(DAY_OF_WEEK_PATTERN).format(date)
+
+    fun decimalFormat(decimal: Double?) = DecimalFormat("#,###").format(decimal)
 
     fun getTodayCode() = getDayCodeFromTS(getNowSeconds())
 

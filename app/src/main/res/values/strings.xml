@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">Farm Account</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -10,7 +10,8 @@
     <string name="GOOGLE_LOG_IN">登入</string>
     <string name="logo">FARM account</string>
     <string name="loading">LOADING......</string>
-    <string name="overage_cycle">每個月第 1 天結算</string>
+    <string name="overage_cycle">每個月%1$s號結算</string>
+    <string name="cycle">每個月1號結算</string>
     <string name="range_start">10000</string>
     <string name="range_low_end">15000</string>
     <string name="range_middle_end">25000</string>

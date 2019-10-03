@@ -28,13 +28,7 @@ class StatisticViewModel : ViewModel() {
 
     val category = MutableLiveData<StatisticCatalog>()
     val categoryPress = MutableLiveData<StatisticCatalog>()
-    private var year: Int = 0
-    private var month:Int = 0
-    private var day:Int = 0
-    private var week:Int = 0
-    private var weekName = ""
     private var pickMonth = MutableLiveData<String>()
-    private val calendar = Calendar.getInstance()
     var currentMonth = MutableLiveData<String>()
     var sumEvent = MutableLiveData<List<SumEvent>>()
     var filter = MutableLiveData<Boolean>()
@@ -116,7 +110,7 @@ class StatisticViewModel : ViewModel() {
     lateinit var firebaseEvent : Event
 
     init {
-        getCurrentDate()
+        dayMode = Format.getCurrentDate()
     }
 
     fun getCurrentMonth() {
@@ -147,38 +141,6 @@ class StatisticViewModel : ViewModel() {
                 _event.value = eventList
                 sumCategoryPrice()
             }
-    }
-
-    private fun getCurrentDate() {
-        year = calendar.get(Calendar.YEAR)
-        month = calendar.get(Calendar.MONTH)
-        day = calendar.get(Calendar.DAY_OF_MONTH)
-        week = calendar.get(Calendar.DAY_OF_WEEK)
-
-        if (week==1) {
-            weekName = ApplicationContext.applicationContext().getString(R.string.sunday)
-        }
-        if (week==2) {
-            weekName = ApplicationContext.applicationContext().getString(R.string.monday)
-        }
-        if (week==3) {
-            weekName = ApplicationContext.applicationContext().getString(R.string.tuesday)
-        }
-        if (week==4) {
-            weekName = ApplicationContext.applicationContext().getString(R.string.wednesday)
-        }
-        if (week==5) {
-            weekName = ApplicationContext.applicationContext().getString(R.string.thursday)
-        }
-        if (week==6) {
-            weekName = ApplicationContext.applicationContext().getString(R.string.friday)
-        }
-        if (week==7) {
-            weekName = ApplicationContext.applicationContext().getString(R.string.sunday)
-        }
-
-        dayMode = "$year.${month+1}.$day ($weekName)"
-
     }
 
 }

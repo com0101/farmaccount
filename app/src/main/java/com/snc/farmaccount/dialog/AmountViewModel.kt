@@ -54,12 +54,12 @@ class AmountViewModel(budget: Budget, app: Application) : AndroidViewModel(app) 
     fun addBudget() {
         budget[FARM_IMAGE] = detail.value?.farmImage?:0
         budget[FARM_TYPE] = detail.value?.farmtype?:0
-        budget[RANGE_START] = detail.value?.rangeStart?:0
-        budget[RANGE_END] = detail.value?.rangeEnd?:0
-        budget[BUDGET_PRICE] = detail.value?.budgetPrice?:0
+        budget[RANGE_START] = detail.value?.rangeStart?:""
+        budget[RANGE_END] = detail.value?.rangeEnd?:""
+        budget[BUDGET_PRICE] = detail.value?.budgetPrice?:""
         budget[POSITION] = detail.value?.position?:0
-        budget[OVERAGE] = detail.value?.budgetPrice?:0
-        budget[CYCLE_DAY] = detail.value?.cycleDay?:0
+        budget[OVERAGE] = detail.value?.budgetPrice?:""
+        budget[CYCLE_DAY] = detail.value?.cycleDay?:0L
 
         db.collection(USER).document("${UserManager.userToken}")
             .collection(BUDGET).document("${UserManager.userToken}")

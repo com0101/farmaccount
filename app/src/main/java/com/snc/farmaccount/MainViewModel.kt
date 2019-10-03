@@ -9,6 +9,7 @@ import com.simplemobiletools.commons.extensions.toBoolean
 import com.simplemobiletools.commons.extensions.toInt
 import com.snc.farmaccount.budget.BudgetViewModel
 import com.snc.farmaccount.helper.*
+import com.snc.farmaccount.helper.Format.DAYCODE_PATTERN
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -18,13 +19,11 @@ class MainViewModel: ViewModel() {
     var year = 0
     var month = 0
     var day = 0
-    var week = 0
     var startTime = 0L
     var endTime = 0L
     var lastTime = 0L
     var futureTime = 0L
     var allPrice = 0L
-    var weekName = ""
     var dayMode = ""
     var overagePrice = MutableLiveData<String>()
     var totalPrice = MutableLiveData<Long>()
@@ -52,7 +51,7 @@ class MainViewModel: ViewModel() {
         db.collection(USER).document("${UserManager.userToken}")
             .collection(BUDGET)
             .document("${UserManager.userToken}")
-            .update(CYCLE_DAY, "${pickdate.value}")
+            .update(CYCLE_DAY, pickdate.value)
             .addOnSuccessListener {
                 Log.d(SOPHIE, "DocumentSnapshot successfully postCycleDay!")
             }
@@ -205,34 +204,10 @@ class MainViewModel: ViewModel() {
             }
     }
 
-    @SuppressLint("SimpleDateFormat")
     private fun setCurrentDate() {
         year = calendar.get(Calendar.YEAR)
         month = calendar.get(Calendar.MONTH)
         day = calendar.get(Calendar.DAY_OF_MONTH)
-        week = calendar.get(Calendar.DAY_OF_WEEK)
-
-        if (week == 1) {
-            weekName = ApplicationContext.applicationContext().getString(R.string.sunday)
-        }
-        if (week == 2) {
-            weekName = ApplicationContext.applicationContext().getString(R.string.monday)
-        }
-        if (week == 3) {
-            weekName = ApplicationContext.applicationContext().getString(R.string.tuesday)
-        }
-        if (week == 4) {
-            weekName = ApplicationContext.applicationContext().getString(R.string.wednesday)
-        }
-        if (week == 5) {
-            weekName = ApplicationContext.applicationContext().getString(R.string.thursday)
-        }
-        if (week == 6) {
-            weekName = ApplicationContext.applicationContext().getString(R.string.friday)
-        }
-        if (week == 7) {
-            weekName = ApplicationContext.applicationContext().getString(R.string.sunday)
-        }
 
         if (pickdate.value == null) {
             pickdate.value = 1
@@ -242,15 +217,13 @@ class MainViewModel: ViewModel() {
         val nextMonth = Date(year-1900, month+1, pickdate.value!!)
         val lastMonth = Date(year-1900, month-1,pickdate.value!!.minus(1))
         val futureDay = Date(year-1900, month, pickdate.value!!)
-        val timeFormat = SimpleDateFormat("yyyyMMdd")
-        startTime = timeFormat.format(thisMonth).toLong()
-        endTime = timeFormat.format(nextMonth).toLong()
-        lastTime = timeFormat.format(lastMonth).toLong()
-        futureTime = timeFormat.format(futureDay).toLong()
+        startTime = Format.getDateFormat(thisMonth).toLong()
+        endTime = Format.getDateFormat(nextMonth).toLong()
+        lastTime = Format.getDateFormat(lastMonth).toLong()
+        futureTime = Format.getDateFormat(futureDay).toLong()
 
         val getDate = Date(year-1900, month, day)
-        val simpleDateFormat = SimpleDateFormat("yyyy.MM.dd (EEEE)")
-        dayMode = simpleDateFormat.format(getDate)
+        dayMode = Format.getSimpleDateFormat(getDate)
         compareWithCycle()
     }
 

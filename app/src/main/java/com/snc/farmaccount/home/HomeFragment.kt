@@ -220,15 +220,13 @@ class HomeFragment : Fragment() {
         setViewPager()
     }
 
-    @SuppressLint("SimpleDateFormat")
     private fun datePickerDialog() {
-        val simpleDateFormat = SimpleDateFormat("EEEE")
         val datePickerDialog = DatePickerDialog(
             this.context!!, R.style.my_dialog_theme,
             DatePickerDialog.OnDateSetListener { _, year, month, day ->
                 // Display Selected date in Toast
                 val date = Date(year, month, day-1)
-                val dayOfWeek = simpleDateFormat.format(date)
+                val dayOfWeek = Format.datePicker(date)
                 currentDayCode = "$year.${month+1}.$day ($dayOfWeek)"
                 setViewPager()
             },

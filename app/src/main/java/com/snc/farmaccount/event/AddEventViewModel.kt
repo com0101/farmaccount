@@ -21,8 +21,6 @@ class AddEventViewModel : ViewModel() {
     var year = 0
     var month = 0
     var day = 0
-    var week = 0
-    var weekName = ""
     var startTime = 0
     var endTime = 0
     var lastTime = 0
@@ -163,57 +161,28 @@ class AddEventViewModel : ViewModel() {
             }
     }
 
-    @SuppressLint("SimpleDateFormat")
     private fun setCurrentDate() {
         year = calendar.get(Calendar.YEAR)
         month = calendar.get(Calendar.MONTH)
         day = calendar.get(Calendar.DAY_OF_MONTH)
-        week = calendar.get(Calendar.DAY_OF_WEEK)
-
-        if (week == 1) {
-            weekName = ApplicationContext.applicationContext().getString(R.string.sunday)
-        }
-        if (week == 2) {
-            weekName = ApplicationContext.applicationContext().getString(R.string.monday)
-        }
-        if (week == 3) {
-            weekName = ApplicationContext.applicationContext().getString(R.string.tuesday)
-        }
-        if (week == 4) {
-            weekName = ApplicationContext.applicationContext().getString(R.string.wednesday)
-        }
-        if (week == 5) {
-            weekName = ApplicationContext.applicationContext().getString(R.string.thursday)
-        }
-        if (week == 6) {
-            weekName = ApplicationContext.applicationContext().getString(R.string.friday)
-        }
-        if (week == 7) {
-            weekName = ApplicationContext.applicationContext().getString(R.string.sunday)
-        }
 
         val getDate = Date(year-1900, month, day)
-        val simpleDateFormat = SimpleDateFormat("yyyy.MM.dd (EEEE)")
-        val monthFormat = SimpleDateFormat("MM")
-        val dateFormat = SimpleDateFormat("yyyyMMdd")
-        monthly.value = monthFormat.format(getDate)
-        today.value = simpleDateFormat.format(getDate)
-        time.value = dateFormat.format(getDate).toLong()
-        thisDate.value = dateFormat.format(getDate).toLong()
+        monthly.value = Format.getMonthFormat(getDate)
+        today.value = Format.getSimpleDateFormat(getDate)
+        time.value = Format.getDateFormat(getDate).toLong()
+        thisDate.value = Format.getDateFormat(getDate).toLong()
 
     }
 
-    @SuppressLint("SimpleDateFormat")
     private fun timeFormat() {
         val thisMonth = Date(year-1900, month, cycleDay.value?:0)
         val nextMonth = Date(year-1900, month+1, cycleDay.value?:0.minus(1))
         val lastMonth = Date(year-1900, month-1,cycleDay.value?:0)
         val futureDay = Date(year-1900, month, cycleDay.value?:0.minus(1))
-        val timeFormat = SimpleDateFormat("yyyyMMdd")
-        startTime = timeFormat.format(thisMonth).toInt()
-        endTime = timeFormat.format(nextMonth).toInt()
-        lastTime = timeFormat.format(lastMonth).toInt()
-        futureTime = timeFormat.format(futureDay).toInt()
+        startTime = Format.getDateFormat(thisMonth).toInt()
+        endTime = Format.getDateFormat(nextMonth).toInt()
+        lastTime = Format.getDateFormat(lastMonth).toInt()
+        futureTime = Format.getDateFormat(futureDay).toInt()
     }
 
 }

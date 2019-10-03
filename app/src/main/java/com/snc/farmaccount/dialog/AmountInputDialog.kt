@@ -16,12 +16,18 @@ import com.snc.farmaccount.R
 import com.snc.farmaccount.budget.AmountViewModelFactory
 import com.snc.farmaccount.databinding.DialogAmountInputBinding
 import com.snc.farmaccount.databinding.DialogCheckBinding
+import com.snc.farmaccount.helper.SOPHIE
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class AmountInputDialog : DialogFragment() {
 
     private lateinit var binding: DialogAmountInputBinding
     private lateinit var warningDialog: Dialog
     private lateinit var bindingCheck: DialogCheckBinding
+    var warningText = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,10 +48,16 @@ class AmountInputDialog : DialogFragment() {
         binding.imageSave.setOnClickListener {
             viewModel.getInput()
             when {
-                viewModel.isPriceMoreThan.value == true ->
-                    Toast.makeText(context, getString(R.string.price_over_check), Toast.LENGTH_SHORT).show()
-                viewModel.isPriceMoreThan.value == false ->
-                    Toast.makeText(context, getString(R.string.price_less_check), Toast.LENGTH_SHORT).show()
+                viewModel.isPriceMoreThan.value == true -> {
+                    warningText = 1
+                    warningDialog()
+                }
+
+                viewModel.isPriceMoreThan.value == false -> {
+                    warningText = 2
+                    warningDialog()
+                }
+
                 else -> findNavController()
                     .navigate(R.id.action_global_homeFragment)
             }
@@ -57,12 +69,37 @@ class AmountInputDialog : DialogFragment() {
         }
 
         viewModel.detail.observe(this, Observer{
-            Log.i("Sophie_getType", "$it")
+            Log.i(SOPHIE, "getType:$it")
             viewModel.getRange(it)
         })
-        // Inflate the layout for this fragment
+
         return binding.root
     }
 
+    private fun warningDialog() {
+        warningDialog = Dialog(this.requireContext())
+        bindingCheck = DialogCheckBinding.inflate(layoutInflater)
+        warningDialog.setContentView(bindingCheck.root)
+        warningDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        bindingCheck.imageCancel.visibility = View.GONE
+        bindingCheck.imageSave.visibility = View.GONE
+
+        GlobalScope.launch(context = Dispatchers.Main) {
+            when(warningText) {
+                1 -> {
+                    bindingCheck.checkContent.setText(R.string.price_over_check)
+                    warningDialog.show()
+                    delay(1000)
+                    warningDialog.dismiss()
+                }
+                2 -> {
+                    bindingCheck.checkContent.setText(R.string.price_less_check)
+                    warningDialog.show()
+                    delay(1000)
+                    warningDialog.dismiss()
+                }
+            }
+        }
+    }
 
 }

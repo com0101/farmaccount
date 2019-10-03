@@ -85,7 +85,7 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintBottom_toBottomOf="@+id/number_icon"
                 app:layout_constraintTop_toTopOf="@+id/number_icon"
-                android:text="@string/overage_cycle"
+                android:text="@string/cycle"
                 android:gravity="bottom|right"
                 android:textSize="16sp"
                 android:textColor="@color/money_text"

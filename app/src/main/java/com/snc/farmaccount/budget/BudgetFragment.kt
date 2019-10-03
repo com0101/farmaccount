@@ -174,9 +174,9 @@ class BudgetFragment : Fragment() {
             "",2,"",1))
     }
 
-    @SuppressLint("SetTextI18n")
     private fun numberPicker() {
-        binding.numberTitle.text = "每個月 ${mainViewModel.pickdate.value} 號結算"
+        binding.numberTitle.text = String.format(getString(R.string.overage_cycle),
+            "${mainViewModel.pickdate.value}")
         numberPickerDialog = Dialog(this.requireContext())
         bindingNumberPicker = DialogNumberpickBinding.inflate(layoutInflater)
         numberPickerDialog.setContentView(bindingNumberPicker.root)
@@ -194,7 +194,8 @@ class BudgetFragment : Fragment() {
                     mainViewModel.pickdate.value = newVal
                     mainViewModel.postCycleDay()
                     getViewModel.getCycleDay()
-                    binding.numberTitle.text = "每個月 ${mainViewModel.pickdate.value} 號結算"
+                    binding.numberTitle.text = String.format(getString(R.string.overage_cycle),
+                        "${mainViewModel.pickdate.value}")
                     numberPickerDialog.dismiss()
                 }
             }
@@ -213,19 +214,21 @@ class BudgetFragment : Fragment() {
         bindingCheck.imageSave.visibility = View.GONE
 
         GlobalScope.launch(context = Dispatchers.Main) {
-            when {
-                viewModel.isPriceMoreThan.value == true -> {
+            when(viewModel.isPriceMoreThan.value) {
+                true -> {
                     bindingCheck.checkContent.setText(R.string.price_over_check)
                     warningDialog.show()
                     delay(1000)
                     warningDialog.dismiss()
                 }
-                viewModel.isPriceMoreThan.value == false -> {
+
+                false -> {
                     bindingCheck.checkContent.setText(R.string.price_less_check)
                     warningDialog.show()
                     delay(1000)
                     warningDialog.dismiss()
                 }
+
                 else -> {
                     bindingCheck.checkContent.setText(R.string.edit_complete)
                     warningDialog.show()

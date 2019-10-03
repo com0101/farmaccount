@@ -31,8 +31,9 @@
                 android:id="@+id/type"
                 app:layout_constraintEnd_toEndOf="@+id/budget_farm_image"
                 app:layout_constraintStart_toStartOf="@+id/budget_farm_image"
-                app:srcCompat="@drawable/waittext" app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginBottom="248dp" app:layout_constraintHorizontal_bias="0.476"/>
+                app:srcCompat="@drawable/waittext"
+                app:layout_constraintHorizontal_bias="0.476"
+                app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="200dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

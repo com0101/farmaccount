@@ -125,7 +125,6 @@ class DetailViewModel(product: Event, app: Application) : AndroidViewModel(app) 
             }
     }
 
-    @SuppressLint("SimpleDateFormat")
     private fun timeFormat() {
         val year = calendar.get(Calendar.YEAR)
         val monthly = calendar.get(Calendar.MONTH)
@@ -135,12 +134,12 @@ class DetailViewModel(product: Event, app: Application) : AndroidViewModel(app) 
         val lastMonth = Date(year-1900, monthly-1,circleDay.value?:0)
         val futureDay = Date(year-1900, monthly, circleDay.value?:0.minus(1))
         val today = Date(year-1900, monthly, day)
-        val timeFormat = SimpleDateFormat("yyyyMMdd")
-        startTime = timeFormat.format(thisMonth).toInt()
-        endTime = timeFormat.format(nextMonth).toInt()
-        lastTime = timeFormat.format(lastMonth).toInt()
-        futureTime = timeFormat.format(futureDay).toInt()
-        thisDate.value = timeFormat.format(today).toLong()
+
+        startTime = Format.getDateFormat(thisMonth).toInt()
+        endTime = Format.getDateFormat(nextMonth).toInt()
+        lastTime = Format.getDateFormat(lastMonth).toInt()
+        futureTime = Format.getDateFormat(futureDay).toInt()
+        thisDate.value = Format.getDateFormat(today).toLong()
     }
 
 
