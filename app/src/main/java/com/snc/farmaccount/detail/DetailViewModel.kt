@@ -48,7 +48,7 @@ class DetailViewModel(product: Event, app: Application) : AndroidViewModel(app) 
                         Log.d("Sophie_db_id", "${document.id} => ${document.data}")
                         db.collection("User").document("${UserManager.userToken}")
                             .collection("Event")
-                            .document("${document.id}")
+                            .document(document.id)
                             .delete()
                             .addOnSuccessListener { documentReference ->
                                 Log.d(
@@ -89,10 +89,10 @@ class DetailViewModel(product: Event, app: Application) : AndroidViewModel(app) 
 
     private fun updateOverage() {
         val overageInt = overagePrice.value?.toLong()
-        if (detail.value!!.status == true) {
-            overagePrice.value = (overageInt?.minus(price)).toString()
-        } else {
-            overagePrice.value = (overageInt?.plus(price)).toString()
+
+        when(detail.value?.status) {
+            true -> overagePrice.value = (overageInt?.minus(price)).toString()
+            else -> overagePrice.value = (overageInt?.plus(price)).toString()
         }
 
         db.collection("User").document("${UserManager.userToken}")

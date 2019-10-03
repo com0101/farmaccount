@@ -7,9 +7,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.snc.farmaccount.helper.DAY_CODE
-import com.snc.farmaccount.helper.NavigationListener
-import com.snc.farmaccount.home.DayCalendarFragment
-import com.snc.farmaccount.home.DayViewModel
 
 class MonthViewPagerAdapter
     (fragmentManager: FragmentManager,
@@ -31,7 +28,7 @@ class MonthViewPagerAdapter
         fragment.arguments = bundle
         fragment.title = "${bundle["day_code"]}".substring(0,7)
 
-        Log.i("Sophie_bundle", "${viewModel.catagory}")
+        Log.i("Sophie_bundle", "${viewModel.category}")
 
         homeFragment.put(position, fragment)
         return fragment

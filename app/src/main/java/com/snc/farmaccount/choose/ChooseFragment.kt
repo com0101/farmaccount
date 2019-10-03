@@ -80,28 +80,25 @@ class ChooseFragment : Fragment() {
 
     private fun changeArrow() {
         viewModel.selectPosition.observe(this, Observer {
-            if(it == 0) {
-                binding.imageArrowLeft.visibility = View.GONE
-            } else {
-                binding.imageArrowRight.visibility = View.VISIBLE
-            }
-
-            if (it == 2) {
-                binding.imageArrowRight.visibility = View.INVISIBLE
-            } else {
-                binding.imageArrowLeft.visibility = View.VISIBLE
+            when(it) {
+                0 -> binding.imageArrowLeft.visibility = View.GONE
+                2 -> binding.imageArrowRight.visibility = View.INVISIBLE
+                else -> {
+                    binding.imageArrowRight.visibility = View.VISIBLE
+                    binding.imageArrowLeft.visibility = View.VISIBLE
+                }
             }
         })
 
     }
 
     private fun addBudget() {
-        budget.add(Budget(R.drawable.type1, R.drawable.rangelow,
-            "10000", "15000","",0,"",1))
-        budget.add(Budget(R.drawable.type2, R.drawable.rangemiddle,
-            "10000", "25000","",1,"",1))
-        budget.add(Budget(R.drawable.type3, R.drawable.rangehigh,
-            "10000", "35000","",2,"",1))
+        budget.add(Budget(R.drawable.type1, R.drawable.rangelow, getString(R.string.range_start),
+            getString(R.string.range_low_end),"",0,"",1))
+        budget.add(Budget(R.drawable.type2, R.drawable.rangemiddle, getString(R.string.range_start),
+            getString(R.string.range_middle_end),"",1,"",1))
+        budget.add(Budget(R.drawable.type3, R.drawable.rangehigh, getString(R.string.range_start),
+            getString(R.string.range_high_end),"",2,"",1))
         viewModel.budgetType.value = budget
     }
 

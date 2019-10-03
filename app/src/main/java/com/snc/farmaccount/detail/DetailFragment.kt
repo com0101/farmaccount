@@ -64,39 +64,39 @@ class DetailFragment : Fragment() {
 
         binding.imageBackState.setOnClickListener {
             findNavController()
-                .navigate(DetailFragmentDirections.actionGlobalHomeFragment())
+                .navigate(R.id.action_global_homeFragment)
         }
 
         viewModel.detail.observe(this , Observer {
             Log.i("Sophie_detail","$it")
-            if(it.tag == "早餐") {
+            if(it.tag == getString(R.string.tag_breakfast)) {
                 binding.tagImage.setImageResource(R.drawable.tag_egg_press)
             }
-            if(it.tag == "午餐") {
+            if(it.tag == getString(R.string.tag_lunch)) {
                 binding.tagImage.setImageResource(R.drawable.tag_pig_press)
             }
-            if(it.tag == "晚餐") {
+            if(it.tag == getString(R.string.tag_dinner)) {
                 binding.tagImage.setImageResource(R.drawable.tag_cow_press)
             }
-            if(it.tag == "點心") {
+            if(it.tag == getString(R.string.tag_dessert)) {
                 binding.tagImage.setImageResource(R.drawable.tag_ginger_press)
             }
-            if(it.tag == "衣服") {
+            if(it.tag == getString(R.string.tag_cloth)) {
                 binding.tagImage.setImageResource(R.drawable.tag_cloth_press)
             }
-            if(it.tag == "生活") {
+            if(it.tag == getString(R.string.tag_live)) {
                 binding.tagImage.setImageResource(R.drawable.tag_live_press)
             }
-            if(it.tag == "交通") {
+            if(it.tag == getString(R.string.tag_traffic)) {
                 binding.tagImage.setImageResource(R.drawable.tag_traffic_press)
             }
-            if(it.tag == "娛樂") {
+            if(it.tag == getString(R.string.tag_fun)) {
                 binding.tagImage.setImageResource(R.drawable.tag_fun_press)
             }
-            if(it.tag == "薪水") {
+            if(it.tag == getString(R.string.tag_payment)) {
                 binding.tagImage.setImageResource(R.drawable.tag_money_press)
             }
-            if(it.tag == "中獎") {
+            if(it.tag == getString(R.string.tag_lottery)) {
                 binding.tagImage.setImageResource(R.drawable.tag_ticket_press)
             }
         })
@@ -124,7 +124,7 @@ class DetailFragment : Fragment() {
         binding.imageDelete.isClickable = false
         checkDialog.show()
         checkDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        bindingCheck.checkContent.text = "確定要刪掉嗎?"
+        bindingCheck.checkContent.setText(R.string.delete_check)
     }
 
     private fun successDialog() {
@@ -135,14 +135,14 @@ class DetailFragment : Fragment() {
             bindingCheck.imageSave.setImageResource(R.drawable.yes)
             bindingCheck.imageSave.isClickable = true
             delay(1000)
-            bindingCheck.checkContent.text = "刪除完成!"
+            bindingCheck.checkContent.setText(R.string.delete_complete)
             bindingCheck.imageCancel.visibility = View.GONE
             bindingCheck.imageSave.visibility = View.GONE
             checkDialog.show()
             delay(1000)
             checkDialog.dismiss()
             findNavController()
-                .navigate(DetailFragmentDirections.actionGlobalHomeFragment())
+                .navigate(R.id.action_global_homeFragment)
         }
     }
 }

@@ -123,12 +123,12 @@ class BudgetFragment : Fragment() {
             binding.unSelectFarmList.visibility = View.GONE
         }
 
-
         return binding.root
     }
 
     private fun getViewPager() {
-        binding.farmList.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+        binding.farmList.registerOnPageChangeCallback(
+            object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 viewModel.selectPosition.value = position
@@ -141,39 +141,37 @@ class BudgetFragment : Fragment() {
 
     private fun changeArrow() {
         viewModel.selectPosition.observe(this, Observer {
-            Log.i("Sophie2","$it")
-            if(it == 0) {
-                binding.imageArrowLeft.visibility = View.GONE
-            } else {
-                binding.imageArrowRight.visibility = View.VISIBLE
-            }
-
-            if (it == 2) {
-                binding.imageArrowRight.visibility = View.INVISIBLE
-            } else {
-                binding.imageArrowLeft.visibility = View.VISIBLE
+            when(it) {
+                0 -> binding.imageArrowLeft.visibility = View.GONE
+                2 -> binding.imageArrowRight.visibility = View.INVISIBLE
+                else -> {
+                    binding.imageArrowRight.visibility = View.VISIBLE
+                    binding.imageArrowLeft.visibility = View.VISIBLE
+                }
             }
         })
-
     }
 
     private fun addBudget() {
-        budget.add(Budget(R.drawable.type1, R.drawable.rangelow,
-            "10000", "15000","",0,"",1))
-        budget.add(Budget(R.drawable.type2, R.drawable.rangemiddle,
-            "10000", "25000","",1,"",1))
-        budget.add(Budget(R.drawable.type3, R.drawable.rangehigh,
-            "10000", "35000","",2,"",1))
+        budget.add(Budget(R.drawable.type1, R.drawable.rangelow, getString(R.string.range_start),
+            getString(R.string.range_low_end),"",0,"",1))
+        budget.add(Budget(R.drawable.type2, R.drawable.rangemiddle, getString(R.string.range_start),
+            getString(R.string.range_middle_end),"",1,"",1))
+        budget.add(Budget(R.drawable.type3, R.drawable.rangehigh, getString(R.string.range_start),
+            getString(R.string.range_high_end),"",2,"",1))
         viewModel.budgetType.value = budget
     }
 
     private fun unEditBudget() {
         budgetUnselect.add(Budget(R.drawable.type1un, R.drawable.rangelow_un,
-            "10000", "15000","",0,"",1))
+            getString(R.string.range_start), getString(R.string.range_low_end),
+            "",0,"",1))
         budgetUnselect.add(Budget(R.drawable.type2un, R.drawable.rangemiddle_un,
-            "10000", "25000","",1,"",1))
+            getString(R.string.range_start), getString(R.string.range_middle_end),
+            "",1,"",1))
         budgetUnselect.add(Budget(R.drawable.type3un, R.drawable.ranghigh_un,
-            "10000", "35000","",2,"",1))
+            getString(R.string.range_start), getString(R.string.range_high_end),
+            "",2,"",1))
     }
 
     @SuppressLint("SetTextI18n")
@@ -206,10 +204,10 @@ class BudgetFragment : Fragment() {
         }
     }
 
-    fun warningDialog() {
+    private fun warningDialog() {
         warningDialog = Dialog(this.requireContext())
         bindingCheck = DialogCheckBinding.inflate(layoutInflater)
-        warningDialog.setContentView(bindingNumberPicker.root)
+        warningDialog.setContentView(bindingCheck.root)
         warningDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
         bindingCheck.imageCancel.visibility = View.GONE
         bindingCheck.imageSave.visibility = View.GONE
@@ -217,24 +215,24 @@ class BudgetFragment : Fragment() {
         GlobalScope.launch(context = Dispatchers.Main) {
             when {
                 viewModel.isPriceMoreThan.value == true -> {
-                    bindingCheck.checkContent.text = "超出範圍啦!"
+                    bindingCheck.checkContent.setText(R.string.price_over_check)
                     warningDialog.show()
                     delay(1000)
                     warningDialog.dismiss()
                 }
                 viewModel.isPriceMoreThan.value == false -> {
-                    bindingCheck.checkContent.text = "省錢還是要顧身體啦!"
+                    bindingCheck.checkContent.setText(R.string.price_less_check)
                     warningDialog.show()
                     delay(1000)
                     warningDialog.dismiss()
                 }
                 else -> {
-                    bindingCheck.checkContent.text = "編輯完成!"
+                    bindingCheck.checkContent.setText(R.string.edit_complete)
                     warningDialog.show()
                     delay(1000)
                     warningDialog.dismiss()
                     findNavController()
-                        .navigate(AmountInputDialogDirections.actionGlobalHomeFragment())}
+                        .navigate(R.id.action_global_homeFragment)}
             }
         }
     }

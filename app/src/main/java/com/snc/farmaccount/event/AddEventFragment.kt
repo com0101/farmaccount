@@ -101,15 +101,18 @@ class AddEventFragment : Fragment() {
                     inputCheck = 0
                     warningDialog()
                 }
+
                 viewModel.priceInput.value == null ||
                 viewModel.priceInput.value!!.isEmpty() -> {
                     inputCheck = 1
                     warningDialog()
                 }
+
                 viewModel.chooseTag.value == null -> {
                     inputCheck = 2
                     warningDialog()
                 }
+
                 viewModel.infoInput.value == null ||
                 viewModel.infoInput.value!!.isEmpty() -> {
                     inputCheck = 3
@@ -174,12 +177,12 @@ class AddEventFragment : Fragment() {
             bindingCheck.imageCancel.visibility = View.GONE
             bindingCheck.imageSave.visibility = View.GONE
             when (inputCheck) {
-                0 -> bindingCheck.checkContent.text = "資訊沒填喔!"
-                1 -> bindingCheck.checkContent.text = "價錢沒填喔!"
-                2 -> bindingCheck.checkContent.text = "類別沒選喔!"
-                3 -> bindingCheck.checkContent.text = "寫個描述吧!"
+                0 -> bindingCheck.checkContent.setText(R.string.event_info)
+                1 -> bindingCheck.checkContent.setText(R.string.event_price)
+                2 -> bindingCheck.checkContent.setText(R.string.event_tag)
+                3 -> bindingCheck.checkContent.setText(R.string.event_description)
                 4 -> {
-                    bindingCheck.checkContent.text = "新增完成!"
+                    bindingCheck.checkContent.setText(R.string.add_complete)
                     binding.imageSave.setImageResource(R.drawable.save)
                     binding.imageSave.isClickable = true
                     findNavController()

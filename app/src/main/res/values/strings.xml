@@ -11,7 +11,13 @@
     <string name="logo">FARM account</string>
     <string name="loading">LOADING......</string>
     <string name="overage_cycle">每個月第 1 天結算</string>
-
+    <string name="range_start">10000</string>
+    <string name="range_low_end">15000</string>
+    <string name="range_middle_end">25000</string>
+    <string name="range_high_end">35000</string>
+    <string name="token">Token</string>
+    <string name="name">Name</string>
+    <string name="email">email</string>
 
     //title
     <string name="expand_title">支出金額</string>
@@ -55,6 +61,36 @@
 
     //check info
     <string name="check_edit">更改資訊尚未儲存，確定要離開嗎?</string>
+    <string name="price_over_check">超出範圍啦</string>
+    <string name="price_less_check">省錢還是要顧身體啦</string>
+    <string name="edit_complete">編輯完成</string>
+    <string name="event_info">資訊沒填喔!</string>
+    <string name="event_price">價錢沒填喔!</string>
+    <string name="event_tag">類別沒選喔!</string>
+    <string name="event_description">寫個描述吧!</string>
+    <string name="add_complete">新增完成</string>
+    <string name="delete_check">確定要刪掉嗎?</string>
+    <string name="delete_complete">刪除完成</string>
+    <string name="overage_zero">這個月透支了，農場被查封，宣告破產!!</string>
+    <string name="camera_permission_advice">這是為了掃 QR code，並不會發生什麼事情，請允許開啟權限</string>
+    <string name="camera_permission_set">相機權限尚未開啟，請至設定開啟</string>
 
+    //label
+    <string name="percent">%</string>
+    <string name="eat_label">食：</string>
+    <string name="cloth_label">衣：</string>
+    <string name="live_label">住：</string>
+    <string name="traffic_label">行：</string>
+    <string name="fun_label">樂：</string>
+    <string name="income_label">收入：</string>
+
+    //week
+    <string name="monday">星期一</string>
+    <string name="tuesday">星期二</string>
+    <string name="wednesday">星期三</string>
+    <string name="thursday">星期四</string>
+    <string name="friday">星期五</string>
+    <string name="saturday">星期六</string>
+    <string name="sunday">星期日</string>
 
 </resources>

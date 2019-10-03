@@ -8,6 +8,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.simplemobiletools.commons.extensions.toInt
+import com.snc.farmaccount.ApplicationContext
+import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.Tag
 import com.snc.farmaccount.helper.UserManager
 import java.text.SimpleDateFormat
@@ -169,33 +171,33 @@ class AddEventViewModel : ViewModel() {
         week = calendar.get(Calendar.DAY_OF_WEEK)
 
         if (week==1) {
-            weekName = "星期日"
+            weekName = ApplicationContext.applicationContext().getString(R.string.sunday)
         }
         if (week==2) {
-            weekName = "星期一"
+            weekName = ApplicationContext.applicationContext().getString(R.string.monday)
         }
         if (week==3) {
-            weekName = "星期二"
+            weekName = ApplicationContext.applicationContext().getString(R.string.tuesday)
         }
         if (week==4) {
-            weekName = "星期三"
+            weekName = ApplicationContext.applicationContext().getString(R.string.wednesday)
         }
         if (week==5) {
-            weekName = "星期四"
+            weekName = ApplicationContext.applicationContext().getString(R.string.thursday)
         }
         if (week==6) {
-            weekName = "星期五"
+            weekName = ApplicationContext.applicationContext().getString(R.string.friday)
         }
         if (week==7) {
-            weekName = "星期六"
+            weekName = ApplicationContext.applicationContext().getString(R.string.sunday)
         }
 
+
         val getDate = Date(year-1900, month, day)
-        val simpleDateFormat = SimpleDateFormat("yyyy.MM.dd (EEEE)")
         val monthFormat = SimpleDateFormat("MM")
         val dateFormat = SimpleDateFormat("yyyyMMdd")
         monthly.value = monthFormat.format(getDate)
-        today.value = simpleDateFormat.format(getDate)
+        today.value = "$year.${month+1}.$day ($weekName)"
         time.value = dateFormat.format(getDate)
         thisDate.value = dateFormat.format(getDate).toLong()
 

@@ -162,7 +162,7 @@ class HomeFragment : Fragment() {
         bindingCheck = DialogCheckBinding.inflate(layoutInflater)
         warningDialog.setContentView(bindingCheck.root)
         warningDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        bindingCheck.checkContent.text = "這個月透支了，農場被查封，宣告破產!!"
+        bindingCheck.checkContent.setText(R.string.overage_zero)
         bindingCheck.imageCancel.visibility = View.GONE
         bindingCheck.imageSave.visibility = View.GONE
 

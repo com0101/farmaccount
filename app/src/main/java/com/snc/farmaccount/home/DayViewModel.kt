@@ -5,6 +5,8 @@ import androidx.lifecycle.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.simplemobiletools.commons.extensions.toInt
+import com.snc.farmaccount.ApplicationContext
+import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.Event
 import com.snc.farmaccount.helper.UserManager
 import java.text.DecimalFormat
@@ -97,25 +99,25 @@ class DayViewModel: ViewModel() {
         week = calendar.get(Calendar.DAY_OF_WEEK)
 
         if (week==1) {
-            weekName = "星期日"
+            weekName = ApplicationContext.applicationContext().getString(R.string.sunday)
         }
         if (week==2) {
-            weekName = "星期一"
+            weekName = ApplicationContext.applicationContext().getString(R.string.monday)
         }
         if (week==3) {
-            weekName = "星期二"
+            weekName = ApplicationContext.applicationContext().getString(R.string.tuesday)
         }
         if (week==4) {
-            weekName = "星期三"
+            weekName = ApplicationContext.applicationContext().getString(R.string.wednesday)
         }
         if (week==5) {
-            weekName = "星期四"
+            weekName = ApplicationContext.applicationContext().getString(R.string.thursday)
         }
         if (week==6) {
-            weekName = "星期五"
+            weekName = ApplicationContext.applicationContext().getString(R.string.friday)
         }
         if (week==7) {
-            weekName = "星期六"
+            weekName = ApplicationContext.applicationContext().getString(R.string.sunday)
         }
 
         dateMode = "$year.${month+1}.$day ($weekName)"

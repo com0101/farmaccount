@@ -98,11 +98,11 @@ class LogInFragment : Fragment() {
                     val user = firebaseAuth.currentUser
                     user?.let {
                         val usersToken = ApplicationContext.applicationContext()
-                            .getSharedPreferences("Token", Context.MODE_PRIVATE)
+                            .getSharedPreferences(getString(R.string.token), Context.MODE_PRIVATE)
                         val editor = usersToken!!.edit()
-                        editor.putString("Token", it.uid ).apply()
-                        editor.putString("Name", it.displayName ).apply()
-                        editor.putString("email", it.email ).apply()
+                        editor.putString(getString(R.string.token), it.uid ).apply()
+                        editor.putString(getString(R.string.name), it.displayName ).apply()
+                        editor.putString(getString(R.string.email), it.email ).apply()
                         viewModel.getBudget()
                         viewModel.getProfile()
                         checkUserStatus()
