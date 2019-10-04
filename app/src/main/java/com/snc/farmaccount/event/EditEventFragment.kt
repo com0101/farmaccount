@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-
+import com.snc.farmaccount.MainActivity
 import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.Tag
 import com.snc.farmaccount.databinding.DialogCheckBinding
@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 class EditEventFragment : Fragment() {
 
     private lateinit var binding: FragmentEditEventBinding
-    private lateinit var checkDialog: Dialog
+    private lateinit var warningDialog: Dialog
     private lateinit var bindingCheck: DialogCheckBinding
     val tag = ArrayList<Tag>()
     var inputCheck = 0
@@ -48,13 +48,13 @@ class EditEventFragment : Fragment() {
         binding.imageBackState.setOnClickListener {
             when {
                 viewModel.priceInput.value != viewModel.detail.value?.price -> checkEdit()
+
                 viewModel.infoInput.value != viewModel.detail.value?.description -> checkEdit()
+
                 viewModel.chooseTag.value?.tag_name != viewModel.detail.value?.tag -> checkEdit()
-                viewModel.priceInput.value == viewModel.detail.value?.price &&
-                viewModel.infoInput.value == viewModel.detail.value?.description &&
-                viewModel.tagName.value == viewModel.detail.value?.tag ->
-                    findNavController()
-                        .navigate(AddEventFragmentDirections.actionGlobalHomeFragment())
+
+                else -> findNavController()
+                        .navigate(R.id.action_global_homeFragment)
             }
         }
 
@@ -134,19 +134,20 @@ class EditEventFragment : Fragment() {
     }
 
     private fun warningDialog() {
-        checkDialog = Dialog(this.requireContext())
-        bindingCheck = DialogCheckBinding.inflate(layoutInflater)
-        checkDialog.setContentView(bindingCheck.root)
-        checkDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        showCheckDialog()
         bindingCheck.imageCancel.visibility = View.GONE
         bindingCheck.imageSave.visibility = View.GONE
 
         GlobalScope.launch(context = Dispatchers.Main) {
             when (inputCheck) {
                 0 -> bindingCheck.checkContent.setText(R.string.event_info)
+
                 1 -> bindingCheck.checkContent.setText(R.string.event_price)
+
                 2 -> bindingCheck.checkContent.setText(R.string.event_tag)
+
                 3 -> bindingCheck.checkContent.setText(R.string.event_description)
+
                 4 -> {
                     bindingCheck.checkContent.setText(R.string.edit_complete)
                     binding.imageSave.setImageResource(R.drawable.save)
@@ -156,28 +157,26 @@ class EditEventFragment : Fragment() {
                         .navigate(R.id.action_global_homeFragment)
                 }
             }
-            checkDialog.show()
+            warningDialog.show()
             delay(1000)
-            checkDialog.dismiss()
+            warningDialog.dismiss()
         }
     }
 
     private fun checkEdit() {
-        checkDialog = Dialog(this.requireContext())
-        bindingCheck = DialogCheckBinding.inflate(layoutInflater)
-        checkDialog.setContentView(bindingCheck.root)
-        checkDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        showCheckDialog()
 
         GlobalScope.launch(context = Dispatchers.Main) {
             bindingCheck.checkContent.setText(R.string.check_edit)
-            checkDialog.show()
-            checkDialog.image_save.setOnClickListener {
-                checkDialog.dismiss()
+            warningDialog.show()
+            warningDialog.image_save.setOnClickListener {
+                warningDialog.dismiss()
                 findNavController().
                     navigate(R.id.action_global_homeFragment)
             }
-            checkDialog.image_cancel.setOnClickListener {
-                checkDialog.dismiss()
+
+            warningDialog.image_cancel.setOnClickListener {
+                warningDialog.dismiss()
             }
         }
     }
@@ -204,6 +203,11 @@ class EditEventFragment : Fragment() {
         tag.add(Tag(R.drawable.tag_ticket_press,R.drawable.tag_ticket,
             getString(R.string.tag_lottery),true, getString(R.string.catalog_income)))
     }
-
+    fun showCheckDialog() {
+        warningDialog = Dialog(this.requireContext())
+        bindingCheck = DialogCheckBinding.inflate(layoutInflater)
+        warningDialog.setContentView(bindingCheck.root)
+        warningDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+    }
 
 }

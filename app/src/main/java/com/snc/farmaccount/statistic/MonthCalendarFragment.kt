@@ -18,8 +18,8 @@ import lecho.lib.hellocharts.model.SliceValue
 class MonthCalendarFragment : Fragment() {
 
     private lateinit var binding: FragmentMonthCalendarBinding
-    var sumEvent = ArrayList<SumEvent>()
-    val pieData = ArrayList<SliceValue>()
+    private val pieData = ArrayList<SliceValue>()
+    private var sumEvent = ArrayList<SumEvent>()
     var date = ""
     var title = ""
     var total = 0
@@ -59,24 +59,29 @@ class MonthCalendarFragment : Fragment() {
         }, viewModel)
 
         parentViewModel.filter.observe(viewLifecycleOwner, Observer {
-            if (it == true) {
-                binding.detailList.visibility = View.VISIBLE
-                binding.totalList.visibility = View.GONE
-                binding.dynamicArcView.visibility = View.GONE
-            } else {
-                binding.detailList.visibility = View.GONE
-                binding.totalList.visibility = View.VISIBLE
-                binding.spendHint.visibility = View.GONE
-                binding.dynamicArcView.visibility = View.VISIBLE
+            when (it) {
+                true -> {
+                    binding.detailList.visibility = View.VISIBLE
+                    binding.totalList.visibility = View.GONE
+                    binding.dynamicArcView.visibility = View.GONE
+                }
+
+                else -> {
+                    binding.detailList.visibility = View.GONE
+                    binding.totalList.visibility = View.VISIBLE
+                    binding.spendHint.visibility = View.GONE
+                    binding.dynamicArcView.visibility = View.VISIBLE
+                }
             }
         })
 
         viewModel.eventByCategory.observe(viewLifecycleOwner, Observer {
             (binding.detailList.adapter as StatisticEventAdapter).submitList(it)
-
             when (it) {
                 null -> binding.spendHint.visibility = View.VISIBLE
+
                 emptyList<Event>() -> binding.spendHint.visibility = View.VISIBLE
+
                 else -> binding.spendHint.visibility = View.GONE
             }
         })

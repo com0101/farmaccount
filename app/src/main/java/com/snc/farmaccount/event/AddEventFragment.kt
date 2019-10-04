@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 class AddEventFragment : Fragment() {
 
     private lateinit var binding: FragmentAddEventBinding
-    private lateinit var checkDialog: Dialog
+    private lateinit var warningDialog: Dialog
     private lateinit var bindingCheck: DialogCheckBinding
     val tag = ArrayList<Tag>()
     var inputCheck = 0
@@ -88,11 +88,11 @@ class AddEventFragment : Fragment() {
         })
 
         binding.imageSave.setOnClickListener {
-            checkDialog = Dialog(this.requireContext())
+            warningDialog = Dialog(this.requireContext())
             bindingCheck = DialogCheckBinding.inflate(layoutInflater)
             isClick = true
-            checkDialog.setContentView(bindingCheck.root)
-            checkDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+            warningDialog.setContentView(bindingCheck.root)
+            warningDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
             when {
                 viewModel.priceInput.value == null &&
@@ -132,16 +132,14 @@ class AddEventFragment : Fragment() {
 
         binding.imageBackState.setOnClickListener {
             when {
-                viewModel.priceInput.value != null ||
-                        viewModel.priceInput.value!!.isNotEmpty() -> checkEdit()
+                viewModel.priceInput.value != null -> checkEdit()
 
-                viewModel.infoInput.value != null ||
-                        viewModel.priceInput.value!!.isNotEmpty() -> checkEdit()
+                viewModel.infoInput.value != null  -> checkEdit()
 
                 viewModel.chooseTag.value != null -> checkEdit()
 
                 else -> findNavController()
-                    .navigate(AddEventFragmentDirections.actionGlobalHomeFragment())
+                    .navigate(R.id.action_global_homeFragment)
             }
         }
 
@@ -157,63 +155,65 @@ class AddEventFragment : Fragment() {
             override fun handleOnBackPressed() {
                 when {
                     viewModel.priceInput.value != null -> checkEdit()
+
                     viewModel.infoInput.value != null -> checkEdit()
+
                     viewModel.chooseTag.value != null -> checkEdit()
+
                     else -> findNavController()
-                        .navigate(AddEventFragmentDirections.actionGlobalHomeFragment())
+                        .navigate(R.id.action_global_homeFragment)
                 }
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 
+
     private fun warningDialog() {
-        checkDialog = Dialog(this.requireContext())
-        bindingCheck = DialogCheckBinding.inflate(layoutInflater)
-        checkDialog.setContentView(bindingCheck.root)
-        checkDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        showCheckDialog()
+        bindingCheck.imageCancel.visibility = View.GONE
+        bindingCheck.imageSave.visibility = View.GONE
 
         GlobalScope.launch(context = Dispatchers.Main) {
-            bindingCheck.imageCancel.visibility = View.GONE
-            bindingCheck.imageSave.visibility = View.GONE
             when (inputCheck) {
                 0 -> bindingCheck.checkContent.setText(R.string.event_info)
+
                 1 -> bindingCheck.checkContent.setText(R.string.event_price)
+
                 2 -> bindingCheck.checkContent.setText(R.string.event_tag)
+
                 3 -> bindingCheck.checkContent.setText(R.string.event_description)
+
                 4 -> {
                     bindingCheck.checkContent.setText(R.string.add_complete)
                     binding.imageSave.setImageResource(R.drawable.save)
                     binding.imageSave.isClickable = true
                     delay(1000)
                     findNavController()
-                        .navigate(EditEventFragmentDirections.actionGlobalHomeFragment())
+                        .navigate(R.id.action_global_homeFragment)
                 }
             }
-            checkDialog.show()
+            warningDialog.show()
             delay(1000)
-            checkDialog.dismiss()
+            warningDialog.dismiss()
         }
     }
 
-    private fun checkEdit() {
-        checkDialog = Dialog(this.requireContext())
-        bindingCheck = DialogCheckBinding.inflate(layoutInflater)
-        checkDialog.setContentView(bindingCheck.root)
-        checkDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
+    private fun checkEdit() {
+        showCheckDialog()
         GlobalScope.launch(context = Dispatchers.Main) {
             bindingCheck.checkContent.setText(R.string.check_edit)
-            checkDialog.show()
+            warningDialog.show()
 
-            checkDialog.image_save.setOnClickListener {
-                checkDialog.dismiss()
+            warningDialog.image_save.setOnClickListener {
+                warningDialog.dismiss()
                 findNavController().
                     navigate(R.id.action_global_homeFragment)
             }
 
-            checkDialog.image_cancel.setOnClickListener {
-                checkDialog.dismiss()
+            warningDialog.image_cancel.setOnClickListener {
+                warningDialog.dismiss()
             }
         }
     }
@@ -239,6 +239,13 @@ class AddEventFragment : Fragment() {
             getString(R.string.tag_fun),false, getString(R.string.catalog_fun)))
         tag.add(Tag(R.drawable.tag_ticket_press,R.drawable.tag_ticket,
             getString(R.string.tag_lottery),true, getString(R.string.catalog_income)))
+    }
+
+    private fun showCheckDialog() {
+        warningDialog = Dialog(this.requireContext())
+        bindingCheck = DialogCheckBinding.inflate(layoutInflater)
+        warningDialog.setContentView(bindingCheck.root)
+        warningDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
     }
 
 }

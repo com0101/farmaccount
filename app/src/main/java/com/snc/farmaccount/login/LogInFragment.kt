@@ -76,6 +76,7 @@ class LogInFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
         if (requestCode == RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
@@ -92,14 +93,18 @@ class LogInFragment : Fragment() {
 
     private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
         Log.d("Sophie_fire_google", "firebaseAuthWithGoogle:" + account.id!!)
+
         val firebaseAuth = FirebaseAuth.getInstance()
         val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+
         firebaseAuth.signInWithCredential(credential)
             .addOnCompleteListener { task ->
+
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("Sophie_fire_google", "signInWithCredential:success")
                     val user = firebaseAuth.currentUser
+
                     user?.let {
                         val usersToken = ApplicationContext.applicationContext()
                             .getSharedPreferences(TOKEN, Context.MODE_PRIVATE)

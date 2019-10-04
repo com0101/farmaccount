@@ -9,13 +9,11 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import com.snc.farmaccount.helper.NavigationListener
 import com.snc.farmaccount.databinding.FragmentDayCalendarBinding
 
 class DayCalendarFragment : Fragment() {
 
     private lateinit var binding: FragmentDayCalendarBinding
-    var navListener: NavigationListener?= null
     var date = ""
     var title = ""
 

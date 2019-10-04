@@ -93,7 +93,7 @@ class DetailViewModel(product: Event, app: Application) : AndroidViewModel(app) 
     private fun updateOverage() {
         val overageInt = overagePrice.value?.toLong()
 
-        when(detail.value?.status) {
+        when (detail.value?.status) {
             true -> overagePrice.value = (overageInt?.minus(price)).toString()
             else -> overagePrice.value = (overageInt?.plus(price)).toString()
         }

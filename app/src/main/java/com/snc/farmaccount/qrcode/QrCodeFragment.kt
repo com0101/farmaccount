@@ -25,8 +25,8 @@ import java.util.*
 import java.text.SimpleDateFormat
 import android.app.Dialog
 import android.os.Build
+import com.snc.farmaccount.MainActivity
 import com.snc.farmaccount.databinding.DialogCheckBinding
-import com.snc.farmaccount.event.EditEventFragmentDirections
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -117,6 +117,7 @@ class QrCodeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         Log.d("Sophie", "onResume")
+
         if (ContextCompat.checkSelfPermission(this.requireActivity(),
                 Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             codeScanner.startPreview()
@@ -166,26 +167,26 @@ class QrCodeFragment : Fragment() {
     }
 
     private fun warning() {
-        warningDialog = Dialog(this.requireContext())
-        bindingCheck = DialogCheckBinding.inflate(layoutInflater)
-        warningDialog.setContentView(bindingCheck.root)
-        warningDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        showCheckDialog()
 
         GlobalScope.launch(context = Dispatchers.Main) {
             when (camera) {
                 1 -> {
                     bindingCheck.checkContent.setText(R.string.camera_permission_advice)
                     warningDialog.show()
+
                     bindingCheck.imageSave.setOnClickListener {
                         warningDialog.dismiss()
                         requestPermissions(arrayOf(Manifest.permission.CAMERA), 50)
                     }
+
                     bindingCheck.imageCancel.setOnClickListener {
                         warningDialog.dismiss()
                         findNavController()
                             .navigate(R.id.action_global_homeFragment)
                     }
                 }
+
                 2 -> {
                     bindingCheck.checkContent.setText(R.string.camera_permission_set)
                     bindingCheck.imageCancel.visibility = View.GONE
@@ -197,6 +198,7 @@ class QrCodeFragment : Fragment() {
                     findNavController()
                         .navigate(R.id.action_global_homeFragment)
                 }
+
                 3 -> {
                     bindingCheck.checkContent.text = "掃錯邊嘍~"
                     bindingCheck.imageCancel.visibility = View.GONE
@@ -219,4 +221,10 @@ class QrCodeFragment : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 
+    fun showCheckDialog() {
+        warningDialog = Dialog(this.requireContext())
+        bindingCheck = DialogCheckBinding.inflate(layoutInflater)
+        warningDialog.setContentView(bindingCheck.root)
+        warningDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+    }
 }

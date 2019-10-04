@@ -1,6 +1,8 @@
 package com.snc.farmaccount
 
 
+import android.annotation.SuppressLint
+import android.app.Dialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
@@ -14,17 +16,21 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import com.crashlytics.android.Crashlytics
+import com.snc.farmaccount.databinding.DialogCheckBinding
 import io.fabric.sdk.android.Fabric
 
 
 class MainActivity : AppCompatActivity(){
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var warningDialog: Dialog
+    private lateinit var bindingCheck: DialogCheckBinding
 
     private val viewModel: MainViewModel by lazy {
         ViewModelProviders.of(this).get(MainViewModel::class.java)
     }
 
+    @SuppressLint("ObsoleteSdkInt")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -47,6 +53,7 @@ class MainActivity : AppCompatActivity(){
 
         }
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
@@ -56,10 +63,10 @@ class MainActivity : AppCompatActivity(){
     }
 
     private fun navigationToHome() {
-        if (viewModel.isLogIn.value == true) {
-            checkBudgetStatus()
-        } else {
-            this.findNavController(R.id.myNavHostFragment)
+        when (viewModel.isLogIn.value) {
+            true -> checkBudgetStatus()
+
+            else -> this.findNavController(R.id.myNavHostFragment)
                 .navigate(R.id.action_global_logInFragment)
         }
     }
@@ -67,11 +74,11 @@ class MainActivity : AppCompatActivity(){
     private fun checkBudgetStatus() {
         viewModel.hasBudget.observe(this, Observer {
             it?.let {
-                if (viewModel.hasBudget.value == false) {
-                    this.findNavController(R.id.myNavHostFragment)
+                when (viewModel.hasBudget.value) {
+                    false -> this.findNavController(R.id.myNavHostFragment)
                         .navigate(R.id.action_global_homeFragment)
-                } else {
-                    this. findNavController(R.id.myNavHostFragment)
+
+                    else -> this. findNavController(R.id.myNavHostFragment)
                         .navigate(R.id.action_global_chooseFragment)
                 }
 
@@ -79,4 +86,13 @@ class MainActivity : AppCompatActivity(){
         })
     }
 
+    fun showCheckDialog() {
+        warningDialog = Dialog(this)
+        bindingCheck = DialogCheckBinding.inflate(layoutInflater)
+        warningDialog.setContentView(bindingCheck.root)
+        warningDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+    }
+
 }
+
+

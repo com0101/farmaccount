@@ -88,7 +88,7 @@ class MainViewModel: ViewModel() {
                         for (document in documents) {
                             tagStatus.value = document.data[STATUS]?.toBoolean()
 
-                            when(tagStatus.value) {
+                            when (tagStatus.value) {
                                 false -> allPrice = document.data[PRICE]!!.toString().toLong()
                                 true -> allPrice = 0-document.data[PRICE]!!.toString().toLong()
                             }
@@ -100,7 +100,7 @@ class MainViewModel: ViewModel() {
                     }
             }
 
-            today > pickdate.value!! -> {
+            today > pickdate.value?:0 -> {
                 db.collection(USER).document("${UserManager.userToken}")
                     .collection(EVENT)
                     .whereGreaterThan(TIME, startTime)
@@ -110,7 +110,7 @@ class MainViewModel: ViewModel() {
                         for (document in documents) {
                             tagStatus.value = document.data[STATUS]?.toBoolean()
 
-                            when(tagStatus.value) {
+                            when (tagStatus.value) {
                                 false -> allPrice = document.data[PRICE]!!.toString().toLong()
                                 true -> allPrice = 0-document.data[PRICE]!!.toString().toLong()
                             }
@@ -122,7 +122,7 @@ class MainViewModel: ViewModel() {
                     }
             }
 
-            today < pickdate.value!! -> {
+            today < pickdate.value?:0 -> {
                 db.collection(USER).document("${UserManager.userToken}")
                     .collection(EVENT)
                     .whereGreaterThan(TIME, lastTime)
@@ -132,7 +132,7 @@ class MainViewModel: ViewModel() {
                         for (document in documents) {
                             tagStatus.value = document.data[STATUS]?.toBoolean()
 
-                            when(tagStatus.value) {
+                            when (tagStatus.value) {
                                 false -> allPrice = document.data[PRICE]!!.toString().toLong()
                                 true -> allPrice = 0-document.data[PRICE]!!.toString().toLong()
                             }

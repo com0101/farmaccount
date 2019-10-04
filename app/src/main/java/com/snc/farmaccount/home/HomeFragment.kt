@@ -70,6 +70,7 @@ class HomeFragment : Fragment() {
         })
 
         binding.buttonSetting.setOnClickListener {
+
             buttonSense = if (!buttonSense) {
                 binding.buttonBudget.animate().translationY(180f).start() // move away
                 binding.buttonStatistic.animate().translationY(360f).start()
@@ -83,6 +84,7 @@ class HomeFragment : Fragment() {
                 binding.buttonSetting.animate().rotation(0f).start()
                 false
             }
+
         }
 
         binding.buttonBudget.setOnClickListener {
@@ -120,33 +122,42 @@ class HomeFragment : Fragment() {
         viewModel.postPrice.observe(this, androidx.lifecycle.Observer {
             Log.i("Sophie_farm", "$it")
             viewModel.farmStatus.observe(this, androidx.lifecycle.Observer { status ->
+
                 if (status == 0) {
                     when {
                         it > 1000 -> binding.imageFarm.setBackgroundResource(R.drawable.simple1)
+
                         it < 0 -> {
                             binding.imageFarm.setBackgroundResource(R.drawable.simple3)
                             showWarning()
                         }
+
                         else -> binding.imageFarm.setBackgroundResource(R.drawable.simple2)
                     }
                 }
+
                 if (status == 1) {
                     when {
                         it > 1000 -> binding.imageFarm.setBackgroundResource(R.drawable.middle)
+
                         it < 0 -> {
                             binding.imageFarm.setBackgroundResource(R.drawable.middle3)
                             showWarning()
                         }
+
                         else -> binding.imageFarm.setBackgroundResource(R.drawable.middle2)
                     }
                 }
+
                 if (status == 2) {
                     when {
                         it > 1000 -> binding.imageFarm.setBackgroundResource(R.drawable.richnew)
+
                         it < 0 -> {
                             binding.imageFarm.setBackgroundResource(R.drawable.rich3)
                             showWarning()
                         }
+
                         else -> binding.imageFarm.setBackgroundResource(R.drawable.rich2)
                     }
                 }
@@ -158,10 +169,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun showWarning() {
-        warningDialog = Dialog(this.requireContext())
-        bindingCheck = DialogCheckBinding.inflate(layoutInflater)
-        warningDialog.setContentView(bindingCheck.root)
-        warningDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        showCheckDialog()
         bindingCheck.checkContent.setText(R.string.overage_zero)
         bindingCheck.imageCancel.visibility = View.GONE
         bindingCheck.imageSave.visibility = View.GONE
@@ -199,6 +207,7 @@ class HomeFragment : Fragment() {
     private fun getDays(code: String): List<String> {
         val days = ArrayList<String>(PREFILLED_DAYS)
         val today = Format.getDateTimeFromCode(code)
+
         for (i in -PREFILLED_DAYS / 2..PREFILLED_DAYS / 2) {
             days.add(Format.getDayCodeFromDateTime(today.plusDays(i)))
         }
@@ -241,8 +250,15 @@ class HomeFragment : Fragment() {
             .updateCalendars(binding.dayViewpager.currentItem)
     }
 
-    private fun restart(){
+    private fun restart() {
         val intent = Intent(this.context, MainActivity::class.java)
         startActivity(intent)
+    }
+
+    fun showCheckDialog() {
+        warningDialog = Dialog(this.requireContext())
+        bindingCheck = DialogCheckBinding.inflate(layoutInflater)
+        warningDialog.setContentView(bindingCheck.root)
+        warningDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
     }
 }

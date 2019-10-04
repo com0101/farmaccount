@@ -14,13 +14,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
+import com.snc.farmaccount.MainActivity
 import com.snc.farmaccount.MainViewModel
 import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.Budget
 import com.snc.farmaccount.databinding.DialogCheckBinding
 import com.snc.farmaccount.databinding.DialogNumberpickBinding
 import com.snc.farmaccount.databinding.FragmentBudgetBinding
-import com.snc.farmaccount.dialog.AmountInputDialogDirections
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -103,6 +103,7 @@ class BudgetFragment : Fragment() {
 
             binding.imageArrowRight.setOnClickListener {
                 binding.farmList.currentItem = binding.farmList.currentItem + 1
+
                 if (binding.farmList.currentItem == 2) {
                     binding.imageArrowRight.visibility = View.INVISIBLE
                 } else {
@@ -112,6 +113,7 @@ class BudgetFragment : Fragment() {
 
             binding.imageArrowLeft.setOnClickListener {
                 binding.farmList.currentItem = binding.farmList.currentItem - 1
+
                 if (binding.farmList.currentItem == 0) {
                     binding.imageArrowLeft.visibility = View.INVISIBLE
                 } else {
@@ -141,9 +143,11 @@ class BudgetFragment : Fragment() {
 
     private fun changeArrow() {
         viewModel.selectPosition.observe(this, Observer {
-            when(it) {
+            when (it) {
                 0 -> binding.imageArrowLeft.visibility = View.GONE
+
                 2 -> binding.imageArrowRight.visibility = View.INVISIBLE
+
                 else -> {
                     binding.imageArrowRight.visibility = View.VISIBLE
                     binding.imageArrowLeft.visibility = View.VISIBLE
@@ -177,14 +181,12 @@ class BudgetFragment : Fragment() {
     private fun numberPicker() {
         binding.numberTitle.text = String.format(getString(R.string.overage_cycle),
             "${mainViewModel.pickdate.value}")
-        numberPickerDialog = Dialog(this.requireContext())
-        bindingNumberPicker = DialogNumberpickBinding.inflate(layoutInflater)
-        numberPickerDialog.setContentView(bindingNumberPicker.root)
-        numberPickerDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
+        (activity as MainActivity).showCheckDialog()
         binding.numberTitle.setOnClickListener {
             numberPickerDialog.show()
         }
+
         mainViewModel.maxDay.observe(this, Observer { maxDay->
             bindingNumberPicker.numberPicker.maxValue = maxDay
 
@@ -200,21 +202,19 @@ class BudgetFragment : Fragment() {
                 }
             }
         })
+
         bindingNumberPicker.cancel.setOnClickListener {
             numberPickerDialog.dismiss()
         }
     }
 
     private fun warningDialog() {
-        warningDialog = Dialog(this.requireContext())
-        bindingCheck = DialogCheckBinding.inflate(layoutInflater)
-        warningDialog.setContentView(bindingCheck.root)
-        warningDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        showCheckDialog()
         bindingCheck.imageCancel.visibility = View.GONE
         bindingCheck.imageSave.visibility = View.GONE
 
         GlobalScope.launch(context = Dispatchers.Main) {
-            when(viewModel.isPriceMoreThan.value) {
+            when (viewModel.isPriceMoreThan.value) {
                 true -> {
                     bindingCheck.checkContent.setText(R.string.price_over_check)
                     warningDialog.show()
@@ -250,4 +250,10 @@ class BudgetFragment : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 
+    fun showCheckDialog() {
+        warningDialog = Dialog(this.requireContext())
+        bindingCheck = DialogCheckBinding.inflate(layoutInflater)
+        warningDialog.setContentView(bindingCheck.root)
+        warningDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+    }
 }

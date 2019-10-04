@@ -38,6 +38,7 @@ class ChooseFragment : Fragment() {
 
         binding.imageArrowRight.setOnClickListener {
             binding.farmList.currentItem = binding.farmList.currentItem + 1
+
             if (binding.farmList.currentItem == 2) {
                 binding.imageArrowRight.visibility = View.INVISIBLE
             } else {
@@ -47,6 +48,7 @@ class ChooseFragment : Fragment() {
 
         binding.imageArrowLeft.setOnClickListener {
             binding.farmList.currentItem = binding.farmList.currentItem - 1
+
             if (binding.farmList.currentItem == 0) {
                 binding.imageArrowLeft.visibility = View.INVISIBLE
             } else {
@@ -80,9 +82,11 @@ class ChooseFragment : Fragment() {
 
     private fun changeArrow() {
         viewModel.selectPosition.observe(this, Observer {
-            when(it) {
+            when (it) {
                 0 -> binding.imageArrowLeft.visibility = View.GONE
+
                 2 -> binding.imageArrowRight.visibility = View.INVISIBLE
+
                 else -> {
                     binding.imageArrowRight.visibility = View.VISIBLE
                     binding.imageArrowLeft.visibility = View.VISIBLE

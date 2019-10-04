@@ -47,20 +47,19 @@ class StatisticFragment : Fragment() {
             val params =  binding.imageArrowRight.layoutParams as ConstraintLayout.LayoutParams
             val paramsleft =  binding.imageArrowLeft.layoutParams as ConstraintLayout.LayoutParams
 
-            when(it.name){
-                "總覽" -> {
+            when (it.name) {
+                getString(R.string.statistic_tag) -> {
                     viewModel.filter.value = false
                     params.setMargins(0, 281.dpToPx(),27.dpToPx(),0)
                     paramsleft.setMargins(25.dpToPx(), 281.dpToPx(),0,0)
-                    binding.imageArrowRight.requestLayout()
-                    binding.imageArrowLeft.requestLayout()
+                    requestLayout()
                 }
+
                 else -> {
                     viewModel.filter.value = true
                     params.setMargins(0,15.dpToPx(),27.dpToPx(),0)
                     paramsleft.setMargins(25.dpToPx(),15.dpToPx(),0,0)
-                    binding.imageArrowRight.requestLayout()
-                    binding.imageArrowLeft.requestLayout()
+                    requestLayout()
                 }
             }
             Log.i("Sophie_taglist", "${viewModel.category.value}")
@@ -100,10 +99,9 @@ class StatisticFragment : Fragment() {
                 override fun onPageSelected(position: Int) {
                     currentDayCode = codes[position]
 
-                    if (position == 125) {
-                        binding.imageArrowRight.visibility = View.GONE
-                    } else {
-                        binding.imageArrowRight.visibility = View.VISIBLE
+                    when (position) {
+                        125 -> binding.imageArrowRight.visibility = View.GONE
+                        else -> binding.imageArrowRight.visibility = View.VISIBLE
                     }
 
                 }
@@ -122,7 +120,7 @@ class StatisticFragment : Fragment() {
         return months
     }
 
-    private fun arrowButtons(){
+    private fun arrowButtons() {
         binding.imageArrowRight.setOnClickListener {
             binding.dayViewpager.currentItem = binding.dayViewpager.currentItem + 1
         }
@@ -148,7 +146,8 @@ class StatisticFragment : Fragment() {
     }
 
     private fun Number.dpToPx(): Int {
-        return (this.toFloat() * (ApplicationContext.applicationContext().resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)).toInt()
+        return (this.toFloat() * (ApplicationContext.applicationContext()
+            .resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)).toInt()
     }
 
     private fun backState() {
@@ -160,5 +159,10 @@ class StatisticFragment : Fragment() {
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
+
+    private fun requestLayout() {
+        binding.imageArrowRight.requestLayout()
+        binding.imageArrowLeft.requestLayout()
     }
 }
