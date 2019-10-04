@@ -5,8 +5,6 @@ import androidx.lifecycle.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.simplemobiletools.commons.extensions.toInt
-import com.snc.farmaccount.ApplicationContext
-import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.Event
 import com.snc.farmaccount.helper.*
 import java.util.*
@@ -52,8 +50,8 @@ class DayViewModel: ViewModel() {
                 if (task.isSuccessful) {
                     for (document in task.result!!) {
                         Log.d(SOPHIE, "getOrderBy:${document.id} => ${document.data}")
-                        firebaseEvent = document.toObject(Event::class.java)
-                        eventList.add(firebaseEvent)
+//                        firebaseEvent = document.toObject(Event::class.java)
+                        eventList.add(document.toObject(Event::class.java))
                     }
                 }
                 _event.value = eventList

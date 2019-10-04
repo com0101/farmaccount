@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.simplemobiletools.commons.extensions.toInt
 import com.snc.farmaccount.`object`.Budget
-import com.snc.farmaccount.`object`.Event
 import com.snc.farmaccount.helper.*
 import java.text.DecimalFormat
 import java.util.HashMap

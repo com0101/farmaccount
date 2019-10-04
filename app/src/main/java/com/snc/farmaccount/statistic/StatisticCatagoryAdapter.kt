@@ -4,14 +4,11 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.internal.view.SupportSubMenu
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.snc.farmaccount.R
-import com.snc.farmaccount.`object`.Event
 import com.snc.farmaccount.`object`.SumEvent
-import com.snc.farmaccount.databinding.ItemStatisticEventBinding
 import com.snc.farmaccount.databinding.ItemStatisticTotalBinding
 
 class StatisticCatagoryAdapter(var onClickListener: OnClickListener, var viewModel: StatisticViewModel):

@@ -1,6 +1,5 @@
 package com.snc.farmaccount.event
 
-import android.annotation.SuppressLint
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
@@ -11,7 +10,6 @@ import com.simplemobiletools.commons.extensions.toInt
 import com.snc.farmaccount.`object`.Event
 import com.snc.farmaccount.`object`.Tag
 import com.snc.farmaccount.helper.*
-import java.text.SimpleDateFormat
 import java.util.*
 
 class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(app) {
@@ -79,7 +77,7 @@ class EditEventViewModel(product: Event, app: Application) : AndroidViewModel(ap
         event[DESCRIPTION] = infoInput.value.toString()
         event[DATE] = today.value.toString()
         event[TIME] = time.value?:0L
-        event[STATUS] = isRevenue.value?:true
+        event[STATUS] = isRevenue.value!!
         event[MONTH] = month
         event[CATALOG] = category.value.toString()
 

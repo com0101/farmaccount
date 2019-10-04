@@ -182,7 +182,10 @@ class BudgetFragment : Fragment() {
         binding.numberTitle.text = String.format(getString(R.string.overage_cycle),
             "${mainViewModel.pickdate.value}")
 
-        (activity as MainActivity).showCheckDialog()
+        numberPickerDialog = Dialog(this.requireContext())
+        bindingNumberPicker = DialogNumberpickBinding.inflate(layoutInflater)
+        numberPickerDialog.setContentView(bindingNumberPicker.root)
+        numberPickerDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
         binding.numberTitle.setOnClickListener {
             numberPickerDialog.show()
         }

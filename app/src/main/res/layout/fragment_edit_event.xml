@@ -5,39 +5,41 @@
 
     <data>
         <variable name="viewModel" type="com.snc.farmaccount.event.EditEventViewModel"/>
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".event.EditEventFragment" android:background="@color/egg_yellow">
-
+            android:background="@color/egg_yellow"
+            tools:context=".event.EditEventFragment">
 
         <ImageView
+                android:id="@+id/background"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:srcCompat="@drawable/event_background"
-                android:id="@+id/background"
                 android:scaleType="centerCrop"
+                android:layout_marginTop="350dp"
+                app:srcCompat="@drawable/event_background"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="350dp" app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
+                app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
+
         <ImageView
+                android:id="@+id/toolbar"
                 android:layout_width="0dp"
                 android:layout_height="70dp"
                 android:scaleType="centerCrop"
                 app:srcCompat="@drawable/toolbar"
-                android:id="@+id/toolbar"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
+
         <ImageView
+                android:id="@+id/image_back_state"
                 android:layout_width="26dp"
                 android:layout_height="29dp"
-                android:id="@+id/image_back_state"
                 android:layout_marginTop="20dp"
                 android:layout_marginStart="25dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -46,42 +48,43 @@
 
         <TextView
                 android:id="@+id/text_budget_edit"
-                android:text="@{viewModel.today}"
-                android:fontFamily="@font/gen_normal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:text="@{viewModel.today}"
+                android:fontFamily="@font/gen_normal"
                 android:layout_marginTop="8dp"
                 android:textSize="20sp"
                 android:layout_marginBottom="8dp"
                 android:gravity="center"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="40dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/image_back_state"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/image_back_state"
-                app:layout_constraintBottom_toBottomOf="@+id/image_back_state"
-                android:textColor="@color/white"
-                android:textStyle="bold"/>
+                app:layout_constraintBottom_toBottomOf="@+id/image_back_state"/>
 
         <TextView
                 android:id="@+id/text_expend_title"
-                android:text="@string/expand_title"
-                android:fontFamily="@font/gen_normal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/expand_title"
+                android:fontFamily="@font/gen_normal"
                 android:layout_marginStart="58dp"
                 android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="parent"
                 android:textColor="@color/expend_title"
-                android:textStyle="bold" android:layout_marginTop="24dp"
+                android:textStyle="bold"
+                android:layout_marginTop="24dp"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
 
         <EditText
                 android:id="@+id/edit_expand"
-                android:text="@={viewModel.priceInput}"
-                android:fontFamily="@font/gen_normal"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
+                android:text="@={viewModel.priceInput}"
+                android:fontFamily="@font/gen_normal"
                 android:inputType="number"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
@@ -89,16 +92,17 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginStart="53dp"
                 android:layout_marginEnd="53dp"
+                android:textColor="@color/expend_title"
                 android:background="@drawable/radius_border"
                 app:layout_constraintTop_toBottomOf="@+id/text_expend_title"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:textColor="@color/expend_title"/>
+                app:layout_constraintEnd_toEndOf="parent"/>
 
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/tag_list"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 tools:listitem="@layout/item_event_tag"
                 tools:itemCount="2"
                 app:spanCount="5"
@@ -106,16 +110,15 @@
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:layout_constraintStart_toStartOf="@+id/edit_expand"
                 app:layout_constraintEnd_toEndOf="@+id/edit_expand"
-                app:layout_constraintTop_toBottomOf="@+id/edit_expand"
-                android:layout_marginTop="16dp">
+                app:layout_constraintTop_toBottomOf="@+id/edit_expand">
         </androidx.recyclerview.widget.RecyclerView>
 
         <EditText
                 android:id="@+id/edit_description"
-                android:text="@={viewModel.infoInput}"
-                android:fontFamily="@font/gen_normal"
                 android:layout_width="0dp"
                 android:layout_height="200dp"
+                android:text="@={viewModel.infoInput}"
+                android:fontFamily="@font/gen_normal"
                 android:inputType="textPersonName|textMultiLine"
                 android:background="@drawable/infor_border"
                 android:ems="10"
@@ -126,35 +129,34 @@
                 android:paddingEnd="16dp"
                 android:paddingBottom="16dp"
                 android:gravity="top"
+                android:textColor="@color/expend_title"
                 app:layout_constraintStart_toStartOf="@+id/edit_expand"
                 app:layout_constraintEnd_toEndOf="@+id/edit_expand"
                 app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintTop_toBottomOf="@+id/tag_list"
-                android:textColor="@color/expend_title"/>
+                app:layout_constraintTop_toBottomOf="@+id/tag_list"/>
 
         <ImageView
                 android:id="@+id/image_save"
                 android:layout_width="102dp"
                 android:layout_height="41dp"
-                app:srcCompat="@drawable/save"
                 android:layout_marginTop="16dp"
+                app:srcCompat="@drawable/save"
                 app:layout_constraintTop_toBottomOf="@+id/edit_description"
                 app:layout_constraintEnd_toEndOf="@+id/edit_description"/>
 
         <TextView
-                android:text="@string/save"
+                android:id="@+id/save_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/save_title"
-                app:layout_constraintTop_toTopOf="@+id/image_save"
-                app:layout_constraintBottom_toBottomOf="@+id/image_save"
-                app:layout_constraintEnd_toEndOf="@+id/image_save"
-                app:layout_constraintStart_toStartOf="@+id/image_save"
+                android:text="@string/save"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:fontFamily="@font/gen_normal"
-                android:layout_marginStart="32dp"/>
-
+                android:layout_marginStart="32dp"
+                app:layout_constraintTop_toTopOf="@+id/image_save"
+                app:layout_constraintBottom_toBottomOf="@+id/image_save"
+                app:layout_constraintEnd_toEndOf="@+id/image_save"
+                app:layout_constraintStart_toStartOf="@+id/image_save"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

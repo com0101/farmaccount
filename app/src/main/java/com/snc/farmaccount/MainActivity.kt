@@ -23,8 +23,7 @@ import io.fabric.sdk.android.Fabric
 class MainActivity : AppCompatActivity(){
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var warningDialog: Dialog
-    private lateinit var bindingCheck: DialogCheckBinding
+
 
     private val viewModel: MainViewModel by lazy {
         ViewModelProviders.of(this).get(MainViewModel::class.java)
@@ -86,13 +85,8 @@ class MainActivity : AppCompatActivity(){
         })
     }
 
-    fun showCheckDialog() {
-        warningDialog = Dialog(this)
-        bindingCheck = DialogCheckBinding.inflate(layoutInflater)
-        warningDialog.setContentView(bindingCheck.root)
-        warningDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-    }
-
 }
+
+
 
 

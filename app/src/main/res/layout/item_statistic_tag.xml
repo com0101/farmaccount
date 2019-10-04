@@ -11,9 +11,9 @@
             android:layout_height="wrap_content">
 
         <ImageView
+                android:id="@+id/image_catalog"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:id="@+id/image_catalog"
                 android:background="@drawable/tag_border"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -23,20 +23,23 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp"/>
+
         <TextView
+                android:id="@+id/statistic_catalog"
                 android:text="@string/statistic_tag"
                 android:layout_width="35dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/statistic_catalog"
                 android:textSize="16sp"
                 android:fontFamily="@font/gen_normal"
+                android:textColor="@color/expend_title"
+                android:gravity="center"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="2dp"
                 app:layout_constraintStart_toStartOf="@+id/image_catalog"
                 app:layout_constraintEnd_toEndOf="@+id/image_catalog"
                 app:layout_constraintTop_toTopOf="@+id/image_catalog"
-                app:layout_constraintBottom_toBottomOf="@+id/image_catalog"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:textColor="@color/expend_title"
-                android:gravity="center" android:layout_marginTop="2dp"/>
+                app:layout_constraintBottom_toBottomOf="@+id/image_catalog"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

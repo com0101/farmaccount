@@ -202,6 +202,7 @@ class AddEventFragment : Fragment() {
 
     private fun checkEdit() {
         showCheckDialog()
+
         GlobalScope.launch(context = Dispatchers.Main) {
             bindingCheck.checkContent.setText(R.string.check_edit)
             warningDialog.show()

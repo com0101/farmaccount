@@ -86,7 +86,7 @@ class StatisticEventAdapter(var onClickListener: OnClickListener,var viewModel: 
                 binding.imageTag.setImageResource(R.drawable.ticket)
             }
 
-            if (event.status!!) {
+            if (event.status) {
                 binding.price.setBackgroundResource(R.drawable.radius_border_green)
                 binding.titleTag.setTextColor(Color.parseColor("#82B763"))
             } else {

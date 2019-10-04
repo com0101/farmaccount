@@ -1,6 +1,5 @@
 package com.snc.farmaccount.detail
 
-import android.annotation.SuppressLint
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
@@ -10,7 +9,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.simplemobiletools.commons.extensions.toInt
 import com.snc.farmaccount.`object`.Event
 import com.snc.farmaccount.helper.*
-import java.text.SimpleDateFormat
 import java.util.*
 
 class DetailViewModel(product: Event, app: Application) : AndroidViewModel(app) {

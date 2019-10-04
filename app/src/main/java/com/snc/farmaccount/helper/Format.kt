@@ -1,8 +1,11 @@
 package com.snc.farmaccount.helper
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import com.snc.farmaccount.ApplicationContext
+import com.snc.farmaccount.MainActivity
 import com.snc.farmaccount.R
+import com.snc.farmaccount.databinding.DialogCheckBinding
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
 import org.joda.time.format.DateTimeFormat
@@ -17,6 +20,10 @@ object Format {
     const val MONTH_PATTERN = "MM"
     private var weekName: String = ""
     private const val DAY_OF_WEEK_PATTERN = "EEEE"
+    private lateinit var warningDialog: Dialog
+    @SuppressLint("StaticFieldLeak")
+    private lateinit var bindingCheck: DialogCheckBinding
+
 
     fun getCurrentDate(): String {
         val calendar = Calendar.getInstance()

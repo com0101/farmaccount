@@ -80,7 +80,7 @@ class DayEventAdapter(var onClickListener: OnClickListener,var viewModel: DayVie
                 binding.imageTag.setImageResource(R.drawable.ticket)
             }
 
-            if (event.status == true) {
+            if (event.status) {
                 binding.price.setBackgroundResource(R.drawable.radius_border_green)
                 binding.titleTag.setTextColor(Color.parseColor("#82B763"))
             } else {
