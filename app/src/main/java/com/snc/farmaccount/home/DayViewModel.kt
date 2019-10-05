@@ -18,9 +18,7 @@ class DayViewModel: ViewModel() {
     var overagePrice = MutableLiveData<String>()
     var farmStatus = MutableLiveData<Int>()
     var eventList = ArrayList<Event>()
-    private val calendar = Calendar.getInstance()
     private val db = FirebaseFirestore.getInstance()
-    lateinit var firebaseEvent : Event
 
     private val _event = MutableLiveData<List<Event>>()
     val event: LiveData<List<Event>>
@@ -50,7 +48,6 @@ class DayViewModel: ViewModel() {
                 if (task.isSuccessful) {
                     for (document in task.result!!) {
                         Log.d(SOPHIE, "getOrderBy:${document.id} => ${document.data}")
-//                        firebaseEvent = document.toObject(Event::class.java)
                         eventList.add(document.toObject(Event::class.java))
                     }
                 }

@@ -45,9 +45,6 @@ class BudgetFragment : Fragment() {
     private val mainViewModel: MainViewModel by lazy {
         ViewModelProviders.of(this.requireActivity()).get(MainViewModel::class.java)
     }
-    private val getViewModel: MainViewModel by lazy {
-        ViewModelProviders.of(this).get(MainViewModel::class.java)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -196,9 +193,8 @@ class BudgetFragment : Fragment() {
             bindingNumberPicker.numberPicker.setOnValueChangedListener {
                     _, _, newVal ->
                 bindingNumberPicker.save.setOnClickListener {
-                    mainViewModel.pickdate.value = newVal
+                    mainViewModel.pickdate.value = newVal.toLong()
                     mainViewModel.postCycleDay()
-                    getViewModel.getCycleDay()
                     binding.numberTitle.text = String.format(getString(R.string.overage_cycle),
                         "${mainViewModel.pickdate.value}")
                     numberPickerDialog.dismiss()

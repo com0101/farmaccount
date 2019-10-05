@@ -28,7 +28,7 @@ class MainViewModel: ViewModel() {
     var overagePrice = MutableLiveData<String>()
     var totalPrice = MutableLiveData<Long>()
     var priceList = ArrayList<Long>()
-    var pickdate = MutableLiveData<Int>()
+    var pickdate = MutableLiveData<Long>()
     var maxDay = MutableLiveData<Int>()
     var tagStatus = MutableLiveData<Boolean>()
     var activityRestart = MutableLiveData<Boolean>()
@@ -68,14 +68,14 @@ class MainViewModel: ViewModel() {
             .get()
             .addOnSuccessListener { document ->
                 if (document != null) {
-                    pickdate.value = document.data?.get(CYCLE_DAY)?.toInt()
+                    pickdate.value = document.data?.get(CYCLE_DAY)?.toInt()?.toLong()
                     setCurrentDate()
                 }
             }
     }
 
     private fun compareWithCycle() {
-        val today = calendar.get(Calendar.DAY_OF_MONTH)
+        val today = calendar.get(Calendar.DAY_OF_MONTH).toLong()
         maxDay.value = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
 
         when {
@@ -100,7 +100,7 @@ class MainViewModel: ViewModel() {
                     }
             }
 
-            today > pickdate.value?:0 -> {
+            today > pickdate.value?:0L -> {
                 db.collection(USER).document("${UserManager.userToken}")
                     .collection(EVENT)
                     .whereGreaterThan(TIME, startTime)
@@ -122,7 +122,7 @@ class MainViewModel: ViewModel() {
                     }
             }
 
-            today < pickdate.value?:0 -> {
+            today < pickdate.value?:0L -> {
                 db.collection(USER).document("${UserManager.userToken}")
                     .collection(EVENT)
                     .whereGreaterThan(TIME, lastTime)
@@ -213,10 +213,10 @@ class MainViewModel: ViewModel() {
             pickdate.value = 1
         }
 
-        val thisMonth = Date(year-1900, month, pickdate.value!!.minus(1))
-        val nextMonth = Date(year-1900, month+1, pickdate.value!!)
-        val lastMonth = Date(year-1900, month-1,pickdate.value!!.minus(1))
-        val futureDay = Date(year-1900, month, pickdate.value!!)
+        val thisMonth = Date(year-1900, month, pickdate.value!!.minus(1).toInt())
+        val nextMonth = Date(year-1900, month+1, pickdate.value!!.toInt())
+        val lastMonth = Date(year-1900, month-1,pickdate.value!!.minus(1).toInt())
+        val futureDay = Date(year-1900, month, pickdate.value!!.toInt())
         startTime = Format.getDateFormat(thisMonth).toLong()
         endTime = Format.getDateFormat(nextMonth).toLong()
         lastTime = Format.getDateFormat(lastMonth).toLong()
@@ -226,8 +226,5 @@ class MainViewModel: ViewModel() {
         dayMode = Format.getSimpleDateFormat(getDate)
         compareWithCycle()
     }
-
-
-
 
 }

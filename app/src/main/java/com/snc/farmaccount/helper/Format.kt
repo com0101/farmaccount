@@ -3,7 +3,6 @@ package com.snc.farmaccount.helper
 import android.annotation.SuppressLint
 import android.app.Dialog
 import com.snc.farmaccount.ApplicationContext
-import com.snc.farmaccount.MainActivity
 import com.snc.farmaccount.R
 import com.snc.farmaccount.databinding.DialogCheckBinding
 import org.joda.time.DateTime
@@ -18,6 +17,7 @@ object Format {
     const val DAYCODE_PATTERN = "yyyy.MM.dd (EEEE)"
     const val DATE_PATTERN = "yyyyMMdd"
     const val MONTH_PATTERN = "MM"
+    private val replace = Regex("[^A-Za-z0-9]")
     private var weekName: String = ""
     private const val DAY_OF_WEEK_PATTERN = "EEEE"
     private lateinit var warningDialog: Dialog
@@ -56,6 +56,10 @@ object Format {
 
         return "$year.${month+1}.$day ($weekName)"
     }
+
+    fun removePunctuation(text: String): String = replace.replace(text,"")
+
+
 
     @SuppressLint("SimpleDateFormat")
     fun getSimpleDateFormat(date: Date): String = SimpleDateFormat(DAYCODE_PATTERN).format(date)

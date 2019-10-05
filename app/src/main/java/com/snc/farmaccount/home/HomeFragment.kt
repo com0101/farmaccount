@@ -1,7 +1,6 @@
 package com.snc.farmaccount.home
 
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -14,7 +13,6 @@ import androidx.viewpager.widget.ViewPager
 import com.snc.farmaccount.R
 import com.snc.farmaccount.databinding.FragmentHomeBinding
 import com.snc.farmaccount.helper.Format
-import java.text.SimpleDateFormat
 import java.util.*
 import android.app.DatePickerDialog
 import android.app.Dialog
@@ -26,7 +24,12 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import android.content.Intent
 import com.snc.farmaccount.MainActivity
+import com.snc.farmaccount.event.AddEventViewModel
 import com.snc.farmaccount.helper.SOPHIE
+import java.util.Collections.replaceAll
+
+
+
 
 
 class HomeFragment : Fragment() {
@@ -47,6 +50,9 @@ class HomeFragment : Fragment() {
     private val mainViewModel: MainViewModel by lazy {
         ViewModelProviders.of(this).get(MainViewModel::class.java)
     }
+    private val addEventViewModel: AddEventViewModel by lazy {
+        ViewModelProviders.of(activity!!).get(AddEventViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,9 +68,10 @@ class HomeFragment : Fragment() {
         setViewPager()
         refreshEvents()
         arrowButtons()
+        mainViewModel.getCycleDay()
         viewModel.getOverage()
 
-        mainViewModel.activityRestart.observe(this, androidx.lifecycle.Observer {
+        mainViewModel.activityRestart.observe(this, androidx.lifecycle.Observer { it ->
             it.let {
                 restart()
             }
@@ -106,6 +113,8 @@ class HomeFragment : Fragment() {
         binding.imageAddEvent.setOnClickListener {
             findNavController()
                 .navigate(R.id.action_global_addEventFragment)
+            addEventViewModel.getDate.value = currentDayCode
+            addEventViewModel.getTime.value = Format.removePunctuation(currentDayCode)
         }
 
         binding.buttonDatePicker.setOnClickListener {
@@ -116,7 +125,7 @@ class HomeFragment : Fragment() {
             goToToday()
         }
 
-        viewModel.overagePrice.observe(this, androidx.lifecycle.Observer {
+        mainViewModel.overagePrice.observe(this, androidx.lifecycle.Observer {
             binding.textBudget.text = it
         })
 

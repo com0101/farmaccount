@@ -25,7 +25,6 @@ import java.util.*
 import java.text.SimpleDateFormat
 import android.app.Dialog
 import android.os.Build
-import com.snc.farmaccount.MainActivity
 import com.snc.farmaccount.databinding.DialogCheckBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -93,7 +92,7 @@ class QrCodeFragment : Fragment() {
                         if (it.text != null) {
                             this.findNavController()
                                 .navigate(R.id.action_global_addEventFragment)
-                            codeViewModel.someDay.value = time
+                            codeViewModel.getDate.value = time
                             codeViewModel.getPrice.value = price
                             codeViewModel.getMonth.value = getMonth
                             codeViewModel.getTime.value = date

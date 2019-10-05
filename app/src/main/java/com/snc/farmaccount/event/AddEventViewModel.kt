@@ -31,7 +31,7 @@ class AddEventViewModel : ViewModel() {
     var priceInput = MutableLiveData<String>()
     var infoInput = MutableLiveData<String>()
     var today = MutableLiveData<String>()
-    var someDay = MutableLiveData<String>()
+    var getDate = MutableLiveData<String>()
     var getPrice = MutableLiveData<String>()
     var monthly = MutableLiveData<String>()
     var getMonth = MutableLiveData<String>()

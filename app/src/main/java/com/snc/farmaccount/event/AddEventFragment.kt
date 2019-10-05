@@ -16,6 +16,7 @@ import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.Tag
 import com.snc.farmaccount.databinding.DialogCheckBinding
 import com.snc.farmaccount.databinding.FragmentAddEventBinding
+import com.snc.farmaccount.home.DayViewModel
 import kotlinx.android.synthetic.main.dialog_check.*
 import kotlinx.android.synthetic.main.fragment_add_event.image_save
 import kotlinx.coroutines.Dispatchers
@@ -49,10 +50,10 @@ class AddEventFragment : Fragment() {
             ViewModelProviders.of(activity!!).get(AddEventViewModel::class.java)
         }
 
-        codeViewModel.someDay.observe(viewLifecycleOwner, Observer {
-            if (codeViewModel.someDay.value != null) {
+        codeViewModel.getDate.observe(viewLifecycleOwner, Observer {
+            if (codeViewModel.getDate.value != null) {
                 viewModel.today.value = it
-                codeViewModel.someDay.value = null
+                codeViewModel.getDate.value = null
             }
         })
 

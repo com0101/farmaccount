@@ -2,7 +2,7 @@
     <string name="app_name">Farm Account</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="budget_number">1,8000</string>
+    <string name="budget_number">....</string>
     <string name="date">2019.08.24 (六)</string>
     <string name="hint_description">描述</string>
     <string name="price_tool_text">-$80</string>

@@ -101,7 +101,7 @@ class BudgetViewModel: ViewModel() {
             budget[BUDGET_PRICE] = postPrice.value?:0
             budget[POSITION] = newBudget.value?.position?:0
             budget[OVERAGE] = newOverage.toString()
-            budget[CYCLE_DAY] = circle.value?:0
+            budget[CYCLE_DAY] = firebaseBudget.cycleDay
 
             db.collection(USER).document("${UserManager.userToken}")
                 .collection(BUDGET)
