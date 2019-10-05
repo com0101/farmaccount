@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowLayoutInDisplayCutoutMode">
+            never
+        </item>
+    </style>
+
+    <style name="Dialog">
+        <item name="android:windowBackground">@color/translate_100</item>
+    </style>
+    <style name="my_dialog_theme" parent="ThemeOverlay.AppCompat.Dialog">
+        <item name="colorAccent">@color/google_text</item>                   <!--header background-->
+        <item name="android:windowBackground">@drawable/datepicker_border</item>     <!--calendar background-->
+        <item name="android:colorControlActivated">@color/expend_title</item> <!--selected day-->
+        <item name="android:textColorPrimary">@color/expend_title</item> <!--days of the month-->
+        <item name="android:textColorSecondary">@color/google_text</item>
+        <item name="android:datePickerStyle">@style/MyDatePicker</item>
+        <item name="android:padding">@dimen/padding_2</item>
+        <item name="android:fontFamily">@font/gen_normal</item>
+        <item name="android:textSize">16dp</item>
+        <!--days of the week-->
+    </style>
+    <style name="MyDatePicker" parent="android:Widget.Material.DatePicker">
+        <item name="android:datePickerMode">spinner</item>
+    </style>
+
+
+</resources>

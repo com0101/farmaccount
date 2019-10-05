@@ -27,6 +27,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import android.content.Intent
+import com.snc.farmaccount.MainActivity
 
 
 class HomeFragment : Fragment() {
@@ -36,8 +38,6 @@ class HomeFragment : Fragment() {
     private var defaultDailyPage = 0
     private var todayDayCode = ""
     private var currentDayCode = ""
-
-
 
     private val viewModel: DayViewModel by lazy {
         ViewModelProviders.of(this).get(DayViewModel::class.java)
@@ -57,7 +57,6 @@ class HomeFragment : Fragment() {
         binding.viewModel = viewModel
         currentDayCode= viewModel.DATE_MODE
         todayDayCode = viewModel.DATE_MODE
-//        mainViewModel.getCircle()
         binding.dayViewpager.id = (System.currentTimeMillis() % 100000).toInt()
         setViewPager()
         refreshEvents()
@@ -65,16 +64,24 @@ class HomeFragment : Fragment() {
         viewModel.getOverage()
         var buttonSense = false
 
+        mainViewModel.activityRestart.observe(this, androidx.lifecycle.Observer {
+            it.let {
+                restart()
+            }
+        })
+
         binding.buttonSetting.setOnClickListener {
             buttonSense = if (!buttonSense) {
                 binding.buttonBudget.animate().translationY(180f).start() // move away
                 binding.buttonStatistic.animate().translationY(360f).start()
                 binding.buttonScan.animate().translationY(540f).start()
+                binding.buttonSetting.animate().rotation(360f).start()
                 true
             } else {
                 binding.buttonBudget.animate().translationY(0f).start()
                 binding.buttonStatistic.animate().translationY(0f).start()
                 binding.buttonScan.animate().translationY(0f).start()
+                binding.buttonSetting.animate().rotation(0f).start()
                 false
             }
         }
@@ -110,6 +117,10 @@ class HomeFragment : Fragment() {
             goToToday()
         }
 
+        viewModel.overagePrice.observe(this, androidx.lifecycle.Observer {
+            binding.textBudget.text = it
+        })
+
         viewModel.date.observe(this, androidx.lifecycle.Observer {
 
         })
@@ -139,7 +150,7 @@ class HomeFragment : Fragment() {
                 }
                 if (status == 2) {
                     when {
-                        it > 1000 -> binding.imageFarm.setBackgroundResource(R.drawable.rich)
+                        it > 1000 -> binding.imageFarm.setBackgroundResource(R.drawable.richnew)
                         it < 0 -> {
                             binding.imageFarm.setBackgroundResource(R.drawable.rich3)
                             showWarning()
@@ -169,6 +180,20 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun note() {
+        var dialog = Dialog(this.requireContext())
+        var bindingCheck = DialogCheckBinding.inflate(layoutInflater)
+        dialog.setContentView(bindingCheck.root)
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        bindingCheck.checkContent.text = "跳至今日已完成"
+        bindingCheck.imageCancel.visibility = View.GONE
+        bindingCheck.imageSave.visibility = View.GONE
+        GlobalScope.launch(context = Dispatchers.Main) {
+            dialog.show()
+            delay(1000)
+            dialog.dismiss()
+        }
+    }
 
     private fun setViewPager() {
         val codes = getDays(currentDayCode)
@@ -218,6 +243,7 @@ class HomeFragment : Fragment() {
     private fun goToToday() {
         currentDayCode = todayDayCode
         setViewPager()
+//        note()
     }
 
     private fun showDialog() {
@@ -240,7 +266,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun refreshEvents() {
-        (binding.dayViewpager.adapter as? DayViewPagerAdapter)?.updateCalendars(binding.dayViewpager.currentItem)
+        (binding.dayViewpager.adapter as DayViewPagerAdapter).updateCalendars(binding.dayViewpager.currentItem)
     }
 
+    private fun restart(){
+        val intent = Intent(this.context, MainActivity::class.java)
+        startActivity(intent)
+    }
 }

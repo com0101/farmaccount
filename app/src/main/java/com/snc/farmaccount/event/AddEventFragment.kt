@@ -19,6 +19,8 @@ import com.snc.farmaccount.`object`.Tag
 import com.snc.farmaccount.databinding.DialogCheckBinding
 import com.snc.farmaccount.databinding.FragmentAddEventBinding
 import com.snc.farmaccount.qrcode.QrCodeFragment
+import kotlinx.android.synthetic.main.dialog_check.*
+import kotlinx.android.synthetic.main.fragment_add_event.image_save
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -29,6 +31,8 @@ class AddEventFragment : Fragment() {
     private lateinit var binding: FragmentAddEventBinding
     val tag = ArrayList<Tag>()
     var REQUEST_EVALUATE = 0X110
+    var inputCheck = 0
+    var isClick = false
 
     private val viewModel: AddEventViewModel by lazy {
         ViewModelProviders.of(this).get(AddEventViewModel::class.java)
@@ -82,36 +86,81 @@ class AddEventFragment : Fragment() {
         binding.tagList.adapter = TagAdapter(TagAdapter.OnClickListener {
             viewModel.chooseTag.value = it
             Log.i("Sophie_tag","$it")
+            if (it.tag_status) {
+                binding.textExpendTitle.setText(R.string.income_title)
+            } else {
+                binding.textExpendTitle.setText(R.string.expand_title)
+            }
         })
 
         binding.imageSave.setOnClickListener {
             var dialog = Dialog(this.requireContext())
             var bindingCheck = DialogCheckBinding.inflate(layoutInflater)
+            isClick = true
             dialog.setContentView(bindingCheck.root)
-            viewModel.addFirebase()
             dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-            GlobalScope.launch(context = Dispatchers.Main) {
-                bindingCheck.checkContent.text = "新增完成!"
-                bindingCheck.imageCancel.visibility = View.GONE
-                bindingCheck.imageSave.visibility = View.GONE
-                dialog.show()
-                delay(1500)
-                dialog.dismiss()
-                findNavController()
-                    .navigate(EditEventFragmentDirections.actionGlobalHomeFragment())
+            when {
+                viewModel.priceInput.value == null && viewModel.chooseTag.value == null &&viewModel.infoInput.value == null
+                -> {
+                    inputCheck = 0
+                    warning()
+                }
+                viewModel.priceInput.value == null -> {
+                    inputCheck = 1
+                    warning()
+                }
+                viewModel.chooseTag.value == null -> {
+                    inputCheck = 2
+                    warning()
+                }
+                viewModel.infoInput.value == null -> {
+                    inputCheck = 3
+                    warning()
+                }
+
+            }
+
+            if (viewModel.priceInput.value != null &&
+                viewModel.chooseTag.value != null &&
+                viewModel.infoInput.value != null) {
+                viewModel.addFirebase()
+                binding.imageSave.setImageResource(R.drawable.save_press)
+                binding.imageSave.isClickable = false
+                GlobalScope.launch(context = Dispatchers.Main) {
+                    bindingCheck.checkContent.text = "新增完成!"
+                    bindingCheck.imageCancel.visibility = View.GONE
+                    bindingCheck.imageSave.visibility = View.GONE
+                    dialog.show()
+                    binding.imageSave.setImageResource(R.drawable.save)
+                    binding.imageSave.isClickable = true
+                    delay(1500)
+                    dialog.dismiss()
+                    findNavController()
+                        .navigate(EditEventFragmentDirections.actionGlobalHomeFragment())
+                }
             }
         }
 
         binding.imageBackState.setOnClickListener {
-            findNavController()
-                .navigate(AddEventFragmentDirections.actionGlobalHomeFragment())
+            when {
+                viewModel.priceInput.value != null && viewModel.priceInput.value!!.isEmpty() -> checkEdit()
+                viewModel.infoInput.value != null && viewModel.priceInput.value!!.isEmpty() -> checkEdit()
+                viewModel.chooseTag.value != null -> checkEdit()
+                else -> findNavController()
+                    .navigate(AddEventFragmentDirections.actionGlobalHomeFragment())
+            }
         }
 
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 // 做你要的事，這邊是跳轉首頁
-                findNavController().
-                    navigate(R.id.action_global_homeFragment)
+                when {
+                    viewModel.priceInput.value != null -> checkEdit()
+                    viewModel.infoInput.value != null -> checkEdit()
+                    viewModel.chooseTag.value != null -> checkEdit()
+                    else -> findNavController()
+                        .navigate(AddEventFragmentDirections.actionGlobalHomeFragment())
+                }
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
@@ -119,6 +168,7 @@ class AddEventFragment : Fragment() {
         tagList()
         viewModel.mark.value = tag
         viewModel.getTag()
+
         // Inflate the layout for this fragment
         return binding.root
     }
@@ -127,9 +177,45 @@ class AddEventFragment : Fragment() {
         super.onAttach(context)
         val qrCodeFragment = QrCodeFragment()
         qrCodeFragment.setTargetFragment(this, REQUEST_EVALUATE)
+    }
 
+    private fun warning() {
+        var warning = Dialog(this.requireContext())
+        var bindingCheck = DialogCheckBinding.inflate(layoutInflater)
+        warning.setContentView(bindingCheck.root)
+        warning.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        GlobalScope.launch(context = Dispatchers.Main) {
+            when (inputCheck) {
+                0 -> bindingCheck.checkContent.text = "資訊沒填喔!"
+                1 -> bindingCheck.checkContent.text = "價錢沒填喔!"
+                2 -> bindingCheck.checkContent.text = "類別沒選喔!"
+                3 -> bindingCheck.checkContent.text = "寫個描述吧!"
+            }
+            bindingCheck.imageCancel.visibility = View.GONE
+            bindingCheck.imageSave.visibility = View.GONE
+            warning.show()
+            delay(1000)
+            warning.dismiss()
+        }
+    }
 
-
+    private fun checkEdit() {
+        var checkEdit = Dialog(this.requireContext())
+        var bindingCheck = DialogCheckBinding.inflate(layoutInflater)
+        checkEdit.setContentView(bindingCheck.root)
+        checkEdit.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        GlobalScope.launch(context = Dispatchers.Main) {
+            bindingCheck.checkContent.setText(R.string.check_edit)
+            checkEdit.show()
+            checkEdit.image_save.setOnClickListener {
+                checkEdit.dismiss()
+                findNavController().
+                    navigate(R.id.action_global_homeFragment)
+            }
+            checkEdit.image_cancel.setOnClickListener {
+                checkEdit.dismiss()
+            }
+        }
     }
 
     private fun tagList() {

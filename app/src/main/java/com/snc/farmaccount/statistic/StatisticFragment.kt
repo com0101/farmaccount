@@ -22,10 +22,7 @@ import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.StatisticCatalog
 import com.snc.farmaccount.databinding.FragmentStatisticBinding
 import com.snc.farmaccount.helper.Format
-
-
-
-
+import kotlinx.android.synthetic.main.fragment_home.*
 
 
 class StatisticFragment : Fragment() {
@@ -59,15 +56,15 @@ class StatisticFragment : Fragment() {
             when(it.name){
                 "總覽" -> {
                     viewModel.filter.value = false
-                    params.setMargins(0, 260.dpToPx(),27.dpToPx(),0)
-                    paramsleft.setMargins(25.dpToPx(), 260.dpToPx(),0,0)
+                    params.setMargins(0, 281.dpToPx(),27.dpToPx(),0)
+                    paramsleft.setMargins(25.dpToPx(), 281.dpToPx(),0,0)
                     binding.imageArrowRight.requestLayout()
                     binding.imageArrowLeft.requestLayout()
                 }
                 else -> {
                     viewModel.filter.value = true
-                    params.setMargins(0,10.dpToPx(),27.dpToPx(),0)
-                    paramsleft.setMargins(25.dpToPx(),10.dpToPx(),0,0)
+                    params.setMargins(0,15.dpToPx(),27.dpToPx(),0)
+                    paramsleft.setMargins(25.dpToPx(),15.dpToPx(),0,0)
                     binding.imageArrowRight.requestLayout()
                     binding.imageArrowLeft.requestLayout()
                 }
@@ -107,14 +104,27 @@ class StatisticFragment : Fragment() {
                 }
 
                 override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                    Log.i("Sophie_position","$positionOffset+${position}")
+                    if (position==125 && positionOffset>0) {
+                        binding.dayViewpager.setCurrentItem(125, true)
+//                        binding.dayViewpager.beginFakeDrag()
+                    }
                 }
 
                 override fun onPageSelected(position: Int) {
                     currentDayCode = codes[position]
-                    Log.i("Sophie_position","$currentDayCode")
+                    if (position == 125) {
+                        binding.imageArrowRight.visibility = View.GONE
+
+                    } else {
+                        binding.imageArrowRight.visibility = View.VISIBLE
+
+                    }
+
                 }
             })
             currentItem = defaultDailyPage
+            Log.i("Sophie_current", "$currentItem + $defaultDailyPage")
         }
     }
 
@@ -126,7 +136,6 @@ class StatisticFragment : Fragment() {
         }
         return months
     }
-
 
     private fun arrowButtons(){
 
@@ -154,7 +163,7 @@ class StatisticFragment : Fragment() {
        tag.add(StatisticCatalog(getString(R.string.catalog_income)))
     }
 
-    fun Number.dpToPx(): Int {
+    private fun Number.dpToPx(): Int {
         return (this.toFloat() * (ApplicationContext.applicationContext().resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)).toInt()
     }
 }

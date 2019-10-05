@@ -10,7 +10,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".qrcode.QrCodeFragment" android:background="@color/egg_yellow">
+            tools:context=".qrcode.QrCodeFragment"
+            android:background="@color/egg_yellow">
 
         <ImageView
                 android:layout_width="0dp"
@@ -26,7 +27,7 @@
                 android:layout_width="26dp"
                 android:layout_height="29dp"
                 android:id="@+id/image_back_state"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginStart="25dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:srcCompat="@drawable/back"

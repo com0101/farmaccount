@@ -1,5 +1,6 @@
 package com.snc.farmaccount.event
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -12,6 +13,7 @@ class TagEditAdapter(private var onClickListener: OnClickListener,var viewModel:
     ListAdapter<Tag, TagEditAdapter.EventTagViewHolder>(DiffCallback){
 
     var selectedPosition = -1
+    var select = false
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventTagViewHolder {
@@ -34,25 +36,34 @@ class TagEditAdapter(private var onClickListener: OnClickListener,var viewModel:
         val event : Tag = getItem(position)
         holder.itemView.setOnClickListener {
             selectedPosition = position
+            select = true
             onClickListener.onClick(event)
             notifyDataSetChanged()
         }
-        holder.bind(event,selectedPosition,viewModel)
+        holder.bind(event,selectedPosition,viewModel,select)
     }
 
     class EventTagViewHolder(private var binding: ItemEventTagBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(event : Tag, selectedPosition: Int, viewModel: EditEventViewModel) {
+        fun bind(event : Tag, selectedPosition: Int,
+                 viewModel: EditEventViewModel,select: Boolean) {
             binding.tag = event
             binding.textEvent.text = event.tag_name
             binding.eventTag.setImageResource(event.tag_img)
             if (selectedPosition==adapterPosition) {
                 binding.eventTag.setImageResource(event.tag_img_press)
+                select
+            } else {
+                binding.eventTag.setImageResource(event.tag_img)
+                !select
             }
-            if (viewModel.detail.value?.tag == event.tag_name) {
-                binding.eventTag.setImageResource(event.tag_img_press)
+            if (viewModel.chooseTag.value == null) {
+                if (viewModel.detail.value?.tag == event.tag_name) {
+                    binding.eventTag.setImageResource(event.tag_img_press)
+                }
             }
+
 
             binding.executePendingBindings()
         }

@@ -44,6 +44,8 @@ class DetailFragment : Fragment() {
         binding.viewModel = viewModel
 
         binding.imageEdit.setOnClickListener {
+            binding.imageEdit.setImageResource(R.drawable.edit_press)
+            binding.imageEdit.isClickable = false
             findNavController()
                 .navigate(DetailFragmentDirections.actionGlobalEditEventFragment(product))
         }
@@ -52,16 +54,26 @@ class DetailFragment : Fragment() {
             var dialog = Dialog(this.requireContext())
             var bindingCheck = DialogCheckBinding.inflate(layoutInflater)
             dialog.setContentView(bindingCheck.root)
+            binding.imageDelete.setImageResource(R.drawable.delete_press)
+            binding.imageDelete.isClickable = false
             dialog.show()
             dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
             bindingCheck.checkContent.text = "確定要刪掉嗎?"
             bindingCheck.imageCancel.setOnClickListener {
                 dialog.dismiss()
+                binding.imageDelete.setImageResource(R.drawable.delete)
+                binding.imageDelete.isClickable = true
+                bindingCheck.imageCancel.setImageResource(R.drawable.cancel_press)
+
             }
             bindingCheck.imageSave.setOnClickListener {
                 viewModel.deleteEvent()
                 dialog.dismiss()
+                bindingCheck.imageSave.setImageResource(R.drawable.yes_press)
+                bindingCheck.imageSave.isClickable = false
                 GlobalScope.launch(context = Dispatchers.Main) {
+                    bindingCheck.imageSave.setImageResource(R.drawable.yes)
+                    bindingCheck.imageSave.isClickable = true
                     delay(1000)
                     bindingCheck.checkContent.text = "刪除完成!"
                     bindingCheck.imageCancel.visibility = View.GONE
@@ -83,34 +95,34 @@ class DetailFragment : Fragment() {
         viewModel.detail.observe(this , Observer {
             Log.i("Sophie_detail","$it")
             if(it.tag == "早餐") {
-                binding.tagImage.setImageResource(R.drawable.tag_egg)
+                binding.tagImage.setImageResource(R.drawable.tag_egg_press)
             }
             if(it.tag == "午餐") {
-                binding.tagImage.setImageResource(R.drawable.tag_pig)
+                binding.tagImage.setImageResource(R.drawable.tag_pig_press)
             }
             if(it.tag == "晚餐") {
-                binding.tagImage.setImageResource(R.drawable.tag_cow)
+                binding.tagImage.setImageResource(R.drawable.tag_cow_press)
             }
             if(it.tag == "點心") {
-                binding.tagImage.setImageResource(R.drawable.tag_ginger)
+                binding.tagImage.setImageResource(R.drawable.tag_ginger_press)
             }
             if(it.tag == "衣服") {
-                binding.tagImage.setImageResource(R.drawable.tag_cloth)
+                binding.tagImage.setImageResource(R.drawable.tag_cloth_press)
             }
-            if(it.tag == "住") {
-                binding.tagImage.setImageResource(R.drawable.tag_live)
+            if(it.tag == "生活") {
+                binding.tagImage.setImageResource(R.drawable.tag_live_press)
             }
             if(it.tag == "交通") {
-                binding.tagImage.setImageResource(R.drawable.tag_traffic)
+                binding.tagImage.setImageResource(R.drawable.tag_traffic_press)
             }
             if(it.tag == "娛樂") {
-                binding.tagImage.setImageResource(R.drawable.tag_fun)
+                binding.tagImage.setImageResource(R.drawable.tag_fun_press)
             }
             if(it.tag == "薪水") {
-                binding.tagImage.setImageResource(R.drawable.tag_money)
+                binding.tagImage.setImageResource(R.drawable.tag_money_press)
             }
             if(it.tag == "中獎") {
-                binding.tagImage.setImageResource(R.drawable.tag_ticket)
+                binding.tagImage.setImageResource(R.drawable.tag_ticket_press)
             }
         })
 

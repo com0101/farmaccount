@@ -12,7 +12,7 @@ import com.snc.farmaccount.databinding.ItemStatisticTagBinding
 class StatisticTagAdapter(private val budget: ArrayList<StatisticCatalog>, var onClickListener: OnClickListener)
     : RecyclerView.Adapter<StatisticTagAdapter.TagViewHolder>() {
 
-    var selectedPosition = -1
+    var selectedPosition = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TagViewHolder {
         return TagViewHolder( ItemStatisticTagBinding
@@ -39,14 +39,19 @@ class StatisticTagAdapter(private val budget: ArrayList<StatisticCatalog>, var o
             binding.statisticCatalog.text = catalog.name
             if (selectedPosition==adapterPosition) {
                 binding.statisticCatalog.setTextColor(ApplicationContext.applicationContext().getColor(R.color.wood))
-                binding.imageCatalog.setImageResource(R.drawable.datepicker_border)
+                binding.imageCatalog.setImageResource(R.drawable.tag_select_border)
             } else {
                 binding.statisticCatalog.setTextColor(ApplicationContext.applicationContext().getColor(R.color.expend_title))
                 binding.imageCatalog.setImageResource(R.drawable.tag_border)
             }
+            if (selectedPosition==0) {
+                if (catalog.name=="總覽") {
+                    binding.statisticCatalog.setTextColor(ApplicationContext.applicationContext().getColor(R.color.wood))
+                    binding.imageCatalog.setImageResource(R.drawable.tag_select_border)
+                }
+            }
             binding.executePendingBindings()
         }
-
     }
     class OnClickListener(val clickListener: (catalog: StatisticCatalog ) -> Unit) {
         fun onClick(catalog: StatisticCatalog ) = clickListener(catalog)

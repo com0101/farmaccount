@@ -26,17 +26,16 @@
                     android:layout_width="0dp"
                     android:layout_height="400dp"
                     android:scaleType="centerCrop"
-                    android:background="@drawable/chicken"
+                    android:background="@drawable/chicken2"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    tools:srcCompat="@drawable/waiting"/>
+                    app:layout_constraintHorizontal_bias="0.0"/>
             <Button
                     android:id="@+id/button_date_picker"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginStart="25dp"
                     android:background="@drawable/pickday"
                     app:layout_constraintTop_toTopOf="parent"
@@ -56,7 +55,7 @@
 
                 <TextView
                         android:id="@+id/text_budget"
-                        android:text="@{viewModel.overagePrice}"
+                        android:text="@string/budget_number"
                         android:fontFamily="@font/gen_normal"
                         android:layout_width="0dp"
                         android:layout_height="30dp"
@@ -68,7 +67,8 @@
                         app:layout_constraintStart_toEndOf="@+id/image_coin"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent" android:textStyle="bold"/>
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:textStyle="bold"/>
 
                 <ImageView
                         android:id="@+id/image_coin"
@@ -90,7 +90,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:background="@drawable/today"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginEnd="16dp"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/button_setting"/>
@@ -102,14 +102,14 @@
                     android:layout_marginEnd="25dp"
                     android:background="@drawable/chart"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginTop="25dp" app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="20dp" app:layout_constraintTop_toTopOf="parent"
             />
             <Button
                     android:id="@+id/button_budget"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:background="@drawable/bank"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="20dp"
                     app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginEnd="25dp"/>
             <Button
@@ -119,13 +119,13 @@
                     android:layout_marginEnd="25dp"
                     android:background="@drawable/code"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginTop="25dp" app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="20dp" app:layout_constraintTop_toTopOf="parent"
             />
             <Button
                     android:id="@+id/button_setting"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginEnd="25dp"
                     android:background="@drawable/set"
                     app:layout_constraintTop_toTopOf="parent"
@@ -136,10 +136,9 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/add"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="8dp" android:layout_marginBottom="16dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/image_farm"/>
+                    app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+                    app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+                    android:layout_marginBottom="16dp" app:layout_constraintBottom_toBottomOf="@+id/image_farm"/>
             <com.google.android.material.appbar.AppBarLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
@@ -148,36 +147,38 @@
                     app:layout_constraintTop_toBottomOf="@+id/image_farm"
                     android:id="@+id/appBarLayout"
                     app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintBottom_toBottomOf="parent">
+                    app:layout_constraintBottom_toBottomOf="parent" android:background="@color/translate_100">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent" android:background="@color/expend_title">
 
                     <androidx.viewpager.widget.ViewPager
                             android:id="@+id/dayViewpager"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent" android:background="@color/expend_title">
+                            android:background="@color/translate_100"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                    >
                     </androidx.viewpager.widget.ViewPager>
                     <ImageView
                             android:id="@+id/image_arrow_left"
-                            android:layout_width="26dp"
-                            android:layout_height="29dp"
+                            android:layout_width="23dp"
+                            android:layout_height="26dp"
                             app:srcCompat="@drawable/arrow"
-                            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="25dp"
-                            app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="12dp"/>
+                            android:layout_marginTop="15dp" app:layout_constraintTop_toTopOf="@+id/dayViewpager"
+                            app:layout_constraintStart_toStartOf="@+id/dayViewpager" android:layout_marginStart="38dp"/>
                     <ImageView
                             android:id="@+id/image_arrow_right"
-                            android:layout_width="26dp"
-                            android:layout_height="29dp"
+                            android:layout_width="23dp"
+                            android:layout_height="26dp"
                             app:srcCompat="@drawable/arrow"
                             android:rotation="@dimen/arrow_rotate_180"
-                            android:layout_marginEnd="25dp" app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="12dp"/>
+                            android:layout_marginTop="15dp" app:layout_constraintTop_toTopOf="@+id/dayViewpager"
+                            android:layout_marginEnd="38dp" app:layout_constraintEnd_toEndOf="@+id/dayViewpager"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </com.google.android.material.appbar.AppBarLayout>

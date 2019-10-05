@@ -12,7 +12,7 @@
     </style>
 
     <style name="Dialog">
-        <item name="android:windowBackground">@color/translate_40</item>
+        <item name="android:windowBackground">@color/translate_100</item>
     </style>
     <style name="my_dialog_theme" parent="ThemeOverlay.AppCompat.Dialog">
         <item name="colorAccent">@color/google_text</item>                   <!--header background-->

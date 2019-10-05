@@ -25,12 +25,11 @@ class DayViewModel: ViewModel() {
     lateinit var firebaseEvent : Event
     var currentDate = MutableLiveData<String>()
     var date = MutableLiveData<String>()
-    var postPrice = MutableLiveData<Int>()
+    var postPrice = MutableLiveData<Long>()
     var overagePrice = MutableLiveData<String>()
     var farmStatus = MutableLiveData<Int>()
     var dataList = ArrayList<Event>()
     var DATE_MODE = ""
-
 
     private val _event = MutableLiveData<List<Event>>()
     val event: LiveData<List<Event>>
@@ -43,14 +42,43 @@ class DayViewModel: ViewModel() {
     init {
         pickDate
         week()
+        getOrderBy()
 //        getBudget()
 
     }
 
-    fun getFirebase() {
+    val getFirebase: LiveData<List<Event>> = Transformations.map(event) { it ->
+        it.filter {
+            it.date == "${pickDate.value}"
+        }
+    }
+
+//    fun getFirebase() {
+//        val db = FirebaseFirestore.getInstance()
+//        db.collection("User").document("${UserManager.userToken}").collection("Event")
+//            .whereEqualTo("date","${pickDate.value}")
+//            .get()
+//            .addOnCompleteListener { task ->
+//                if (task.isSuccessful) {
+//                    for (document in task.result!!) {
+//                        Log.d("Sophie_db", "${document.id} => ${document.data}")
+//                        if (document.data != null) {
+//                            firebaseEvent = document.toObject(Event::class.java)
+//                            dataList.add(firebaseEvent)
+//                        } else {
+//                            Log.d("Sophie_db", "no data")
+//                        }
+//                    }
+//                }
+//                _event.value = dataList
+//                Log.w("Sophie_db_list", "$dataList")
+//            }
+//    }
+
+    fun getOrderBy() {
         val db = FirebaseFirestore.getInstance()
         db.collection("User").document("${UserManager.userToken}").collection("Event")
-            .whereEqualTo("date","${pickDate.value}")
+            .orderBy("id", Query.Direction.DESCENDING)
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -59,6 +87,7 @@ class DayViewModel: ViewModel() {
                         if (document.data != null) {
                             firebaseEvent = document.toObject(Event::class.java)
                             dataList.add(firebaseEvent)
+                            Log.d("Sophie_order", "no data")
                         } else {
                             Log.d("Sophie_db", "no data")
                         }
@@ -69,6 +98,7 @@ class DayViewModel: ViewModel() {
             }
     }
 
+
     fun getOverage() {
         val db = FirebaseFirestore.getInstance()
         val decimalFormat = DecimalFormat("#,###")
@@ -78,7 +108,7 @@ class DayViewModel: ViewModel() {
                 if (task.isSuccessful) {
                     for (document in task.result!!) {
                         overagePrice.value = decimalFormat.format(document.data["overage"].toString().toDouble())
-                        postPrice.value = document.data["overage"]?.toInt()
+                        postPrice.value = document.data["overage"].toString().toLong()
                         farmStatus.value = document.data["position"]?.toInt()
                     }
                 }

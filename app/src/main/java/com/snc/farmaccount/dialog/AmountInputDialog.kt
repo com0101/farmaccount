@@ -27,7 +27,7 @@ class AmountInputDialog : DialogFragment() {
 
         binding = DialogAmountInputBinding.inflate(inflater)
         binding.lifecycleOwner = this
-
+        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
         val application = requireNotNull(activity).application
 
         val budget = AmountInputDialogArgs.fromBundle(arguments!!).amount

@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
+import com.simplemobiletools.commons.extensions.toBoolean
 import com.simplemobiletools.commons.extensions.toInt
 import com.snc.farmaccount.`object`.Event
 import com.snc.farmaccount.helper.UserManager
@@ -24,16 +25,27 @@ class MainViewModel: ViewModel() {
     var lastTime: Long = 0
     var futureTime: Long = 0
     var overagePrice = MutableLiveData<String>()
-    var totalPrice = MutableLiveData<Int>()
-    var priceList = ArrayList<Int>()
+    var totalPrice = MutableLiveData<Long>()
+    var priceList = ArrayList<Long>()
     var pickdate = MutableLiveData<Int>()
     var maxDay = MutableLiveData<Int>()
-
+    var tagStatus = MutableLiveData<Boolean>()
+    var allPrice = 0L
+    var activityRestart = MutableLiveData<Boolean>()
+    var checkLogIn = MutableLiveData<Boolean>()
+    var checkBudget = MutableLiveData<Boolean>()
 
     init {
         pickdate.value = 1
-//        week()
         updateOverage()
+        checkLogIn.value = false
+        Log.i("Sophie_token_activity", "${UserManager.userToken}+${UserManager.userEmail}+${UserManager.userName}")
+        if (UserManager.userToken != null) {
+            checkLogIn.value = true
+            getBudget()
+        } else {
+            checkLogIn.value = null
+        }
     }
 
     fun postCircleDay() {
@@ -57,7 +69,6 @@ class MainViewModel: ViewModel() {
                 if (document != null) {
                     pickdate.value = document.data?.get("circleDay")?.toInt()
                     week()
-
                 }
             }
     }
@@ -73,20 +84,23 @@ class MainViewModel: ViewModel() {
                 .whereEqualTo("date","$DATE_MODE")
                 .get()
                 .addOnSuccessListener { documents ->
-                    if (documents != null) {
-                        Log.d("Sophie", "DocumentSnapshot data: ${documents.documents}")
-                        if (documents.documents.isEmpty()) {
-                            totalPrice.value = 0
-
-                        } else {
-                            for (document in documents) {
-                                Log.d("Sophie", "${document.id} => ${document.data}")
-                                priceList.add(document.data["price"]!!.toInt())
-                                totalPrice.value = priceList.sum()
-                                Log.d("Sophie_list", "${totalPrice.value}")
-                            }
+                    for (document in documents) {
+                        Log.d("Sophie", "${document.id} => ${document.data}")
+                        tagStatus.value = document.data["status"]?.toBoolean()
+                        if (tagStatus.value == false) {
+                            allPrice = document.data["price"]!!.toString().toLong()
                         }
-
+                        if (tagStatus.value == true)  {
+                            allPrice = 0-document.data["price"]!!.toString().toLong()
+                        }
+                        priceList.add(allPrice)
+                        if (priceList.isEmpty()) {
+                            totalPrice.value = 0
+                        } else {
+                            Log.i("Sophie_minus", "$priceList")
+                            totalPrice.value = priceList.sum()
+                        }
+                        Log.d("Sophie_list_same", "${totalPrice.value}")
                         db.collection("User").document("${UserManager.userToken}").collection("Budget")
                             .get()
                             .addOnCompleteListener { task ->
@@ -94,16 +108,11 @@ class MainViewModel: ViewModel() {
                                     for (document in task.result!!) {
                                         Log.d("Sophie_db", "${document.id} => ${document.data}")
                                         if (document.data != null) {
-                                            Log.d("Sophie_list", "${totalPrice.value}")
                                             overagePrice.value = (document.data["budgetPrice"]!!.toInt()- totalPrice.value!!).toString()
-                                            Log.d("Sophie_ overagePrice.value", "${overagePrice.value}")
                                             db.collection("User").document("${UserManager.userToken}").collection("Budget")
                                                 .document("${UserManager.userToken}")
                                                 .update("overage", "${overagePrice.value}")
-                                                .addOnSuccessListener {
-                                                    Log.d("Sophie_list", "${overagePrice.value}")
-                                                    Log.d("Sophie_budget_edit", "DocumentSnapshot successfully written!")
-                                                }
+                                                .addOnSuccessListener { Log.d("Sophie_budget_edit", "DocumentSnapshot successfully written!") }
                                                 .addOnFailureListener { e -> Log.w("Sophie_budget_edit", "Error writing document", e) }
                                         } else {
                                             Log.d("Sophie_db", "no data")
@@ -127,10 +136,18 @@ class MainViewModel: ViewModel() {
                     .addOnSuccessListener { documents ->
                         for (document in documents) {
                             Log.d("Sophie", "${document.id} => ${document.data}")
-                            priceList.add(document.data["price"]!!.toInt())
+                            tagStatus.value = document.data["status"]?.toBoolean()
+                                if (tagStatus.value == false) {
+                                    allPrice = document.data["price"]!!.toString().toLong()
+                                }
+                                if (tagStatus.value == true)  {
+                                    allPrice = 0-document.data["price"]!!.toString().toLong()
+                                }
+                            priceList.add(allPrice)
                             if (priceList.isEmpty()) {
                                 totalPrice.value = 0
                             } else {
+                                Log.i("Sophie_minus", "$priceList")
                                 totalPrice.value = priceList.sum()
                             }
                             Log.d("Sophie_list", "${totalPrice.value}")
@@ -170,10 +187,18 @@ class MainViewModel: ViewModel() {
                     .addOnSuccessListener { documents ->
                         for (document in documents) {
                             Log.d("Sophie", "${document.id} => ${document.data}")
-                            priceList.add(document.data["price"]!!.toInt())
+                            tagStatus.value = document.data["status"]?.toBoolean()
+                                if (tagStatus.value == false) {
+                                    allPrice = document.data["price"]!!.toString().toLong()
+                                }
+                                if (tagStatus.value == true)  {
+                                    allPrice = 0-document.data["price"]!!.toString().toLong()
+                                }
+                            priceList.add(allPrice)
                             if (priceList.isEmpty()) {
                                 totalPrice.value = 0
                             } else {
+                                Log.i("Sophie_minus", "$priceList")
                                 totalPrice.value = priceList.sum()
                             }
                             Log.d("Sophie_list", "${totalPrice.value}")
@@ -255,4 +280,27 @@ class MainViewModel: ViewModel() {
         Log.i("today","$endTime + $startTime")
         updateOverage()
     }
+
+    fun getBudget() {
+        val db = FirebaseFirestore.getInstance()
+        db.collection("User").document("${UserManager.userToken}")
+            .collection("Budget").document("${UserManager.userToken}")
+            .get()
+            .addOnSuccessListener { document ->
+                if (document.data != null) {
+                    checkBudget.value = false
+                    Log.d("Sophie", "DocumentSnapshot data: ${document.data}")
+                    Log.d("Sophie", "${checkBudget.value}")
+
+                } else {
+                    checkBudget.value = true
+                    Log.d("Sophie", "No such document")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d("Sophie", "get failed with ", exception)
+            }
+    }
+
+
 }

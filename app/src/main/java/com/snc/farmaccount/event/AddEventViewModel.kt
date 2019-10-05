@@ -34,11 +34,12 @@ class AddEventViewModel : ViewModel() {
     var time = MutableLiveData<String>()
     var getTime = MutableLiveData<String>()
     var circleDay = MutableLiveData<Int>()
+    var thisDate = MutableLiveData<Long>()
     var startTime = 0
     var endTime = 0
     var lastTime = 0
     var futureTime = 0
-    var price = 0
+    var price = 0L
 
     private val _tag = MutableLiveData<List<Tag>>()
     val tag: LiveData<List<Tag>>
@@ -47,7 +48,7 @@ class AddEventViewModel : ViewModel() {
     init {
         week()
         getOverage()
-        Log.i("Sophie_today","${today.value}")
+        Log.i("Sophie_today","addevent-${today.value}")
 
     }
 
@@ -60,6 +61,7 @@ class AddEventViewModel : ViewModel() {
         var timeStamp = System.currentTimeMillis()
         // Create a new user with a first and last name
         val event = HashMap<String,Any>()
+        event["id"] = timeStamp
         event["price"] = priceInput.value!!
         event["tag"] = chooseTag.value!!.tag_name
         event["description"] = infoInput.value!!
@@ -86,33 +88,39 @@ class AddEventViewModel : ViewModel() {
                     .addOnSuccessListener {document ->
                         if (document != null) {
                             circleDay.value = document.data?.get("circleDay")!!.toInt()
-                            val thisMonth = Date(year-1900, month, circleDay.value!!.minus(1))
-                            val nextMonth = Date(year-1900, month+1, circleDay.value!!)
-                            val lastMonth = Date(year-1900, month-1,circleDay.value!!.minus(1))
-                            val futureDay = Date(year-1900, month, circleDay.value!!)
+                            val thisMonth = Date(year-1900, month, circleDay.value!!)
+                            val nextMonth = Date(year-1900, month+1, circleDay.value!!.minus(1))
+                            val lastMonth = Date(year-1900, month-1,circleDay.value!!)
+                            val futureDay = Date(year-1900, month, circleDay.value!!.minus(1))
                             val timeformat = SimpleDateFormat("yyyyMMdd")
                             startTime = timeformat.format(thisMonth).toInt()
                             endTime = timeformat.format(nextMonth).toInt()
                             lastTime = timeformat.format(lastMonth).toInt()
                             futureTime = timeformat.format(futureDay).toInt()
                             Log.d("Sophie_budget_time",
-                                "$startTime + $endTime + $lastTime + $futureTime +${time.value}")
+                                "$startTime + $endTime + $lastTime + $futureTime +${time.value}+${thisDate.value}")
                         }
 
-                        if (time.value!!.toInt() in (lastTime + 1) until futureTime) {
-                            price = priceInput.value!!.toInt()
-                            updateOverage()
-                            Log.d("Sophie_budget_over",
-                                "in!")
-
-                        } else if (time.value!!.toInt() in (startTime + 1) until endTime) {
-                            price = priceInput.value!!.toInt()
-                            updateOverage()
-                            Log.d("Sophie_budget_over",
-                                "inagain!")
-                        } else {
-                            price = 0
-                            updateOverage()
+                        when {
+                            thisDate.value!! in lastTime until futureTime -> {
+                                if (time.value!!.toInt() in lastTime until futureTime) {
+                                    price = priceInput.value!!.toLong()
+                                    updateOverage()
+                                    Log.d("Sophie_budget_over",
+                                        "$lastTime+$futureTime")
+                                }
+                            }
+                            thisDate.value!! in startTime until endTime -> {
+                                if (time.value!!.toInt() in startTime until endTime) {
+                                    price = priceInput.value!!.toLong()
+                                    updateOverage()
+                                    Log.d("Sophie_budget_over", "$startTime+$endTime")
+                                }
+                            }
+                            else -> {
+                                price = 0
+                                updateOverage()
+                            }
                         }
 
                     }
@@ -192,6 +200,7 @@ class AddEventViewModel : ViewModel() {
         monthFormat.value = monthformat.format(getDate)
         today.value = simpledateformat.format(getDate)
         time.value = dateformat.format(getDate)
+        thisDate.value = dateformat.format(getDate).toLong()
         Log.i("Sophie_date_mode", "${monthFormat.value}")
 
     }

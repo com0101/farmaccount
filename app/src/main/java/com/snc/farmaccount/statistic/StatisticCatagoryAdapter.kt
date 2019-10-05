@@ -50,12 +50,13 @@ class StatisticCatagoryAdapter(var onClickListener: OnClickListener, var viewMod
     class EventViewHolder(private var binding: ItemStatisticTotalBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        @SuppressLint("ResourceAsColor")
+        @SuppressLint("ResourceAsColor", "SetTextI18n")
         fun bind(event: SumEvent) {
             binding.sum = event
             binding.imageTag.setImageResource(event.tagImage)
             binding.titleTag.text = event.tagType
-            binding.textPrice.text = event.totalPrice
+            binding.textPrice.text = "$"+event.totalPrice
+
 
             if (event.status) {
                 binding.price.setBackgroundResource(R.drawable.radius_border_green)

@@ -8,16 +8,21 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Adapter
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 
 import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.Tag
 import com.snc.farmaccount.databinding.DialogCheckBinding
 import com.snc.farmaccount.databinding.FragmentEditEventBinding
 import com.snc.farmaccount.detail.DetailFragmentDirections
+import kotlinx.android.synthetic.main.dialog_check.*
+import kotlinx.android.synthetic.main.fragment_add_event.*
+import kotlinx.android.synthetic.main.fragment_add_event.image_save
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -28,6 +33,8 @@ class EditEventFragment : Fragment() {
 
     private lateinit var binding: FragmentEditEventBinding
     val tag = ArrayList<Tag>()
+    var inputCheck = 0
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,12 +54,29 @@ class EditEventFragment : Fragment() {
         binding.viewModel = viewModel
 
         binding.imageBackState.setOnClickListener {
-            findNavController()
-                .navigate(AddEventFragmentDirections.actionGlobalHomeFragment())
+            when {
+                viewModel.priceInput.value != viewModel.detail.value?.price -> checkEdit()
+                viewModel.infoInput.value != viewModel.detail.value?.description -> checkEdit()
+                viewModel.chooseTag.value?.tag_name != viewModel.detail.value?.tag -> checkEdit()
+                viewModel.priceInput.value == viewModel.detail.value?.price &&
+                viewModel.infoInput.value == viewModel.detail.value?.description &&
+                viewModel.tagName.value == viewModel.detail.value?.tag ->
+                    findNavController()
+                        .navigate(AddEventFragmentDirections.actionGlobalHomeFragment())
+            }
         }
 
         binding.tagList.adapter = TagEditAdapter(TagEditAdapter.OnClickListener {
             viewModel.chooseTag.value = it
+            if (viewModel.detail.value?.tag != it.tag_name) {
+                (binding.tagList.adapter as TagEditAdapter).select = false
+            }
+            if (it.tag_status) {
+                binding.textExpendTitle.setText(R.string.income_title)
+            } else {
+                binding.textExpendTitle.setText(R.string.expand_title)
+            }
+
         },viewModel)
 
         binding.imageSave.setOnClickListener {
@@ -60,34 +84,107 @@ class EditEventFragment : Fragment() {
             var bindingCheck = DialogCheckBinding.inflate(layoutInflater)
             dialog.setContentView(bindingCheck.root)
             dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-            viewModel.editFirebase()
-            GlobalScope.launch(context = Dispatchers.Main) {
-                delay(1000)
-                bindingCheck.checkContent.text = "編輯完成!"
-                bindingCheck.imageCancel.visibility = View.GONE
-                bindingCheck.imageSave.visibility = View.GONE
-                dialog.show()
-                delay(1000)
-                dialog.dismiss()
-                findNavController()
-                    .navigate(EditEventFragmentDirections.actionGlobalHomeFragment())
+            when {
+                viewModel.priceInput.value == null && viewModel.chooseTag.value == null &&viewModel.infoInput.value == null
+                -> {
+                    inputCheck = 0
+                    warning()
+                }
+                viewModel.priceInput.value!!.isEmpty() -> {
+                    inputCheck = 1
+                    warning()
+                }
+                viewModel.tagName.value == null -> {
+                    inputCheck = 2
+                    warning()
+                }
+                viewModel.infoInput.value!!.isEmpty() -> {
+                    inputCheck = 3
+                    warning()
+                }
+
+            }
+            if (viewModel.priceInput.value!!.isNotEmpty() &&
+                viewModel.tagName.value != null &&
+                viewModel.infoInput.value!!.isNotEmpty()) {
+                viewModel.editFirebase()
+                binding.imageSave.setImageResource(R.drawable.save_press)
+                binding.imageSave.isClickable = false
+                GlobalScope.launch(context = Dispatchers.Main) {
+                    binding.imageSave.setImageResource(R.drawable.save)
+                    binding.imageSave.isClickable = true
+                    bindingCheck.checkContent.text = "編輯完成!"
+                    bindingCheck.imageCancel.visibility = View.GONE
+                    bindingCheck.imageSave.visibility = View.GONE
+                    dialog.show()
+                    delay(1000)
+                    dialog.dismiss()
+                    findNavController()
+                        .navigate(EditEventFragmentDirections.actionGlobalHomeFragment())
+                }
             }
         }
 
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 // 做你要的事，這邊是跳轉首頁
-                findNavController().
-                    navigate(R.id.action_global_homeFragment)
+                when {
+                    viewModel.priceInput.value != viewModel.detail.value?.price -> checkEdit()
+                    viewModel.infoInput.value != viewModel.detail.value?.description -> checkEdit()
+                    viewModel.chooseTag.value?.tag_name != viewModel.detail.value?.tag -> checkEdit()
+                    viewModel.priceInput.value == viewModel.detail.value?.price &&
+                    viewModel.infoInput.value == viewModel.detail.value?.description &&
+                    viewModel.tagName.value == viewModel.detail.value?.tag ->
+                        findNavController()
+                            .navigate(AddEventFragmentDirections.actionGlobalHomeFragment())
+                }
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
-
         tagList()
         viewModel.mark.value = tag
         viewModel.getTag()
 
         return binding.root
+    }
+
+    private fun warning() {
+        var warning = Dialog(this.requireContext())
+        var bindingCheck = DialogCheckBinding.inflate(layoutInflater)
+        warning.setContentView(bindingCheck.root)
+        warning.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        GlobalScope.launch(context = Dispatchers.Main) {
+            when (inputCheck) {
+                0 -> bindingCheck.checkContent.text = "資訊沒填喔!"
+                1 -> bindingCheck.checkContent.text = "價錢沒填喔!"
+                2 -> bindingCheck.checkContent.text = "類別沒選喔!"
+                3 -> bindingCheck.checkContent.text = "寫個描述吧!"
+            }
+            bindingCheck.imageCancel.visibility = View.GONE
+            bindingCheck.imageSave.visibility = View.GONE
+            warning.show()
+            delay(1000)
+            warning.dismiss()
+        }
+    }
+
+    private fun checkEdit() {
+        var checkEdit = Dialog(this.requireContext())
+        var bindingCheck = DialogCheckBinding.inflate(layoutInflater)
+        checkEdit.setContentView(bindingCheck.root)
+        checkEdit.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        GlobalScope.launch(context = Dispatchers.Main) {
+            bindingCheck.checkContent.setText(R.string.check_edit)
+            checkEdit.show()
+            checkEdit.image_save.setOnClickListener {
+                checkEdit.dismiss()
+                findNavController().
+                    navigate(R.id.action_global_homeFragment)
+            }
+            checkEdit.image_cancel.setOnClickListener {
+                checkEdit.dismiss()
+            }
+        }
     }
 
     private fun tagList() {
