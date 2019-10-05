@@ -2,7 +2,8 @@ package com.snc.farmaccount
 
 
 import android.annotation.SuppressLint
-import android.app.Dialog
+import android.content.Context
+import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
@@ -16,23 +17,66 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import com.crashlytics.android.Crashlytics
-import com.snc.farmaccount.databinding.DialogCheckBinding
 import io.fabric.sdk.android.Fabric
+import android.net.ConnectivityManager
+import android.util.Log
+import com.snc.farmaccount.helper.INTERNET
+import com.snc.farmaccount.helper.SOPHIE
+import android.content.Intent
+
+
 
 
 class MainActivity : AppCompatActivity(){
 
     private lateinit var binding: ActivityMainBinding
 
-
     private val viewModel: MainViewModel by lazy {
         ViewModelProviders.of(this).get(MainViewModel::class.java)
     }
 
-    @SuppressLint("ObsoleteSdkInt")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        statusBar()
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
+        viewModel.getCycleDay()
+        navigationToHome()
+        registerConnectReceiver()
+        Fabric.with(this, Crashlytics())
+    }
+
+    private fun navigationToHome() {
+        when (viewModel.isLogIn.value) {
+            true -> checkBudgetStatus()
+
+            else -> this.findNavController(R.id.myNavHostFragment)
+                .navigate(R.id.action_global_logInFragment)
+        }
+    }
+
+    //check Budget collection exist
+    private fun checkBudgetStatus() {
+        viewModel.hasBudget.observe(this, Observer {
+            it?.let {
+                when (viewModel.hasBudget.value) {
+                    false -> this.findNavController(R.id.myNavHostFragment)
+                        .navigate(R.id.action_global_homeFragment)
+
+                    else -> this. findNavController(R.id.myNavHostFragment)
+                        .navigate(R.id.action_global_chooseFragment)
+                }
+
+            }
+        })
+    }
+
+    @SuppressLint("ObsoleteSdkInt")
+    fun statusBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) { // 4.4
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         }
@@ -49,41 +93,16 @@ class MainActivity : AppCompatActivity(){
 
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS) // 跟系統表示要渲染 system bar 背景。
             window.statusBarColor = Color.TRANSPARENT
-
-        }
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.lifecycleOwner = this
-        binding.viewModel = viewModel
-        viewModel.getCycleDay()
-        navigationToHome()
-        Fabric.with(this, Crashlytics())
-    }
-
-    private fun navigationToHome() {
-        when (viewModel.isLogIn.value) {
-            true -> checkBudgetStatus()
-
-            else -> this.findNavController(R.id.myNavHostFragment)
-                .navigate(R.id.action_global_logInFragment)
         }
     }
 
-    private fun checkBudgetStatus() {
-        viewModel.hasBudget.observe(this, Observer {
-            it?.let {
-                when (viewModel.hasBudget.value) {
-                    false -> this.findNavController(R.id.myNavHostFragment)
-                        .navigate(R.id.action_global_homeFragment)
-
-                    else -> this. findNavController(R.id.myNavHostFragment)
-                        .navigate(R.id.action_global_chooseFragment)
-                }
-
-            }
-        })
+    //check internet connection
+    @SuppressLint("ObsoleteSdkInt")
+    fun registerConnectReceiver() {
+        val intentFilter = IntentFilter(INTERNET)
+        registerReceiver(CheckInternet(), intentFilter)
     }
+
 
 }
 

@@ -26,6 +26,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import android.content.Intent
 import com.snc.farmaccount.MainActivity
+import com.snc.farmaccount.helper.SOPHIE
 
 
 class HomeFragment : Fragment() {
@@ -226,6 +227,7 @@ class HomeFragment : Fragment() {
 
     private fun goToToday() {
         currentDayCode = todayDayCode
+        Log.i(SOPHIE, "today:$todayDayCode")
         setViewPager()
     }
 
@@ -255,7 +257,7 @@ class HomeFragment : Fragment() {
         startActivity(intent)
     }
 
-    fun showCheckDialog() {
+    private fun showCheckDialog() {
         warningDialog = Dialog(this.requireContext())
         bindingCheck = DialogCheckBinding.inflate(layoutInflater)
         warningDialog.setContentView(bindingCheck.root)

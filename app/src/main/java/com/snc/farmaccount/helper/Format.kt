@@ -51,7 +51,7 @@ object Format {
             weekName = ApplicationContext.applicationContext().getString(R.string.friday)
         }
         if (week == 7) {
-            weekName = ApplicationContext.applicationContext().getString(R.string.sunday)
+            weekName = ApplicationContext.applicationContext().getString(R.string.saturday)
         }
 
         return "$year.${month+1}.$day ($weekName)"
