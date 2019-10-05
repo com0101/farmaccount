@@ -23,8 +23,10 @@ import android.util.Log
 import com.snc.farmaccount.helper.INTERNET
 import com.snc.farmaccount.helper.SOPHIE
 import android.content.Intent
-
-
+import android.view.Gravity
+import android.view.ViewGroup
+import android.widget.Toast
+import com.firebase.ui.auth.AuthUI
 
 
 class MainActivity : AppCompatActivity(){
@@ -44,10 +46,11 @@ class MainActivity : AppCompatActivity(){
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-//        viewModel.getCycleDay()
         navigationToHome()
         registerConnectReceiver()
         Fabric.with(this, Crashlytics())
+
+
     }
 
     private fun navigationToHome() {
