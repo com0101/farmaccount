@@ -42,7 +42,7 @@ class StatisticViewModel : ViewModel() {
     }
 
     val eventByTotalPrice: LiveData<Int> = Transformations.map(event) { it ->
-        it.sumBy { it.price!!.toInt() }
+        it.sumBy { it.price.toInt() }
     }
 
     private val eventByEat: LiveData<List<Event>> = Transformations.map(event) { it ->
@@ -52,7 +52,7 @@ class StatisticViewModel : ViewModel() {
     }
 
     val eventByEatPrice: LiveData<Int> = Transformations.map(eventByEat) { it ->
-        it.sumBy { it.price!!.toInt() }
+        it.sumBy { it.price.toInt() }
     }
 
     private val eventByCloth: LiveData<List<Event>> = Transformations.map(event) { it ->
@@ -62,7 +62,7 @@ class StatisticViewModel : ViewModel() {
     }
 
     val eventByClothPrice: LiveData<Int> = Transformations.map(eventByCloth) { it ->
-        it.sumBy { it.price!!.toInt() }
+        it.sumBy { it.price.toInt() }
     }
 
     private val eventByLive: LiveData<List<Event>> = Transformations.map(event) { it ->
@@ -72,7 +72,7 @@ class StatisticViewModel : ViewModel() {
     }
 
     val eventByLivePrice: LiveData<Int> = Transformations.map(eventByLive) { it ->
-        it.sumBy { it.price!!.toInt() }
+        it.sumBy { it.price.toInt() }
     }
 
     private val eventByTraffic: LiveData<List<Event>> = Transformations.map(event) { it ->
@@ -82,7 +82,7 @@ class StatisticViewModel : ViewModel() {
     }
 
     val eventByTrafficPrice: LiveData<Int> = Transformations.map(eventByTraffic) { it ->
-        it.sumBy { it.price!!.toInt() }
+        it.sumBy { it.price.toInt() }
     }
 
     private val eventByFun: LiveData<List<Event>> = Transformations.map(event) { it ->
@@ -92,7 +92,7 @@ class StatisticViewModel : ViewModel() {
     }
 
     val eventByFunPrice: LiveData<Int> = Transformations.map(eventByFun) { it ->
-        it.sumBy { it.price!!.toInt() }
+        it.sumBy { it.price.toInt() }
     }
 
     private val eventByIncome: LiveData<List<Event>> = Transformations.map(event) { it ->
@@ -102,11 +102,10 @@ class StatisticViewModel : ViewModel() {
     }
 
     val eventByIncomePrice: LiveData<Int> = Transformations.map(eventByIncome) { it ->
-        it.sumBy { it.price!!.toInt() }
+        it.sumBy { it.price.toInt() }
     }
 
     var eventList = ArrayList<Event>()
-    lateinit var firebaseEvent : Event
 
     init {
         dayMode = Format.getCurrentDate()
@@ -132,8 +131,7 @@ class StatisticViewModel : ViewModel() {
                         Log.d(SOPHIE, "getEvent:${document.id} => ${document.data}")
 
                         document.data.let {
-                            firebaseEvent = document.toObject(Event::class.java)
-                            eventList.add(firebaseEvent)
+                            eventList.add(document.toObject(Event::class.java))
                         }
                     }
                 }

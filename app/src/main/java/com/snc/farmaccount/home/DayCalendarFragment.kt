@@ -44,7 +44,7 @@ class DayCalendarFragment : Fragment() {
             }
         })
 
-        viewModel.sortByTime.observe(this, Observer {
+        viewModel.sortByDate.observe(this, Observer {
             (binding.eventList.adapter as DayEventAdapter).submitList(it)
             if (it.isEmpty()) {
                 binding.spendHint.visibility = View.VISIBLE

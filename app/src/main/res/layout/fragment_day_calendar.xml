@@ -57,7 +57,7 @@
                     android:layout_marginEnd="8dp"
                     tools:listitem="@layout/item_add_event"
                     tools:itemCount="7"
-                    app:listEvent="@{viewModel.sortByTime}"
+                    app:listEvent="@{viewModel.sortByDate}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

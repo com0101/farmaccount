@@ -71,11 +71,6 @@ class HomeFragment : Fragment() {
         mainViewModel.getCycleDay()
         viewModel.getOverage()
 
-        mainViewModel.activityRestart.observe(this, androidx.lifecycle.Observer { it ->
-            it.let {
-                restart()
-            }
-        })
 
         binding.buttonSetting.setOnClickListener {
 
@@ -130,7 +125,7 @@ class HomeFragment : Fragment() {
         })
 
         viewModel.postPrice.observe(this, androidx.lifecycle.Observer {
-            Log.i("Sophie_farm", "$it")
+            // get overage to show the right farm type
             viewModel.farmStatus.observe(this, androidx.lifecycle.Observer { status ->
 
                 if (status == 0) {
@@ -259,11 +254,6 @@ class HomeFragment : Fragment() {
     private fun refreshEvents() {
         (binding.dayViewpager.adapter as DayViewPagerAdapter)
             .updateCalendars(binding.dayViewpager.currentItem)
-    }
-
-    private fun restart() {
-        val intent = Intent(this.context, MainActivity::class.java)
-        startActivity(intent)
     }
 
     private fun showCheckDialog() {

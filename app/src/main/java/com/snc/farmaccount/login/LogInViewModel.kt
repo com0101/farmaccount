@@ -13,7 +13,7 @@ class LogInViewModel :  ViewModel() {
     var hasBudget = MutableLiveData<Boolean>()
     val user = HashMap<String, Any>()
 
-    fun getProfile() {
+    fun getProfile() { // check the user account existence
         db.collection(USER)
             .get()
             .addOnCompleteListener { task ->
@@ -24,7 +24,7 @@ class LogInViewModel :  ViewModel() {
                             hasNewUser.value = false
                             break
                         } else {
-                            Log.d(SOPHIE, "not such file: ")
+                            Log.d(SOPHIE, "not such Profile: ")
                             setUser()
                         }
                     }

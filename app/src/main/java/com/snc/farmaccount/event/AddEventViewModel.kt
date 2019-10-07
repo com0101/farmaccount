@@ -59,7 +59,7 @@ class AddEventViewModel : ViewModel() {
     }
 
     fun addEvent() {
-        // Create a new user with a first and last name
+
         event[ID] = timeStamp
         event[PRICE] = priceInput.value.toString()
         event[TAG] = chooseTag.value?.tag_name.toString()

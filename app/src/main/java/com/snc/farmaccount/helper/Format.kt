@@ -2,6 +2,7 @@ package com.snc.farmaccount.helper
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.util.DisplayMetrics
 import com.snc.farmaccount.ApplicationContext
 import com.snc.farmaccount.R
 import com.snc.farmaccount.databinding.DialogCheckBinding
@@ -17,13 +18,11 @@ object Format {
     const val DAYCODE_PATTERN = "yyyy.MM.dd (EEEE)"
     const val DATE_PATTERN = "yyyyMMdd"
     const val MONTH_PATTERN = "MM"
-    private val replace = Regex("[^A-Za-z0-9]")
     private var weekName: String = ""
     private const val DAY_OF_WEEK_PATTERN = "EEEE"
-    private lateinit var warningDialog: Dialog
-    @SuppressLint("StaticFieldLeak")
-    private lateinit var bindingCheck: DialogCheckBinding
 
+    private val replace: Regex
+        get() = Regex("[^A-Za-z0-9]")
 
     fun getCurrentDate(): String {
         val calendar = Calendar.getInstance()
@@ -58,8 +57,6 @@ object Format {
     }
 
     fun removePunctuation(text: String): String = replace.replace(text,"")
-
-
 
     @SuppressLint("SimpleDateFormat")
     fun getSimpleDateFormat(date: Date): String = SimpleDateFormat(DAYCODE_PATTERN).format(date)

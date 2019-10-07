@@ -31,7 +31,6 @@ class MainViewModel: ViewModel() {
     var pickdate = MutableLiveData<Long>()
     var maxDay = MutableLiveData<Int>()
     var tagStatus = MutableLiveData<Boolean>()
-    var activityRestart = MutableLiveData<Boolean>()
     var isLogIn = MutableLiveData<Boolean>()
     var hasBudget = MutableLiveData<Boolean>()
     private val db = FirebaseFirestore.getInstance()
@@ -146,7 +145,7 @@ class MainViewModel: ViewModel() {
         }
     }
 
-    private fun getPriceSum() {
+    private fun getPriceSum() { // sum all price in that period
         priceList.add(allPrice)
 
         when {
@@ -222,8 +221,7 @@ class MainViewModel: ViewModel() {
         lastTime = Format.getDateFormat(lastMonth).toLong()
         futureTime = Format.getDateFormat(futureDay).toLong()
 
-        val getDate = Date(year-1900, month, day)
-        dayMode = Format.getSimpleDateFormat(getDate)
+        dayMode = Format.getCurrentDate()
         compareWithCycle()
     }
 

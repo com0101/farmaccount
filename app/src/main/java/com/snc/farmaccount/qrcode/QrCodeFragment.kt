@@ -26,6 +26,7 @@ import java.text.SimpleDateFormat
 import android.app.Dialog
 import android.os.Build
 import com.snc.farmaccount.databinding.DialogCheckBinding
+import com.snc.farmaccount.helper.Format
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -83,11 +84,9 @@ class QrCodeFragment : Fragment() {
                         val month = it.text.substring(13, 15).toInt()
                         val day = it.text.substring(15, 17).toInt()
                         val getDate = Date(year+11, month-1, day)
-                        val simpleDateFormat = SimpleDateFormat("yyyy.MM.dd (EEEE)")
-                        val dateFormat = SimpleDateFormat("yyyyMMdd")
-                        val time = simpleDateFormat.format(getDate)
+                        val time = Format.getSimpleDateFormat(getDate)
                         val getMonth = time.substring(5, 7)
-                        val date = dateFormat.format(getDate)
+                        val date = Format.getDateFormat(getDate)
 
                         if (it.text != null) {
                             this.findNavController()
@@ -106,9 +105,6 @@ class QrCodeFragment : Fragment() {
         binding.surfaceView.setOnClickListener {
             codeScanner.startPreview()
 
-        }
-        binding.scanText.setOnClickListener {
-            restart()
         }
 
     }
@@ -137,6 +133,7 @@ class QrCodeFragment : Fragment() {
                 // If request is cancelled, the result arrays are empty.
                 if ((grantResults.isNotEmpty() && grantResults[0] ==
                             PackageManager.PERMISSION_GRANTED)) {
+                    restart()
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
                 } else {
@@ -220,7 +217,7 @@ class QrCodeFragment : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 
-    fun showCheckDialog() {
+    private fun showCheckDialog() {
         warningDialog = Dialog(this.requireContext())
         bindingCheck = DialogCheckBinding.inflate(layoutInflater)
         warningDialog.setContentView(bindingCheck.root)

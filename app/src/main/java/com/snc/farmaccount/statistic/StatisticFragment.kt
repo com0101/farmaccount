@@ -18,6 +18,7 @@ import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.StatisticCatalog
 import com.snc.farmaccount.databinding.FragmentStatisticBinding
 import com.snc.farmaccount.helper.Format
+import com.snc.farmaccount.helper.dpToPx
 
 
 class StatisticFragment : Fragment() {
@@ -62,7 +63,6 @@ class StatisticFragment : Fragment() {
                     requestLayout()
                 }
             }
-            Log.i("Sophie_taglist", "${viewModel.category.value}")
         })
 
         binding.imageBackState.setOnClickListener {
@@ -145,15 +145,9 @@ class StatisticFragment : Fragment() {
        tag.add(StatisticCatalog(getString(R.string.catalog_income)))
     }
 
-    private fun Number.dpToPx(): Int {
-        return (this.toFloat() * (ApplicationContext.applicationContext()
-            .resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)).toInt()
-    }
-
     private fun backState() {
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                // 做你要的事，這邊是跳轉首頁
                 findNavController().
                     navigate(R.id.action_global_homeFragment)
             }

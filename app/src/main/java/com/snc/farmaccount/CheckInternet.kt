@@ -11,6 +11,7 @@ import android.widget.Toast
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.widget.TextView
+import com.snc.farmaccount.helper.dpToPx
 
 
 class CheckInternet: BroadcastReceiver() {
@@ -27,30 +28,25 @@ class CheckInternet: BroadcastReceiver() {
         toast.duration = Toast.LENGTH_LONG
         toast.view = layout
 
+        //take action when network is closed
         if (network == null) {
             content.text = ApplicationContext.applicationContext().getString(R.string.no_internet)
             toast.show()
         }
 
-        connectivityManager?.let {
-            it.registerDefaultNetworkCallback(object : ConnectivityManager.NetworkCallback() {
-                override fun onAvailable(network: Network) {
-                    //take action when network connection is gained
-                    content.text = ApplicationContext.applicationContext().getString(R.string.internet_gained)
-                    toast.show()
-                }
+        connectivityManager.registerDefaultNetworkCallback(object : ConnectivityManager.NetworkCallback() {
+            override fun onAvailable(network: Network) {
+                //take action when network connection is gained
+                content.text = ApplicationContext.applicationContext().getString(R.string.internet_gained)
+                toast.show()
+            }
 
-                override fun onLost(network: Network?) {
-                    //take action when network connection is lost
-                    content.text = ApplicationContext.applicationContext().getString(R.string.internet_lost)
-                    toast.show()
-                }
-            })
-        }
+            override fun onLost(network: Network?) {
+                //take action when network connection is lost
+                content.text = ApplicationContext.applicationContext().getString(R.string.internet_lost)
+                toast.show()
+            }
+        })
     }
 
-    private fun Number.dpToPx(): Int {
-        return (this.toFloat() * (ApplicationContext.applicationContext()
-            .resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)).toInt()
-    }
 }

@@ -33,13 +33,13 @@ class DayViewModel: ViewModel() {
         getOrderBy()
     }
 
-    val sortByTime: LiveData<List<Event>> = Transformations.map(event) { it ->
+    val sortByDate: LiveData<List<Event>> = Transformations.map(event) { it ->
         it.filter {
-            it.date == "${currentDate.value}"
+            it.date == "${currentDate.value}" // filter by current date
         }
     }
 
-    private fun getOrderBy() {
+    private fun getOrderBy() { // sort event by create time
         db.collection(USER).document("${UserManager.userToken}")
             .collection(EVENT)
             .orderBy(ID, Query.Direction.DESCENDING)
