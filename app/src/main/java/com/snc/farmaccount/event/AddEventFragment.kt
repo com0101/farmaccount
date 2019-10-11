@@ -2,7 +2,6 @@ package com.snc.farmaccount.event
 
 
 import android.app.Dialog
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -11,14 +10,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.Tag
 import com.snc.farmaccount.databinding.DialogCheckBinding
 import com.snc.farmaccount.databinding.FragmentAddEventBinding
-import com.snc.farmaccount.qrcode.QrCodeFragment
+import com.snc.farmaccount.home.DayViewModel
 import kotlinx.android.synthetic.main.dialog_check.*
 import kotlinx.android.synthetic.main.fragment_add_event.image_save
 import kotlinx.coroutines.Dispatchers
@@ -29,8 +27,9 @@ import kotlinx.coroutines.launch
 class AddEventFragment : Fragment() {
 
     private lateinit var binding: FragmentAddEventBinding
+    private lateinit var warningDialog: Dialog
+    private lateinit var bindingCheck: DialogCheckBinding
     val tag = ArrayList<Tag>()
-    var REQUEST_EVALUATE = 0X110
     var inputCheck = 0
     var isClick = false
 
@@ -44,44 +43,40 @@ class AddEventFragment : Fragment() {
     ): View? {
 
         binding = FragmentAddEventBinding.inflate(inflater)
-
-        val QRviewModel: AddEventViewModel by lazy {
-            ViewModelProviders.of(activity!!).get(AddEventViewModel::class.java)
-        }
-        QRviewModel.someDay.observe(viewLifecycleOwner, Observer {
-            Log.i("Sophie_qr","$it")
-            if (QRviewModel.someDay.value != null) {
-                viewModel.today.value = it
-                QRviewModel.someDay.value = null
-            }
-        })
-
-        QRviewModel.getPrice.observe(viewLifecycleOwner, Observer {
-            Log.i("Sophie_qr","$it")
-            if (QRviewModel.getPrice.value != null) {
-                viewModel.priceInput.value = it
-                QRviewModel.getPrice.value = null
-            }
-        })
-
-        QRviewModel.getMonth.observe(viewLifecycleOwner, Observer {
-            Log.i("Sophie_qr","$it")
-            if (QRviewModel.getMonth.value != null) {
-                viewModel.monthFormat.value = it
-                QRviewModel.getMonth.value = null
-            }
-        })
-
-        QRviewModel.getTime.observe(viewLifecycleOwner, Observer {
-            Log.i("Sophie_qr","$it")
-            if (QRviewModel.getTime.value != null) {
-                viewModel.time.value = it
-                QRviewModel.getTime.value = null
-            }
-        })
-
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+
+        val codeViewModel: AddEventViewModel by lazy {
+            ViewModelProviders.of(activity!!).get(AddEventViewModel::class.java)
+        }
+
+        codeViewModel.getDate.observe(viewLifecycleOwner, Observer {
+            if (codeViewModel.getDate.value != null) {
+                viewModel.today.value = it
+                codeViewModel.getDate.value = null
+            }
+        })
+
+        codeViewModel.getPrice.observe(viewLifecycleOwner, Observer {
+            if (codeViewModel.getPrice.value != null) {
+                viewModel.priceInput.value = it
+                codeViewModel.getPrice.value = null
+            }
+        })
+
+        codeViewModel.getMonth.observe(viewLifecycleOwner, Observer {
+            if (codeViewModel.getMonth.value != null) {
+                viewModel.monthly.value = it
+                codeViewModel.getMonth.value = null
+            }
+        })
+
+        codeViewModel.getTime.observe(viewLifecycleOwner, Observer {
+            if (codeViewModel.getTime.value != null) {
+                viewModel.time.value = it.toLong()
+                codeViewModel.getTime.value = null
+            }
+        })
 
         binding.tagList.adapter = TagAdapter(TagAdapter.OnClickListener {
             viewModel.chooseTag.value = it
@@ -94,126 +89,133 @@ class AddEventFragment : Fragment() {
         })
 
         binding.imageSave.setOnClickListener {
-            var dialog = Dialog(this.requireContext())
-            var bindingCheck = DialogCheckBinding.inflate(layoutInflater)
+            warningDialog = Dialog(this.requireContext())
+            bindingCheck = DialogCheckBinding.inflate(layoutInflater)
             isClick = true
-            dialog.setContentView(bindingCheck.root)
-            dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+            warningDialog.setContentView(bindingCheck.root)
+            warningDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
             when {
-                viewModel.priceInput.value == null && viewModel.chooseTag.value == null &&viewModel.infoInput.value == null
-                -> {
+                viewModel.priceInput.value == null &&
+                viewModel.chooseTag.value == null &&
+                viewModel.infoInput.value == null -> {
                     inputCheck = 0
-                    warning()
+                    warningDialog()
                 }
-                viewModel.priceInput.value == null -> {
+
+                viewModel.priceInput.value == null ||
+                viewModel.priceInput.value!!.isEmpty() -> {
                     inputCheck = 1
-                    warning()
+                    warningDialog()
                 }
+
                 viewModel.chooseTag.value == null -> {
                     inputCheck = 2
-                    warning()
+                    warningDialog()
                 }
-                viewModel.infoInput.value == null -> {
+
+                viewModel.infoInput.value == null ||
+                viewModel.infoInput.value!!.isEmpty() -> {
                     inputCheck = 3
-                    warning()
+                    warningDialog()
                 }
 
-            }
-
-            if (viewModel.priceInput.value != null &&
-                viewModel.chooseTag.value != null &&
-                viewModel.infoInput.value != null) {
-                viewModel.addFirebase()
-                binding.imageSave.setImageResource(R.drawable.save_press)
-                binding.imageSave.isClickable = false
-                GlobalScope.launch(context = Dispatchers.Main) {
-                    bindingCheck.checkContent.text = "新增完成!"
-                    bindingCheck.imageCancel.visibility = View.GONE
-                    bindingCheck.imageSave.visibility = View.GONE
-                    dialog.show()
-                    binding.imageSave.setImageResource(R.drawable.save)
-                    binding.imageSave.isClickable = true
-                    delay(1500)
-                    dialog.dismiss()
-                    findNavController()
-                        .navigate(EditEventFragmentDirections.actionGlobalHomeFragment())
+                else -> {
+                    viewModel.addEvent()
+                    inputCheck = 4
+                    binding.imageSave.setImageResource(R.drawable.save_press)
+                    binding.imageSave.isClickable = false
+                    warningDialog()
                 }
             }
+
         }
 
         binding.imageBackState.setOnClickListener {
             when {
-                viewModel.priceInput.value != null && viewModel.priceInput.value!!.isEmpty() -> checkEdit()
-                viewModel.infoInput.value != null && viewModel.priceInput.value!!.isEmpty() -> checkEdit()
+                viewModel.priceInput.value != null -> checkEdit()
+
+                viewModel.infoInput.value != null  -> checkEdit()
+
                 viewModel.chooseTag.value != null -> checkEdit()
+
                 else -> findNavController()
-                    .navigate(AddEventFragmentDirections.actionGlobalHomeFragment())
+                    .navigate(R.id.action_global_homeFragment)
             }
         }
 
+        backState()
+        tagList()
+        viewModel.mark.value = tag
+        viewModel.setTag()
+        return binding.root
+    }
+
+    private fun backState() {
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                // 做你要的事，這邊是跳轉首頁
                 when {
                     viewModel.priceInput.value != null -> checkEdit()
+
                     viewModel.infoInput.value != null -> checkEdit()
+
                     viewModel.chooseTag.value != null -> checkEdit()
+
                     else -> findNavController()
-                        .navigate(AddEventFragmentDirections.actionGlobalHomeFragment())
+                        .navigate(R.id.action_global_homeFragment)
                 }
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
-
-        tagList()
-        viewModel.mark.value = tag
-        viewModel.getTag()
-
-        // Inflate the layout for this fragment
-        return binding.root
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        val qrCodeFragment = QrCodeFragment()
-        qrCodeFragment.setTargetFragment(this, REQUEST_EVALUATE)
-    }
 
-    private fun warning() {
-        var warning = Dialog(this.requireContext())
-        var bindingCheck = DialogCheckBinding.inflate(layoutInflater)
-        warning.setContentView(bindingCheck.root)
-        warning.window?.setBackgroundDrawableResource(android.R.color.transparent)
+    private fun warningDialog() {
+        showCheckDialog()
+        bindingCheck.imageCancel.visibility = View.GONE
+        bindingCheck.imageSave.visibility = View.GONE
+
         GlobalScope.launch(context = Dispatchers.Main) {
             when (inputCheck) {
-                0 -> bindingCheck.checkContent.text = "資訊沒填喔!"
-                1 -> bindingCheck.checkContent.text = "價錢沒填喔!"
-                2 -> bindingCheck.checkContent.text = "類別沒選喔!"
-                3 -> bindingCheck.checkContent.text = "寫個描述吧!"
+                0 -> bindingCheck.checkContent.setText(R.string.event_info)
+
+                1 -> bindingCheck.checkContent.setText(R.string.event_price)
+
+                2 -> bindingCheck.checkContent.setText(R.string.event_tag)
+
+                3 -> bindingCheck.checkContent.setText(R.string.event_description)
+
+                4 -> {
+                    bindingCheck.checkContent.setText(R.string.add_complete)
+                    binding.imageSave.setImageResource(R.drawable.save)
+                    binding.imageSave.isClickable = true
+                    delay(1000)
+                    findNavController()
+                        .navigate(R.id.action_global_homeFragment)
+                }
             }
-            bindingCheck.imageCancel.visibility = View.GONE
-            bindingCheck.imageSave.visibility = View.GONE
-            warning.show()
+            warningDialog.show()
             delay(1000)
-            warning.dismiss()
+            warningDialog.dismiss()
         }
     }
 
+
     private fun checkEdit() {
-        var checkEdit = Dialog(this.requireContext())
-        var bindingCheck = DialogCheckBinding.inflate(layoutInflater)
-        checkEdit.setContentView(bindingCheck.root)
-        checkEdit.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        showCheckDialog()
+
         GlobalScope.launch(context = Dispatchers.Main) {
             bindingCheck.checkContent.setText(R.string.check_edit)
-            checkEdit.show()
-            checkEdit.image_save.setOnClickListener {
-                checkEdit.dismiss()
+            warningDialog.show()
+
+            warningDialog.image_save.setOnClickListener {
+                warningDialog.dismiss()
                 findNavController().
                     navigate(R.id.action_global_homeFragment)
             }
-            checkEdit.image_cancel.setOnClickListener {
-                checkEdit.dismiss()
+
+            warningDialog.image_cancel.setOnClickListener {
+                warningDialog.dismiss()
             }
         }
     }
@@ -239,6 +241,13 @@ class AddEventFragment : Fragment() {
             getString(R.string.tag_fun),false, getString(R.string.catalog_fun)))
         tag.add(Tag(R.drawable.tag_ticket_press,R.drawable.tag_ticket,
             getString(R.string.tag_lottery),true, getString(R.string.catalog_income)))
+    }
+
+    private fun showCheckDialog() {
+        warningDialog = Dialog(this.requireContext())
+        bindingCheck = DialogCheckBinding.inflate(layoutInflater)
+        warningDialog.setContentView(bindingCheck.root)
+        warningDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
     }
 
 }

@@ -12,7 +12,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.snc.farmaccount.MainActivity
 
 import com.snc.farmaccount.R
 import com.snc.farmaccount.databinding.DialogCheckBinding
@@ -25,22 +25,21 @@ import kotlinx.coroutines.launch
 class DetailFragment : Fragment() {
 
     private lateinit var binding: FragmentDetailBinding
+    private lateinit var warningDialog: Dialog
+    private lateinit var bindingCheck: DialogCheckBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val application = requireNotNull(activity).application
         binding = FragmentDetailBinding.inflate(inflater)
         binding.lifecycleOwner = this
 
+        val application = requireNotNull(activity).application
         val product = DetailFragmentArgs.fromBundle(arguments!!).detail
-
         val viewModelFactory = DetailFactory(product , application)
-
         val viewModel = ViewModelProviders.of(
             this, viewModelFactory).get(DetailViewModel::class.java)
-
         binding.viewModel = viewModel
 
         binding.imageEdit.setOnClickListener {
@@ -51,95 +50,107 @@ class DetailFragment : Fragment() {
         }
 
         binding.imageDelete.setOnClickListener {
-            var dialog = Dialog(this.requireContext())
-            var bindingCheck = DialogCheckBinding.inflate(layoutInflater)
-            dialog.setContentView(bindingCheck.root)
-            binding.imageDelete.setImageResource(R.drawable.delete_press)
-            binding.imageDelete.isClickable = false
-            dialog.show()
-            dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-            bindingCheck.checkContent.text = "確定要刪掉嗎?"
+            checkEdit()
+
             bindingCheck.imageCancel.setOnClickListener {
-                dialog.dismiss()
+                warningDialog.dismiss()
                 binding.imageDelete.setImageResource(R.drawable.delete)
                 binding.imageDelete.isClickable = true
                 bindingCheck.imageCancel.setImageResource(R.drawable.cancel_press)
-
             }
+
             bindingCheck.imageSave.setOnClickListener {
                 viewModel.deleteEvent()
-                dialog.dismiss()
-                bindingCheck.imageSave.setImageResource(R.drawable.yes_press)
-                bindingCheck.imageSave.isClickable = false
-                GlobalScope.launch(context = Dispatchers.Main) {
-                    bindingCheck.imageSave.setImageResource(R.drawable.yes)
-                    bindingCheck.imageSave.isClickable = true
-                    delay(1000)
-                    bindingCheck.checkContent.text = "刪除完成!"
-                    bindingCheck.imageCancel.visibility = View.GONE
-                    bindingCheck.imageSave.visibility = View.GONE
-                    dialog.show()
-                    delay(1000)
-                    dialog.dismiss()
-                    findNavController()
-                        .navigate(DetailFragmentDirections.actionGlobalHomeFragment())
-                }
+                successDialog()
             }
         }
 
         binding.imageBackState.setOnClickListener {
             findNavController()
-                .navigate(DetailFragmentDirections.actionGlobalHomeFragment())
+                .navigate(R.id.action_global_homeFragment)
         }
 
         viewModel.detail.observe(this , Observer {
             Log.i("Sophie_detail","$it")
-            if(it.tag == "早餐") {
+            if(it.tag == getString(R.string.tag_breakfast)) {
                 binding.tagImage.setImageResource(R.drawable.tag_egg_press)
             }
-            if(it.tag == "午餐") {
+            if(it.tag == getString(R.string.tag_lunch)) {
                 binding.tagImage.setImageResource(R.drawable.tag_pig_press)
             }
-            if(it.tag == "晚餐") {
+            if(it.tag == getString(R.string.tag_dinner)) {
                 binding.tagImage.setImageResource(R.drawable.tag_cow_press)
             }
-            if(it.tag == "點心") {
+            if(it.tag == getString(R.string.tag_dessert)) {
                 binding.tagImage.setImageResource(R.drawable.tag_ginger_press)
             }
-            if(it.tag == "衣服") {
+            if(it.tag == getString(R.string.tag_cloth)) {
                 binding.tagImage.setImageResource(R.drawable.tag_cloth_press)
             }
-            if(it.tag == "生活") {
+            if(it.tag == getString(R.string.tag_live)) {
                 binding.tagImage.setImageResource(R.drawable.tag_live_press)
             }
-            if(it.tag == "交通") {
+            if(it.tag == getString(R.string.tag_traffic)) {
                 binding.tagImage.setImageResource(R.drawable.tag_traffic_press)
             }
-            if(it.tag == "娛樂") {
+            if(it.tag == getString(R.string.tag_fun)) {
                 binding.tagImage.setImageResource(R.drawable.tag_fun_press)
             }
-            if(it.tag == "薪水") {
+            if(it.tag == getString(R.string.tag_payment)) {
                 binding.tagImage.setImageResource(R.drawable.tag_money_press)
             }
-            if(it.tag == "中獎") {
+            if(it.tag == getString(R.string.tag_lottery)) {
                 binding.tagImage.setImageResource(R.drawable.tag_ticket_press)
             }
         })
 
+        backState()
+
+        return binding.root
+    }
+
+    private fun backState() {
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                // 做你要的事，這邊是跳轉首頁
                 findNavController().
                     navigate(R.id.action_global_homeFragment)
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
-
-        // Inflate the layout for this fragment
-        return binding.root
     }
 
+    private fun checkEdit() {
+        showCheckDialog()
+        binding.imageDelete.setImageResource(R.drawable.delete_press)
+        binding.imageDelete.isClickable = false
+        warningDialog.show()
+        bindingCheck.checkContent.setText(R.string.delete_check)
+    }
 
+    private fun successDialog() {
+        warningDialog.dismiss()
+        bindingCheck.imageSave.setImageResource(R.drawable.yes_press)
+        bindingCheck.imageSave.isClickable = false
 
+        GlobalScope.launch(context = Dispatchers.Main) {
+            bindingCheck.imageSave.setImageResource(R.drawable.yes)
+            bindingCheck.imageSave.isClickable = true
+            delay(1000)
+            bindingCheck.checkContent.setText(R.string.delete_complete)
+            bindingCheck.imageCancel.visibility = View.GONE
+            bindingCheck.imageSave.visibility = View.GONE
+            warningDialog.show()
+            delay(1000)
+            warningDialog.dismiss()
+            findNavController()
+                .navigate(R.id.action_global_homeFragment)
+        }
+    }
 
+    fun showCheckDialog() {
+        warningDialog = Dialog(this.requireContext())
+        bindingCheck = DialogCheckBinding.inflate(layoutInflater)
+        warningDialog.setContentView(bindingCheck.root)
+        warningDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+    }
 }

@@ -15,18 +15,19 @@
             android:background="@color/egg_yellow">
 
         <ImageView
+                android:id="@+id/toolbar"
                 android:layout_width="0dp"
                 android:layout_height="70dp"
                 android:scaleType="centerCrop"
                 app:srcCompat="@drawable/toolbar"
-                android:id="@+id/toolbar"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
+
         <ImageView
+                android:id="@+id/image_back_state"
                 android:layout_width="26dp"
                 android:layout_height="29dp"
-                android:id="@+id/image_back_state"
                 android:layout_marginTop="20dp"
                 android:layout_marginStart="25dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -35,10 +36,12 @@
 
         <TextView
                 android:id="@+id/text__budget_edit"
-                android:text="@string/budget_page_title"
-                android:fontFamily="@font/gen_normal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:text="@string/budget_page_title"
+                android:fontFamily="@font/gen_normal"
+                android:textColor="@color/white"
+                android:textStyle="bold"
                 android:layout_marginTop="8dp"
                 android:textSize="20sp"
                 android:layout_marginBottom="8dp"
@@ -48,26 +51,24 @@
                 app:layout_constraintStart_toEndOf="@+id/image_back_state"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/image_back_state"
-                app:layout_constraintBottom_toBottomOf="@+id/image_back_state"
-                android:textColor="@color/white"
-                android:textStyle="bold"/>
+                app:layout_constraintBottom_toBottomOf="@+id/image_back_state"/>
 
         <ImageView
+                android:id="@+id/background"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:scaleType="centerCrop"
+                android:layout_marginTop="32dp"
                 app:srcCompat="@drawable/event_background"
-                android:id="@+id/background"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginTop="32dp"
                 app:layout_constraintTop_toBottomOf="@+id/price"/>
 
         <ImageView
+                android:id="@+id/number_icon"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:id="@+id/number_icon"
                 android:layout_weight="1"
                 android:background="@drawable/calendar_day"
                 android:layout_marginTop="10dp"
@@ -75,58 +76,60 @@
                 app:layout_constraintStart_toStartOf="@+id/imageView3"/>
 
         <TextView
+                android:id="@+id/number_title"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:id="@+id/number_title"
-                android:layout_marginEnd="27dp"
-                app:layout_constraintStart_toEndOf="@+id/number_icon"
                 android:layout_marginStart="8dp"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintBottom_toBottomOf="@+id/number_icon"
-                app:layout_constraintTop_toTopOf="@+id/number_icon"
-                android:text="@string/overage_cycle"
+                android:layout_marginEnd="27dp"
+                android:text="@string/cycle"
                 android:gravity="bottom|right"
                 android:textSize="16sp"
                 android:textColor="@color/money_text"
-                android:fontFamily="@font/gen_normal">
+                android:fontFamily="@font/gen_normal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/number_icon"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintBottom_toBottomOf="@+id/number_icon"
+                app:layout_constraintTop_toTopOf="@+id/number_icon">
         </TextView>
 
         <ImageView
+                android:id="@+id/budget_back"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:srcCompat="@drawable/datepicker_border"
-                android:id="@+id/budget_back"
                 android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/budget_edit_title"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="25dp"
                 android:layout_marginEnd="25dp"
                 android:layout_marginBottom="50dp"
+                app:srcCompat="@drawable/datepicker_border"
+                app:layout_constraintTop_toBottomOf="@+id/budget_edit_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="@+id/background"/>
+
         <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/price"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
-                android:background="@drawable/money_border"
-                android:id="@+id/price"
-                app:layout_constraintStart_toStartOf="@+id/budget_back"
-                app:layout_constraintEnd_toEndOf="@+id/budget_back"
+                android:background="@drawable/unedit_radius_border"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
+                app:layout_constraintStart_toStartOf="@+id/budget_back"
+                app:layout_constraintEnd_toEndOf="@+id/budget_back"
                 app:layout_constraintTop_toBottomOf="@+id/budget_edit_title">
 
             <EditText
                     android:id="@+id/text_budget"
-                    android:text="@={viewModel.budgetPrice}"
-                    android:fontFamily="@font/gen_normal"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    android:text="@={viewModel.budgetPrice}"
+                    android:fontFamily="@font/gen_normal"
+                    android:inputType="number"
                     android:paddingStart="6dp"
                     android:layout_marginEnd="16dp"
                     android:textSize="18sp"
-                    android:textColor="@color/money_text"
+                    android:textColor="@color/deep_gray"
                     android:background="@null"
                     android:gravity="center|end"
                     app:layout_constraintStart_toEndOf="@+id/image_coin"
@@ -134,118 +137,121 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintVertical_bias="1.0" android:inputType="number"/>
+                    app:layout_constraintVertical_bias="1.0"/>
 
             <ImageView
                     android:id="@+id/image_coin"
                     android:layout_width="28dp"
                     android:layout_height="30dp"
                     android:layout_marginStart="7dp"
-                    android:background="@drawable/money_icon"
+                    android:layout_marginBottom="3dp"
+                    android:background="@drawable/money_unedit"
                     app:civ_border_width="0dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginBottom="3dp"
                     app:layout_constraintVertical_bias="0.55"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
                 android:id="@+id/text_expend_title"
-                android:fontFamily="@font/gen_normal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/gen_normal"
                 android:textSize="18sp"
+                android:visibility="gone"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="305dp"
                 app:layout_constraintTop_toBottomOf="@+id/text__budget_edit"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/image_back_state"
-                app:layout_constraintHorizontal_bias="0.0"
-                android:visibility="gone"/>
+                app:layout_constraintHorizontal_bias="0.0"/>
 
         <ImageView
                 android:id="@+id/image_send"
                 android:layout_width="100dp"
                 android:layout_height="40dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
                 app:srcCompat="@drawable/save"
                 app:layout_constraintEnd_toEndOf="@+id/price"
-                android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/farm_type"
-                android:layout_marginBottom="16dp" app:layout_constraintBottom_toBottomOf="@+id/budget_back"
+                app:layout_constraintTop_toBottomOf="@+id/farm_type"
+                app:layout_constraintBottom_toBottomOf="@+id/budget_back"
                 app:layout_constraintVertical_bias="0.0"/>
 
         <TextView
-                android:text="@string/budget_edit_title"
+                android:id="@+id/budget_edit_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/budget_edit_title"
-                app:layout_constraintTop_toBottomOf="@+id/imageView3"
-                app:layout_constraintStart_toStartOf="@+id/imageView3"
+                android:text="@string/budget_edit_title"
                 android:layout_marginTop="16dp"
                 android:textColor="@color/google_text"
                 android:textSize="18sp"
-                android:fontFamily="@font/gen_normal"/>
+                android:fontFamily="@font/gen_normal"
+                app:layout_constraintTop_toBottomOf="@+id/imageView3"
+                app:layout_constraintStart_toStartOf="@+id/imageView3"/>
+
         <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/farm_type"
                 android:layout_width="0dp"
                 android:layout_height="250dp"
+                android:layout_marginTop="8dp"
                 tools:context=".choose.ChooseFragment"
-                android:id="@+id/farm_type"
                 app:layout_constraintStart_toStartOf="@+id/budget_back"
                 app:layout_constraintEnd_toEndOf="@+id/budget_back"
-                android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/price"
+                app:layout_constraintTop_toBottomOf="@+id/price"
                 app:layout_constraintBottom_toBottomOf="@+id/budget_back"
                 app:layout_constraintVertical_bias="0.0">
 
-
             <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/farm_list"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    android:visibility="gone"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:id="@+id/farm_list"
-                    android:visibility="gone">
+                    app:layout_constraintEnd_toEndOf="parent">
             </androidx.viewpager2.widget.ViewPager2>
 
             <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/unSelect_farm_list"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:id="@+id/unSelect_farm_list"
                     app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintVertical_bias="1.0"
-            >
+                    app:layout_constraintVertical_bias="1.0">
             </androidx.viewpager2.widget.ViewPager2>
 
             <ImageView
+                    android:id="@+id/image_arrow_right"
                     android:layout_width="26dp"
                     android:layout_height="29dp"
-                    android:id="@+id/image_arrow_right"
+                    android:rotation="@dimen/arrow_rotate_180"
+                    android:visibility="gone"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="8dp"
                     android:layout_marginTop="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:srcCompat="@drawable/arrowunedit"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:rotation="@dimen/arrow_rotate_180"
-                    android:visibility="gone"/>
+                    app:layout_constraintTop_toTopOf="parent"/>
 
             <ImageView
+                    android:id="@+id/image_arrow_left"
                     android:layout_width="26dp"
                     android:layout_height="29dp"
-                    android:id="@+id/image_arrow_left"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
+                    android:layout_marginStart="16dp"
+                    android:visibility="invisible"
                     app:srcCompat="@drawable/arrowunedit"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:visibility="invisible" android:layout_marginStart="16dp"
                     app:layout_constraintStart_toStartOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -256,47 +262,59 @@
                 app:srcCompat="@drawable/edit"
                 app:layout_constraintStart_toStartOf="@+id/price"
                 app:layout_constraintTop_toTopOf="@+id/image_send"/>
+
         <TextView
-                android:text="@string/edit"
+                android:id="@+id/edit_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/edit_title"
-                app:layout_constraintStart_toStartOf="@+id/image_edit"
-                app:layout_constraintEnd_toEndOf="@+id/image_edit"
-                app:layout_constraintTop_toTopOf="@+id/image_edit"
-                app:layout_constraintBottom_toBottomOf="@+id/image_edit"
+                android:text="@string/edit"
                 android:layout_marginStart="32dp"
                 android:textSize="18sp"
                 android:textColor="@color/white"
-                android:fontFamily="@font/gen_normal"/>
+                android:fontFamily="@font/gen_normal"
+                app:layout_constraintStart_toStartOf="@+id/image_edit"
+                app:layout_constraintEnd_toEndOf="@+id/image_edit"
+                app:layout_constraintTop_toTopOf="@+id/image_edit"
+                app:layout_constraintBottom_toBottomOf="@+id/image_edit"/>
+
         <TextView
-                android:text="@string/save"
+                android:id="@+id/save_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/save_title"
+                android:text="@string/save"
+                android:layout_marginStart="32dp"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:fontFamily="@font/gen_normal"
                 app:layout_constraintTop_toTopOf="@+id/image_send"
                 app:layout_constraintBottom_toBottomOf="@+id/image_send"
                 app:layout_constraintEnd_toEndOf="@+id/image_send"
-                app:layout_constraintStart_toStartOf="@+id/image_send" android:layout_marginStart="32dp"
-                android:textColor="@color/white" android:textSize="18sp"
-                android:fontFamily="@font/gen_normal"/>
+                app:layout_constraintStart_toStartOf="@+id/image_send"/>
+
         <ImageView
-                android:layout_width="0dp"
-                android:layout_height="3dp" app:srcCompat="@drawable/datepicker_border"
                 android:id="@+id/imageView3"
-                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="25dp" app:layout_constraintHorizontal_bias="0.0"
-                android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/number_title"
-                android:layout_marginEnd="27dp"/>
+                android:layout_width="0dp"
+                android:layout_height="3dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="27dp"
+                app:srcCompat="@drawable/datepicker_border"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintTop_toBottomOf="@+id/number_title"/>
+
         <TextView
-                android:text="@string/circle_title"
+                android:id="@+id/circle_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/circle_title"
-                android:textColor="@color/google_text" android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="@+id/number_icon" android:fontFamily="@font/gen_normal"
-                android:layout_marginTop="10dp" app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
-
+                android:text="@string/circle_title"
+                android:textColor="@color/google_text"
+                android:textSize="18sp"
+                android:fontFamily="@font/gen_normal"
+                android:layout_marginTop="10dp"
+                app:layout_constraintStart_toStartOf="@+id/number_icon"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

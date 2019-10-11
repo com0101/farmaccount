@@ -14,8 +14,6 @@ import com.snc.farmaccount.databinding.ItemAddEventBinding
 class DayEventAdapter(var onClickListener: OnClickListener,var viewModel: DayViewModel):
     ListAdapter<Event, DayEventAdapter.ColorViewHolder>(DiffCallback){
 
-    var selectedPosition = -1
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ColorViewHolder {
         return ColorViewHolder (ItemAddEventBinding
             .inflate(LayoutInflater.from(parent.context ), parent, false))
@@ -35,23 +33,22 @@ class DayEventAdapter(var onClickListener: OnClickListener,var viewModel: DayVie
     override fun onBindViewHolder(holder: ColorViewHolder, position: Int) {
         val event: Event = getItem(position)
 
-
         holder.itemView.setOnClickListener {
-            selectedPosition = position
             onClickListener.onClick(event)
             notifyDataSetChanged()
 
         }
-        holder.bind(event,selectedPosition)
+        holder.bind(event, viewModel)
     }
-
 
     class ColorViewHolder(private var binding: ItemAddEventBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         @SuppressLint("ResourceAsColor")
-        fun bind(event: Event, selectedPosition: Int) {
+        fun bind(event: Event, viewModel: DayViewModel) {
             binding.event = event
+            binding.viewModel = viewModel
+
             if (event.tag == "早餐") {
                 binding.imageTag.setImageResource(R.drawable.fried_egg)
             }
@@ -83,7 +80,7 @@ class DayEventAdapter(var onClickListener: OnClickListener,var viewModel: DayVie
                 binding.imageTag.setImageResource(R.drawable.ticket)
             }
 
-            if (event.status == true) {
+            if (event.status) {
                 binding.price.setBackgroundResource(R.drawable.radius_border_green)
                 binding.titleTag.setTextColor(Color.parseColor("#82B763"))
             } else {

@@ -1,33 +1,26 @@
 package com.snc.farmaccount.budget
 
 
+import android.annotation.SuppressLint
 import android.app.Dialog
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.snackbar.Snackbar
-import com.snc.farmaccount.ApplicationContext
+import com.snc.farmaccount.MainActivity
 import com.snc.farmaccount.MainViewModel
 import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.Budget
 import com.snc.farmaccount.databinding.DialogCheckBinding
 import com.snc.farmaccount.databinding.DialogNumberpickBinding
 import com.snc.farmaccount.databinding.FragmentBudgetBinding
-import com.snc.farmaccount.dialog.AmountInputDialogDirections
-import com.snc.farmaccount.event.EditEventFragmentDirections
-import com.snc.farmaccount.statistic.StatisticViewModel
-import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -39,6 +32,10 @@ import kotlin.collections.ArrayList
 class BudgetFragment : Fragment() {
 
     private lateinit var binding: FragmentBudgetBinding
+    private lateinit var numberPickerDialog: Dialog
+    private lateinit var warningDialog: Dialog
+    private lateinit var bindingNumberPicker: DialogNumberpickBinding
+    private lateinit var bindingCheck: DialogCheckBinding
     var budget = ArrayList<Budget>()
     var budgetUnselect = ArrayList<Budget>()
 
@@ -48,40 +45,32 @@ class BudgetFragment : Fragment() {
     private val mainViewModel: MainViewModel by lazy {
         ViewModelProviders.of(this.requireActivity()).get(MainViewModel::class.java)
     }
-    private val getViewModel: MainViewModel by lazy {
-        ViewModelProviders.of(this).get(MainViewModel::class.java)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         binding = FragmentBudgetBinding.inflate(inflater)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-//        binding.farmList.visibility = View.GONE
-//        binding.farmList.visibility = View.VISIBLE
         binding.farmList.orientation = ViewPager2.ORIENTATION_HORIZONTAL
         binding.textBudget.isEnabled = false
-        binding.textBudget.setTextColor(resources.getColor(R.color.deep_gray))
-        binding.price.background = resources.getDrawable(R.drawable.unedit_radius_border)
-        binding.imageCoin.background = resources.getDrawable(R.drawable.money_unedit)
-
-
         addBudget()
         unEditBudget()
         viewModel.getBudget()
-        getPager2()
+        getViewPager()
         viewModel.getBudgetPrice()
         changeArrow()
         numberPicker()
+        backState()
+
         binding.farmList.adapter = BudgetAdapter(budget,BudgetAdapter.OnClickListener {
             viewModel.getBudgetType.value = it
-            Snackbar.make(this.requireView(), "選擇更改金額或直接儲存", Snackbar.LENGTH_LONG).show()
         })
 
-        binding.unSelectFarmList.adapter = BudgetAdapter(budgetUnselect,BudgetAdapter.OnClickListener {
-
+        binding.unSelectFarmList.adapter = BudgetAdapter(budgetUnselect,
+            BudgetAdapter.OnClickListener {
         })
 
         viewModel.position.observe(this, Observer {
@@ -92,40 +81,7 @@ class BudgetFragment : Fragment() {
 
         binding.imageSend.setOnClickListener {
             viewModel.editBudgetPrice()
-            var dialog = Dialog(this.requireContext())
-            var bindingCheck = DialogCheckBinding.inflate(layoutInflater)
-            dialog.setContentView(bindingCheck.root)
-            dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-            GlobalScope.launch(context = Dispatchers.Main) {
-                when {
-                    viewModel.amountCheck.value == true -> {
-                        bindingCheck.checkContent.text = "超出範圍啦!"
-                        bindingCheck.imageCancel.visibility = View.GONE
-                        bindingCheck.imageSave.visibility = View.GONE
-                        dialog.show()
-                        delay(1000)
-                        dialog.dismiss()
-                    }
-                    viewModel.amountCheck.value == false -> {
-                        bindingCheck.checkContent.text = "省錢還是要顧身體啦!"
-                        bindingCheck.imageCancel.visibility = View.GONE
-                        bindingCheck.imageSave.visibility = View.GONE
-                        dialog.show()
-                        delay(1000)
-                        dialog.dismiss()
-                    }
-                    else -> {
-                        bindingCheck.checkContent.text = "編輯完成!"
-                        bindingCheck.imageCancel.visibility = View.GONE
-                        bindingCheck.imageSave.visibility = View.GONE
-                        dialog.show()
-                        delay(1000)
-                        dialog.dismiss()
-                        findNavController()
-                        .navigate(AmountInputDialogDirections.actionGlobalHomeFragment())}
-                }
-            }
-
+            warningDialog()
         }
 
         binding.imageBackState.setOnClickListener {
@@ -141,8 +97,10 @@ class BudgetFragment : Fragment() {
             binding.imageArrowRight.visibility = View.VISIBLE
             binding.imageArrowRight.setImageResource(R.drawable.arrow)
             binding.imageArrowLeft.setImageResource(R.drawable.arrow)
+
             binding.imageArrowRight.setOnClickListener {
                 binding.farmList.currentItem = binding.farmList.currentItem + 1
+
                 if (binding.farmList.currentItem == 2) {
                     binding.imageArrowRight.visibility = View.INVISIBLE
                 } else {
@@ -152,6 +110,7 @@ class BudgetFragment : Fragment() {
 
             binding.imageArrowLeft.setOnClickListener {
                 binding.farmList.currentItem = binding.farmList.currentItem - 1
+
                 if (binding.farmList.currentItem == 0) {
                     binding.imageArrowLeft.visibility = View.INVISIBLE
                 } else {
@@ -161,22 +120,14 @@ class BudgetFragment : Fragment() {
 
             binding.farmList.visibility = View.VISIBLE
             binding.unSelectFarmList.visibility = View.GONE
-
         }
 
-        val callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                // 做你要的事，這邊是跳轉首頁
-                findNavController().
-                    navigate(R.id.action_global_homeFragment)
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
         return binding.root
     }
 
-    private fun getPager2() {
-        binding.farmList.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+    private fun getViewPager() {
+        binding.farmList.registerOnPageChangeCallback(
+            object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 viewModel.selectPosition.value = position
@@ -189,73 +140,119 @@ class BudgetFragment : Fragment() {
 
     private fun changeArrow() {
         viewModel.selectPosition.observe(this, Observer {
-            Log.i("Sophie2","$it")
-            if(it == 0) {
-                binding.imageArrowLeft.visibility = View.GONE
-            } else {
-                binding.imageArrowRight.visibility = View.VISIBLE
-            }
-            if (it == 2) {
-                binding.imageArrowRight.visibility = View.INVISIBLE
-            } else {
-                binding.imageArrowLeft.visibility = View.VISIBLE
+            when (it) {
+                0 -> binding.imageArrowLeft.visibility = View.GONE
+
+                2 -> binding.imageArrowRight.visibility = View.INVISIBLE
+
+                else -> {
+                    binding.imageArrowRight.visibility = View.VISIBLE
+                    binding.imageArrowLeft.visibility = View.VISIBLE
+                }
             }
         })
-
     }
 
     private fun addBudget() {
-        budget.add(Budget(R.drawable.type1, R.drawable.rangelow, "10000", "15000","",0,"",1))
-        budget.add(Budget(R.drawable.type2, R.drawable.rangemiddle, "10000", "25000","",1,"",1))
-        budget.add(Budget(R.drawable.type3, R.drawable.rangehigh, "10000", "35000","",2,"",1))
+        budget.add(Budget(R.drawable.type1, R.drawable.rangelow, getString(R.string.range_start),
+            getString(R.string.range_low_end),"",0,"",1))
+        budget.add(Budget(R.drawable.type2, R.drawable.rangemiddle, getString(R.string.range_start),
+            getString(R.string.range_middle_end),"",1,"",1))
+        budget.add(Budget(R.drawable.type3, R.drawable.rangehigh, getString(R.string.range_start),
+            getString(R.string.range_high_end),"",2,"",1))
         viewModel.budgetType.value = budget
     }
 
     private fun unEditBudget() {
-        budgetUnselect.add(Budget(R.drawable.type1un, R.drawable.rangelow_un, "10000", "15000","",0,"",1))
-        budgetUnselect.add(Budget(R.drawable.type2un, R.drawable.rangemiddle_un, "10000", "25000","",1,"",1))
-        budgetUnselect.add(Budget(R.drawable.type3un, R.drawable.ranghigh_un, "10000", "35000","",2,"",1))
+        budgetUnselect.add(Budget(R.drawable.type1un, R.drawable.rangelow_un,
+            getString(R.string.range_start), getString(R.string.range_low_end),
+            "",0,"",1))
+        budgetUnselect.add(Budget(R.drawable.type2un, R.drawable.rangemiddle_un,
+            getString(R.string.range_start), getString(R.string.range_middle_end),
+            "",1,"",1))
+        budgetUnselect.add(Budget(R.drawable.type3un, R.drawable.ranghigh_un,
+            getString(R.string.range_start), getString(R.string.range_high_end),
+            "",2,"",1))
     }
 
-    fun numberPicker() {
+    private fun numberPicker() {
+        binding.numberTitle.text = String.format(getString(R.string.overage_cycle),
+            "${mainViewModel.pickdate.value}")
 
-        binding.numberTitle.text = "每個月 ${mainViewModel.pickdate.value} 號結算"
-
-        var dialog = Dialog(this.requireContext())
-        var bindingCheck = DialogNumberpickBinding.inflate(layoutInflater)
-        dialog.setContentView(bindingCheck.root)
-        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        numberPickerDialog = Dialog(this.requireContext())
+        bindingNumberPicker = DialogNumberpickBinding.inflate(layoutInflater)
+        numberPickerDialog.setContentView(bindingNumberPicker.root)
+        numberPickerDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
         binding.numberTitle.setOnClickListener {
-            dialog.show()
+            numberPickerDialog.show()
         }
+
         mainViewModel.maxDay.observe(this, Observer { maxDay->
-            bindingCheck.numberPicker.maxValue = maxDay
-            Log.d("Sophie_today", "$maxDay")
-            bindingCheck.numberPicker.setOnValueChangedListener {
+            bindingNumberPicker.numberPicker.maxValue = maxDay
+
+            bindingNumberPicker.numberPicker.setOnValueChangedListener {
                     _, _, newVal ->
-                bindingCheck.save.setOnClickListener {
-                    mainViewModel.pickdate.value = newVal
-                    mainViewModel.postCircleDay()
-                    getViewModel.getCircle()
-                    binding.numberTitle.text = "每個月 ${mainViewModel.pickdate.value} 號結算"
-
-                    dialog.dismiss()
-                    Log.d("Sophie", "$newVal")
+                bindingNumberPicker.save.setOnClickListener {
+                    mainViewModel.pickdate.value = newVal.toLong()
+                    mainViewModel.postCycleDay()
+                    binding.numberTitle.text = String.format(getString(R.string.overage_cycle),
+                        "${mainViewModel.pickdate.value}")
+                    numberPickerDialog.dismiss()
                 }
-
             }
         })
-        bindingCheck.cancel.setOnClickListener {
-            dialog.dismiss()
+
+        bindingNumberPicker.cancel.setOnClickListener {
+            numberPickerDialog.dismiss()
         }
-
     }
-//    fun showSoftKeyboard(view: View) {
-//        if (view.requestFocus()) {
-//            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-//            imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
-//        }
-//    }
 
+    private fun warningDialog() {
+        showCheckDialog()
+        bindingCheck.imageCancel.visibility = View.GONE
+        bindingCheck.imageSave.visibility = View.GONE
 
+        GlobalScope.launch(context = Dispatchers.Main) {
+            when (viewModel.isPriceMoreThan.value) {
+                true -> {
+                    bindingCheck.checkContent.setText(R.string.price_over_check)
+                    warningDialog.show()
+                    delay(1000)
+                    warningDialog.dismiss()
+                }
+
+                false -> {
+                    bindingCheck.checkContent.setText(R.string.price_less_check)
+                    warningDialog.show()
+                    delay(1000)
+                    warningDialog.dismiss()
+                }
+
+                else -> {
+                    bindingCheck.checkContent.setText(R.string.edit_complete)
+                    warningDialog.show()
+                    delay(1000)
+                    warningDialog.dismiss()
+                    findNavController()
+                        .navigate(R.id.action_global_homeFragment)}
+            }
+        }
+    }
+
+    private fun backState() {
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                findNavController().
+                    navigate(R.id.action_global_homeFragment)
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
+
+    fun showCheckDialog() {
+        warningDialog = Dialog(this.requireContext())
+        bindingCheck = DialogCheckBinding.inflate(layoutInflater)
+        warningDialog.setContentView(bindingCheck.root)
+        warningDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+    }
 }

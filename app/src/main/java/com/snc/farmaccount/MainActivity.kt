@@ -1,7 +1,9 @@
 package com.snc.farmaccount
 
 
-import android.content.Intent
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
@@ -9,31 +11,75 @@ import com.snc.farmaccount.databinding.ActivityMainBinding
 import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.os.Build
-import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.Button
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import com.crashlytics.android.Crashlytics
 import io.fabric.sdk.android.Fabric
+import android.net.ConnectivityManager
+import android.util.Log
+import com.snc.farmaccount.helper.INTERNET
+import com.snc.farmaccount.helper.SOPHIE
+import android.content.Intent
+import android.view.Gravity
+import android.view.ViewGroup
+import android.widget.Toast
+import com.firebase.ui.auth.AuthUI
 
 
 class MainActivity : AppCompatActivity(){
 
     private lateinit var binding: ActivityMainBinding
 
-
     private val viewModel: MainViewModel by lazy {
         ViewModelProviders.of(this).get(MainViewModel::class.java)
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        statusBar()
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
+        navigationToHome()
+        registerConnectReceiver()
+        Fabric.with(this, Crashlytics())
+
+
+    }
+
+    private fun navigationToHome() {
+        when (viewModel.isLogIn.value) {
+            true -> checkBudgetStatus()
+
+            else -> this.findNavController(R.id.myNavHostFragment)
+                .navigate(R.id.action_global_logInFragment)
+        }
+    }
+
+    //check Budget collection exist
+    private fun checkBudgetStatus() {
+        viewModel.hasBudget.observe(this, Observer {
+            it?.let {
+                when (viewModel.hasBudget.value) {
+                    false -> this.findNavController(R.id.myNavHostFragment)
+                        .navigate(R.id.action_global_homeFragment)
+
+                    else -> this. findNavController(R.id.myNavHostFragment)
+                        .navigate(R.id.action_global_chooseFragment)
+                }
+
+            }
+        })
+    }
+
+    @SuppressLint("ObsoleteSdkInt")
+    fun statusBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) { // 4.4
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         }
@@ -50,41 +96,19 @@ class MainActivity : AppCompatActivity(){
 
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS) // 跟系統表示要渲染 system bar 背景。
             window.statusBarColor = Color.TRANSPARENT
-
-        }
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.lifecycleOwner = this
-        binding.viewModel = viewModel
-        viewModel.getCircle()
-        navigationToHome()
-        Fabric.with(this, Crashlytics())
-    }
-
-    private fun navigationToHome() {
-        if (viewModel.checkLogIn.value == true) {
-            checkBudgetStatus()
-        } else {
-            this.findNavController(R.id.myNavHostFragment)
-                .navigate(R.id.action_global_logInFragment)
         }
     }
 
-    private fun checkBudgetStatus() {
-        viewModel.checkBudget.observe(this, Observer {
-            it?.let {
-                if (viewModel.checkBudget.value == false) {
-                    this.findNavController(R.id.myNavHostFragment)
-                        .navigate(R.id.action_global_homeFragment)
-                    Log.i("Sophie_getBudget~~", "${viewModel.checkBudget.value}")
-                } else {
-                    this. findNavController(R.id.myNavHostFragment)
-                        .navigate(R.id.action_global_chooseFragment)
-                    Log.i("Sophie_getBudget", "${viewModel.checkBudget.value}")
-                }
-
-            }
-        })
+    //check internet connection
+    @SuppressLint("ObsoleteSdkInt")
+    fun registerConnectReceiver() {
+        val intentFilter = IntentFilter(INTERNET)
+        registerReceiver(CheckInternet(), intentFilter)
     }
+
 
 }
+
+
+
+

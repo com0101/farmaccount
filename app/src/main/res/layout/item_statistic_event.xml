@@ -10,11 +10,12 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
         <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/price"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:background="@drawable/radius_border"
-                android:id="@+id/price"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="5dp"
@@ -55,9 +56,9 @@
                     app:layout_constraintBottom_toBottomOf="parent"/>
 
             <ImageView
+                    android:id="@+id/image_tag"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:id="@+id/image_tag"
                     android:layout_marginStart="10dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -66,7 +67,6 @@
                     app:layout_constraintVertical_bias="0.5"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

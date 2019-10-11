@@ -9,13 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.Event
-import com.snc.farmaccount.`object`.StatisticCatalog
 import com.snc.farmaccount.databinding.ItemAddEventBinding
-import com.snc.farmaccount.databinding.ItemStatisticEventBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 class StatisticEventAdapter(var onClickListener: OnClickListener,var viewModel: StatisticViewModel):
@@ -92,7 +86,7 @@ class StatisticEventAdapter(var onClickListener: OnClickListener,var viewModel: 
                 binding.imageTag.setImageResource(R.drawable.ticket)
             }
 
-            if (event.status!!) {
+            if (event.status) {
                 binding.price.setBackgroundResource(R.drawable.radius_border_green)
                 binding.titleTag.setTextColor(Color.parseColor("#82B763"))
             } else {

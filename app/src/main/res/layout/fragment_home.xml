@@ -13,13 +13,13 @@
             tools:context=".home.HomeFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:id="@+id/constraintLayout">
+                app:layout_constraintBottom_toBottomOf="parent">
 
             <pl.droidsonroids.gif.GifImageView
                     android:id="@+id/image_farm"
@@ -42,6 +42,7 @@
                     app:layout_constraintStart_toStartOf="parent"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/price"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="16dp"
@@ -50,25 +51,24 @@
                     app:layout_constraintStart_toEndOf="@+id/button_date_picker"
                     app:layout_constraintTop_toTopOf="@+id/button_date_picker"
                     app:layout_constraintBottom_toBottomOf="@+id/button_date_picker"
-                    app:layout_constraintEnd_toStartOf="@+id/button_date_today"
-                    android:id="@+id/price">
+                    app:layout_constraintEnd_toStartOf="@+id/button_date_today">
 
                 <TextView
                         android:id="@+id/text_budget"
-                        android:text="@string/budget_number"
-                        android:fontFamily="@font/gen_normal"
                         android:layout_width="0dp"
                         android:layout_height="30dp"
+                        android:text="@string/budget_number"
+                        android:fontFamily="@font/gen_normal"
                         android:paddingStart="6dp"
                         android:layout_marginEnd="16dp"
                         android:textSize="18sp"
                         android:textColor="@color/money_text"
                         android:gravity="center"
+                        android:textStyle="bold"
                         app:layout_constraintStart_toEndOf="@+id/image_coin"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        android:textStyle="bold"/>
+                        app:layout_constraintBottom_toBottomOf="parent"/>
 
                 <ImageView
                         android:id="@+id/image_coin"
@@ -76,11 +76,13 @@
                         android:layout_height="30dp"
                         android:layout_marginStart="6dp"
                         android:scaleType="centerCrop"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="5dp"
                         app:srcCompat="@drawable/money_icon"
                         app:civ_border_width="0dp"
                         app:layout_constraintStart_toStartOf="parent"
-                        android:layout_marginTop="2dp" app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginBottom="5dp" app:layout_constraintBottom_toBottomOf="parent"/>
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -101,26 +103,29 @@
                     android:layout_height="40dp"
                     android:layout_marginEnd="25dp"
                     android:background="@drawable/chart"
+                    android:layout_marginTop="20dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginTop="20dp" app:layout_constraintTop_toTopOf="parent"
-            />
+                    app:layout_constraintTop_toTopOf="parent"/>
             <Button
                     android:id="@+id/button_budget"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:background="@drawable/bank"
                     android:layout_marginTop="20dp"
-                    app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="25dp"/>
+                    android:layout_marginEnd="25dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
             <Button
                     android:id="@+id/button_scan"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginEnd="25dp"
+                    android:layout_marginTop="20dp"
                     android:background="@drawable/code"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginTop="20dp" app:layout_constraintTop_toTopOf="parent"
-            />
+                    app:layout_constraintTop_toTopOf="parent"/>
+
             <Button
                     android:id="@+id/button_setting"
                     android:layout_width="40dp"
@@ -136,52 +141,66 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/add"
-                    app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-                    app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
-                    android:layout_marginBottom="16dp" app:layout_constraintBottom_toBottomOf="@+id/image_farm"/>
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginBottom="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@+id/image_farm"/>
+
             <com.google.android.material.appbar.AppBarLayout
+                    android:id="@+id/appBarLayout"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:background="@color/translate_100"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/image_farm"
-                    android:id="@+id/appBarLayout"
                     app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintBottom_toBottomOf="parent" android:background="@color/translate_100">
+                    app:layout_constraintBottom_toBottomOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" android:background="@color/expend_title">
+                        android:layout_height="match_parent"
+                        android:background="@color/expend_title">
 
                     <androidx.viewpager.widget.ViewPager
                             android:id="@+id/dayViewpager"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
+                            android:background="@color/translate_100"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            android:background="@color/translate_100"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                    >
+                            app:layout_constraintBottom_toBottomOf="parent">
                     </androidx.viewpager.widget.ViewPager>
+
                     <ImageView
                             android:id="@+id/image_arrow_left"
                             android:layout_width="23dp"
                             android:layout_height="26dp"
-                            app:srcCompat="@drawable/arrow"
-                            android:layout_marginTop="15dp" app:layout_constraintTop_toTopOf="@+id/dayViewpager"
-                            app:layout_constraintStart_toStartOf="@+id/dayViewpager" android:layout_marginStart="38dp"/>
+                            android:layout_marginTop="15dp"
+                            android:layout_marginStart="38dp"
+                            app:layout_constraintTop_toTopOf="@+id/dayViewpager"
+                            app:layout_constraintStart_toStartOf="@+id/dayViewpager"
+                            app:srcCompat="@drawable/arrow"/>
+
                     <ImageView
                             android:id="@+id/image_arrow_right"
                             android:layout_width="23dp"
                             android:layout_height="26dp"
-                            app:srcCompat="@drawable/arrow"
                             android:rotation="@dimen/arrow_rotate_180"
-                            android:layout_marginTop="15dp" app:layout_constraintTop_toTopOf="@+id/dayViewpager"
-                            android:layout_marginEnd="38dp" app:layout_constraintEnd_toEndOf="@+id/dayViewpager"/>
+                            android:layout_marginTop="15dp"
+                            android:layout_marginEnd="38dp"
+                            app:srcCompat="@drawable/arrow"
+                            app:layout_constraintTop_toTopOf="@+id/dayViewpager"
+                            app:layout_constraintEnd_toEndOf="@+id/dayViewpager"/>
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </com.google.android.material.appbar.AppBarLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

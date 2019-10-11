@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.snc.farmaccount.`object`.*
-import com.snc.farmaccount.budget.BudgetAdapter
 import com.snc.farmaccount.event.TagAdapter
 import com.snc.farmaccount.event.TagEditAdapter
 import com.snc.farmaccount.home.DayEventAdapter

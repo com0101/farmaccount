@@ -1,8 +1,8 @@
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">Farm Account</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="budget_number">1,8000</string>
+    <string name="budget_number">18000</string>
     <string name="date">2019.08.24 (六)</string>
     <string name="hint_description">描述</string>
     <string name="price_tool_text">-$80</string>
@@ -10,10 +10,17 @@
     <string name="GOOGLE_LOG_IN">登入</string>
     <string name="logo">FARM account</string>
     <string name="loading">LOADING......</string>
-    <string name="overage_cycle">每個月第 1 天結算</string>
+    <string name="overage_cycle">每個月%1$s號結算</string>
+    <string name="cycle">每個月1號結算</string>
+    <string name="range_start">10000</string>
+    <string name="range_low_end">15000</string>
+    <string name="range_middle_end">25000</string>
+    <string name="range_high_end">35000</string>
+    <string name="token">Token</string>
+    <string name="name">Name</string>
+    <string name="email">email</string>
 
-
-    //title
+    // title
     <string name="expand_title">支出金額</string>
     <string name="income_title">收入金額</string>
     <string name="budget_range_title">預算金額</string>
@@ -30,7 +37,7 @@
     <string name="budget_edit_title">預算修改</string>
 
 
-    //tag
+    // tag
     <string name="tag_breakfast">早餐</string>
     <string name="tag_lunch">午餐</string>
     <string name="tag_dinner">晚餐</string>
@@ -53,8 +60,43 @@
     <string name="no_event">尚無新增帳目</string>
     <string name="scan_hint">請對準左邊條碼</string>
 
-    //check info
+    // check info
     <string name="check_edit">更改資訊尚未儲存，確定要離開嗎?</string>
+    <string name="price_over_check">超出範圍啦</string>
+    <string name="price_less_check">省錢還是要顧身體啦</string>
+    <string name="edit_complete">編輯完成</string>
+    <string name="event_info">資訊沒填喔!</string>
+    <string name="event_price">價錢沒填喔!</string>
+    <string name="event_tag">類別沒選喔!</string>
+    <string name="event_description">寫個描述吧!</string>
+    <string name="add_complete">新增完成</string>
+    <string name="delete_check">確定要刪掉嗎?</string>
+    <string name="delete_complete">刪除完成</string>
+    <string name="overage_zero">這個月透支了，農場被查封，宣告破產!!</string>
+    <string name="camera_permission_advice">這是為了掃 QR code，並不會發生什麼事情，請允許開啟權限</string>
+    <string name="camera_permission_set">相機權限尚未開啟，請至設定開啟</string>
 
+    // label
+    <string name="percent">%</string>
+    <string name="eat_label">食：</string>
+    <string name="cloth_label">衣：</string>
+    <string name="live_label">住：</string>
+    <string name="traffic_label">行：</string>
+    <string name="fun_label">樂：</string>
+    <string name="income_label">收入：</string>
+
+    // week
+    <string name="monday">周一</string>
+    <string name="tuesday">周二</string>
+    <string name="wednesday">周三</string>
+    <string name="thursday">周四</string>
+    <string name="friday">周五</string>
+    <string name="saturday">周六</string>
+    <string name="sunday">周日</string>
+
+    // internet
+    <string name="no_internet">沒有開網路喔</string>
+    <string name="internet_gained">已連接網路</string>
+    <string name="internet_lost">網路中斷</string>
 
 </resources>

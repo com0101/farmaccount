@@ -15,27 +15,28 @@
             android:background="@color/translate_100">
 
         <ImageView
+                android:id="@+id/budget_farm_image"
                 android:layout_width="195dp"
                 android:layout_height="162dp"
+                android:layout_marginTop="8dp"
                 app:srcCompat="@drawable/waiting"
-                android:id="@+id/budget_farm_image"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="8dp"/>
+                app:layout_constraintTop_toTopOf="parent"/>
+
         <ImageView
+                android:id="@+id/type"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
-                android:id="@+id/type"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="10dp"
                 app:layout_constraintTop_toBottomOf="@+id/budget_farm_image"
                 app:layout_constraintEnd_toEndOf="@+id/budget_farm_image"
                 app:layout_constraintStart_toStartOf="@+id/budget_farm_image"
                 app:srcCompat="@drawable/waittext"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginBottom="8dp"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintVertical_bias="0.0"
-                android:layout_marginTop="10dp"/>
+                app:layout_constraintVertical_bias="0.0"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

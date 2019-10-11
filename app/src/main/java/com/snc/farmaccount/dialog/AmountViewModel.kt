@@ -7,42 +7,43 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FirebaseFirestore
 import com.snc.farmaccount.`object`.Budget
-import com.snc.farmaccount.helper.UserManager
-import java.text.DecimalFormat
+import com.snc.farmaccount.helper.*
 import java.util.HashMap
 
 
 class AmountViewModel(budget: Budget, app: Application) : AndroidViewModel(app) {
 
     private val _detail = MutableLiveData<Budget>()
-
     val detail: LiveData<Budget>
         get() = _detail
 
     var rangeStart = ""
     var rangeEnd = ""
     var amount = MutableLiveData<String>()
-    var amountCheck = MutableLiveData<Boolean>()
+    var isPriceMoreThan = MutableLiveData<Boolean>()
+    private val db = FirebaseFirestore.getInstance()
+    val budget = HashMap<String,Any>()
 
     init {
         _detail.value = budget
     }
 
     fun getInput() {
-            when {
-                amount.value?.toInt()!! > rangeEnd.toInt() -> {
-                    detail.value?.budgetPrice = rangeEnd
-                    amountCheck.value = true
-                    Log.i("Sophie_amount", "${amountCheck.value}")
-                }
-                amount.value?.toInt()!! < rangeStart.toInt() -> {
-                    detail.value?.budgetPrice = rangeStart
-                    amountCheck.value = false
-                    Log.i("Sophie_amount", "${amountCheck.value}")
-                }
-                else -> detail.value?.budgetPrice = amount.value!!
+        when {
+            amount.value?.toInt()!! > rangeEnd.toInt() -> {
+                detail.value?.budgetPrice = rangeEnd
+                isPriceMoreThan.value = true
+                Log.i(SOPHIE, "getInput:${isPriceMoreThan.value}")
             }
-        Log.i("Sophie_input", "${detail.value?.budgetPrice} + $rangeEnd + $rangeStart")
+
+            amount.value?.toInt()!! < rangeStart.toInt() -> {
+                detail.value?.budgetPrice = rangeStart
+                isPriceMoreThan.value = false
+                Log.i(SOPHIE, "getInput:${isPriceMoreThan.value}")
+            }
+
+            else -> detail.value?.budgetPrice = amount.value!!
+        }
     }
 
     fun getRange(msg: Budget) {
@@ -51,28 +52,27 @@ class AmountViewModel(budget: Budget, app: Application) : AndroidViewModel(app) 
     }
 
     fun addBudget() {
-        val db = FirebaseFirestore.getInstance()
-        // Create a new user with a first and last name
-        val budget = HashMap<String,Any>()
-        budget["farmImage"] = detail.value?.farmImage!!
-        budget["farmtype"] = detail.value?.farmtype!!
-        budget["rangeStart"] = detail.value?.rangeStart!!
-        budget["rangeEnd"] = detail.value?.rangeEnd!!
-        budget["budgetPrice"] = detail.value?.budgetPrice!!
-        budget["position"] = detail.value?.position!!
-        budget["overage"] = detail.value?.budgetPrice!!
-        budget["circleDay"] = detail.value?.circleDay!!
-        // Add a new document with a generated ID
-        db.collection("User").document("${UserManager.userToken}")
-            .collection("Budget").document("${UserManager.userToken}")
+        budget[FARM_IMAGE] = detail.value?.farmImage?:0
+        budget[FARM_TYPE] = detail.value?.farmtype?:0
+        budget[RANGE_START] = detail.value?.rangeStart?:""
+        budget[RANGE_END] = detail.value?.rangeEnd?:""
+        budget[BUDGET_PRICE] = detail.value?.budgetPrice?:""
+        budget[POSITION] = detail.value?.position?:0
+        budget[OVERAGE] = detail.value?.budgetPrice?:""
+        budget[CYCLE_DAY] = detail.value?.cycleDay?:0L
+
+        db.collection(USER).document("${UserManager.userToken}")
+            .collection(BUDGET).document("${UserManager.userToken}")
             .set(budget)
             .addOnSuccessListener { documentReference ->
                 Log.d(
-                    "Sophie_add",
-                    "DocumentSnapshot added with ID: $documentReference"
+                    SOPHIE,
+                    "DocumentSnapshot addBudget with ID: $documentReference"
                 )
             }
-            .addOnFailureListener { e -> Log.w("Sophie_add_fail", "Error adding document", e) }
+            .addOnFailureListener { e ->
+                Log.w(SOPHIE, "Error addBudget document", e)
+            }
     }
 
 }

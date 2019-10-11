@@ -15,7 +15,6 @@ import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.Budget
 import com.snc.farmaccount.budget.BudgetViewModel
 import com.snc.farmaccount.databinding.FragmentChooseBinding
-import com.snc.farmaccount.dialog.AmountInputDialogArgs
 
 
 class ChooseFragment : Fragment() {
@@ -39,6 +38,7 @@ class ChooseFragment : Fragment() {
 
         binding.imageArrowRight.setOnClickListener {
             binding.farmList.currentItem = binding.farmList.currentItem + 1
+
             if (binding.farmList.currentItem == 2) {
                 binding.imageArrowRight.visibility = View.INVISIBLE
             } else {
@@ -48,6 +48,7 @@ class ChooseFragment : Fragment() {
 
         binding.imageArrowLeft.setOnClickListener {
             binding.farmList.currentItem = binding.farmList.currentItem - 1
+
             if (binding.farmList.currentItem == 0) {
                 binding.imageArrowLeft.visibility = View.INVISIBLE
             } else {
@@ -55,19 +56,20 @@ class ChooseFragment : Fragment() {
             }
         }
 
-        addBudget()
-        viewModel.getBudget()
         binding.farmList.adapter = ChooseAdapter(budget,ChooseAdapter.OnClickListener {
             viewModel.getBudgetType.value = it
             findNavController()
                 .navigate(ChooseFragmentDirections.actionGlobalAmountInputDialog(it))
         })
-        getPager2()
+
+        addBudget()
+        viewModel.getBudget()
+        setViewPager()
         changeArrow()
         return binding.root
     }
 
-    private fun getPager2() {
+    private fun setViewPager() {
         binding.farmList.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
@@ -80,25 +82,27 @@ class ChooseFragment : Fragment() {
 
     private fun changeArrow() {
         viewModel.selectPosition.observe(this, Observer {
-            Log.i("Sophie2","$it")
-            if(it == 0) {
-                binding.imageArrowLeft.visibility = View.GONE
-            } else {
-                binding.imageArrowRight.visibility = View.VISIBLE
-            }
-            if (it == 2) {
-                binding.imageArrowRight.visibility = View.INVISIBLE
-            } else {
-                binding.imageArrowLeft.visibility = View.VISIBLE
+            when (it) {
+                0 -> binding.imageArrowLeft.visibility = View.GONE
+
+                2 -> binding.imageArrowRight.visibility = View.INVISIBLE
+
+                else -> {
+                    binding.imageArrowRight.visibility = View.VISIBLE
+                    binding.imageArrowLeft.visibility = View.VISIBLE
+                }
             }
         })
 
     }
 
     private fun addBudget() {
-        budget.add(Budget(R.drawable.type1, R.drawable.rangelow, "10000", "15000","",0,"",1))
-        budget.add(Budget(R.drawable.type2, R.drawable.rangemiddle, "10000", "25000","",1,"",1))
-        budget.add(Budget(R.drawable.type3, R.drawable.rangehigh, "10000", "35000","",2,"",1))
+        budget.add(Budget(R.drawable.type1, R.drawable.rangelow, getString(R.string.range_start),
+            getString(R.string.range_low_end),"",0,"",1))
+        budget.add(Budget(R.drawable.type2, R.drawable.rangemiddle, getString(R.string.range_start),
+            getString(R.string.range_middle_end),"",1,"",1))
+        budget.add(Budget(R.drawable.type3, R.drawable.rangehigh, getString(R.string.range_start),
+            getString(R.string.range_high_end),"",2,"",1))
         viewModel.budgetType.value = budget
     }
 

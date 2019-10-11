@@ -6,30 +6,19 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.simplemobiletools.commons.extensions.toInt
 import com.snc.farmaccount.`object`.Event
-import com.snc.farmaccount.helper.UserManager
-import java.text.DecimalFormat
+import com.snc.farmaccount.helper.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-
-
-
 class DayViewModel: ViewModel() {
 
-    private var year: Int = 0
-    private var month:Int = 0
-    private var day:Int = 0
-    private var week:Int = 0
-    private var weekName = ""
-    private var pickDate = MutableLiveData<String>()
-    lateinit var firebaseEvent : Event
+    var dateMode = ""
     var currentDate = MutableLiveData<String>()
-    var date = MutableLiveData<String>()
     var postPrice = MutableLiveData<Long>()
     var overagePrice = MutableLiveData<String>()
     var farmStatus = MutableLiveData<Int>()
-    var dataList = ArrayList<Event>()
-    var DATE_MODE = ""
+    var eventList = ArrayList<Event>()
+    private val db = FirebaseFirestore.getInstance()
 
     private val _event = MutableLiveData<List<Event>>()
     val event: LiveData<List<Event>>
@@ -40,118 +29,46 @@ class DayViewModel: ViewModel() {
         get() = _navigateToDetail
 
     init {
-        pickDate
-        week()
+        dateMode = Format.getCurrentDate()
         getOrderBy()
-//        getBudget()
-
     }
 
-    val getFirebase: LiveData<List<Event>> = Transformations.map(event) { it ->
+    val sortByDate: LiveData<List<Event>> = Transformations.map(event) { it ->
         it.filter {
-            it.date == "${pickDate.value}"
+            it.date == "${currentDate.value}" // filter by current date
         }
     }
 
-//    fun getFirebase() {
-//        val db = FirebaseFirestore.getInstance()
-//        db.collection("User").document("${UserManager.userToken}").collection("Event")
-//            .whereEqualTo("date","${pickDate.value}")
-//            .get()
-//            .addOnCompleteListener { task ->
-//                if (task.isSuccessful) {
-//                    for (document in task.result!!) {
-//                        Log.d("Sophie_db", "${document.id} => ${document.data}")
-//                        if (document.data != null) {
-//                            firebaseEvent = document.toObject(Event::class.java)
-//                            dataList.add(firebaseEvent)
-//                        } else {
-//                            Log.d("Sophie_db", "no data")
-//                        }
-//                    }
-//                }
-//                _event.value = dataList
-//                Log.w("Sophie_db_list", "$dataList")
-//            }
-//    }
-
-    fun getOrderBy() {
-        val db = FirebaseFirestore.getInstance()
-        db.collection("User").document("${UserManager.userToken}").collection("Event")
-            .orderBy("id", Query.Direction.DESCENDING)
+    private fun getOrderBy() { // sort event by create time
+        db.collection(USER).document("${UserManager.userToken}")
+            .collection(EVENT)
+            .orderBy(ID, Query.Direction.DESCENDING)
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     for (document in task.result!!) {
-                        Log.d("Sophie_db", "${document.id} => ${document.data}")
-                        if (document.data != null) {
-                            firebaseEvent = document.toObject(Event::class.java)
-                            dataList.add(firebaseEvent)
-                            Log.d("Sophie_order", "no data")
-                        } else {
-                            Log.d("Sophie_db", "no data")
-                        }
+                        Log.d(SOPHIE, "getOrderBy:${document.id} => ${document.data}")
+                        eventList.add(document.toObject(Event::class.java))
                     }
                 }
-                _event.value = dataList
-                Log.w("Sophie_db_list", "$dataList")
+                _event.value = eventList
+                Log.w(SOPHIE, "getOrderBy:$eventList")
             }
     }
-
 
     fun getOverage() {
-        val db = FirebaseFirestore.getInstance()
-        val decimalFormat = DecimalFormat("#,###")
-        db.collection("User").document("${UserManager.userToken}").collection("Budget")
+        db.collection(USER).document("${UserManager.userToken}")
+            .collection(BUDGET)
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     for (document in task.result!!) {
-                        overagePrice.value = decimalFormat.format(document.data["overage"].toString().toDouble())
-                        postPrice.value = document.data["overage"].toString().toLong()
-                        farmStatus.value = document.data["position"]?.toInt()
+                        postPrice.value = document.data[OVERAGE].toString().toLong()
+                        overagePrice.value = Format.decimalFormat(postPrice.value.toString().toDouble())
+                        farmStatus.value = document.data[POSITION]?.toInt()
                     }
                 }
-                Log.d("Sophie_db", "overagePrice.value = ${farmStatus.value}")
             }
-    }
-
-    fun getCurrentDate() {
-        pickDate.value = currentDate.value
-    }
-
-    private fun week() {
-        val c = Calendar.getInstance()
-        year = c.get(Calendar.YEAR)
-        month = c.get(Calendar.MONTH)
-        day = c.get(Calendar.DAY_OF_MONTH)
-        week = c.get(Calendar.DAY_OF_WEEK)
-
-        if (week==1) {
-            weekName = "星期日"
-        }
-        if (week==2) {
-            weekName = "星期一"
-        }
-        if (week==3) {
-            weekName = "星期二"
-        }
-        if (week==4) {
-            weekName = "星期三"
-        }
-        if (week==5) {
-            weekName = "星期四"
-        }
-        if (week==6) {
-            weekName = "星期五"
-        }
-        if (week==7) {
-            weekName = "星期六"
-        }
-
-        DATE_MODE = "$year.${month+1}.$day ($weekName)"
-//        Log.i("today","$DATE_MODE")
-
     }
 
     fun displayPropertyDetails(product: Event) {

@@ -10,48 +10,57 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".choose.ChooseFragment" android:background="@color/dark_green">
+            android:background="@color/dark_green"
+            tools:context=".choose.ChooseFragment">
 
         <ImageView
+                android:id="@+id/circle"
                 android:layout_width="350dp"
-                android:layout_height="350dp" app:srcCompat="@drawable/circle" android:id="@+id/circle"
+                android:layout_height="350dp"
+                app:srcCompat="@drawable/circle"
                 app:layout_constraintEnd_toEndOf="@+id/farm_list"
                 app:layout_constraintStart_toStartOf="@+id/farm_list"
                 app:layout_constraintTop_toTopOf="@+id/farm_list"
                 app:layout_constraintBottom_toBottomOf="@+id/farm_list"/>
+
         <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/farm_list"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:id="@+id/farm_list" app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintVertical_bias="1.0">
         </androidx.viewpager2.widget.ViewPager2>
 
         <ImageView
+                android:id="@+id/image_arrow_right"
                 android:layout_width="32dp"
                 android:layout_height="35dp"
-                android:id="@+id/image_arrow_right"
                 android:layout_marginEnd="24dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
+                android:visibility="visible"
+                android:rotation="@dimen/arrow_rotate_180"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:srcCompat="@drawable/arrow"
-                app:layout_constraintTop_toTopOf="parent" android:visibility="visible"
-                android:rotation="@dimen/arrow_rotate_180"/>
+                app:layout_constraintTop_toTopOf="parent"/>
+
         <ImageView
+                android:id="@+id/image_arrow_left"
                 android:layout_width="32dp"
                 android:layout_height="35dp"
-                android:id="@+id/image_arrow_left"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
+                android:visibility="invisible"
                 app:srcCompat="@drawable/arrow"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" android:visibility="invisible"/>
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
