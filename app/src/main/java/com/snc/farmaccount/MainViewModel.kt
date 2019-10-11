@@ -155,6 +155,8 @@ class MainViewModel: ViewModel() {
         updateOverage()
     }
 
+
+
     private fun updateOverage() {
         db.collection(USER).document("${UserManager.userToken}")
             .collection(BUDGET)

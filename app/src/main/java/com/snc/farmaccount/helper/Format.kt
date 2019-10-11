@@ -15,7 +15,7 @@ import java.util.*
 
 
 object Format {
-    const val DAYCODE_PATTERN = "yyyy.MM.dd (EEEE)"
+    const val DAYCODE_PATTERN = "yyyy.MM.dd EEE"
     const val DATE_PATTERN = "yyyyMMdd"
     const val MONTH_PATTERN = "MM"
     private var weekName: String = ""
@@ -53,7 +53,7 @@ object Format {
             weekName = ApplicationContext.applicationContext().getString(R.string.saturday)
         }
 
-        return "$year.${month+1}.$day ($weekName)"
+        return "$year.${month+1}.$day $weekName"
     }
 
     fun removePunctuation(text: String): String = replace.replace(text,"")

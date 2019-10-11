@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">Farm Account</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="budget_number">18000</string>
+    <string name="date">2019.08.24 (六)</string>
+    <string name="hint_description">描述</string>
+    <string name="price_tool_text">-$80</string>
+    <string name="check_content_tool">XXXXXXXXXXXXXXXXXXXXXXXXXX</string>
+    <string name="GOOGLE_LOG_IN">Login</string>
+    <string name="logo">FARM account</string>
+    <string name="loading">LOADING......</string>
+    <string name="overage_cycle">calculate at %1$s every month</string>
+    <string name="cycle">calculate at first every month</string>
+    <string name="range_start">10000</string>
+    <string name="range_low_end">15000</string>
+    <string name="range_middle_end">25000</string>
+    <string name="range_high_end">35000</string>
+    <string name="token">Token</string>
+    <string name="name">Name</string>
+    <string name="email">email</string>
+
+    // title
+    <string name="expand_title">EXPAND</string>
+    <string name="income_title">REVENUE</string>
+    <string name="budget_range_title">BUDGET</string>
+    <string name="title_price">PRICE</string>
+    <string name="title_date">DATE</string>
+    <string name="edit">EDIT</string>
+    <string name="save">SAVE</string>
+    <string name="delete">DELETE</string>
+    <string name="detail_page_title">COST DETAIL</string>
+    <string name="budget_page_title">BUDGETING</string>
+    <string name="qrcode_page_title">SCAN</string>
+    <string name="statistic_page_title">ANALYSIS</string>
+    <string name="circle_title">CYCLE</string>
+    <string name="budget_edit_title">EDIT BUDGET</string>
+
+
+    // tag
+    <string name="tag_breakfast">breakfast</string>
+    <string name="tag_lunch">lunch</string>
+    <string name="tag_dinner">dinner</string>
+    <string name="tag_payment">payment</string>
+    <string name="tag_dessert">dessert</string>
+    <string name="tag_cloth">cloth</string>
+    <string name="tag_live">live</string>
+    <string name="tag_traffic">traffic</string>
+    <string name="tag_fun">fun</string>
+    <string name="tag_lottery">lottery</string>
+    <string name="catalog_eat">E</string>
+    <string name="catalog_cloth">C</string>
+    <string name="catalog_live">L</string>
+    <string name="catalog_traffic">T</string>
+    <string name="catalog_fun">F</string>
+    <string name="catalog_income">R</string>
+    <string name="sure_btn">OK</string>
+    <string name="statistic_tag">All</string>
+    <string name="no_spend">No cost or revenue</string>
+    <string name="no_event">No Event</string>
+    <string name="scan_hint">Please scan left</string>
+
+    // check info
+    <string name="check_edit">Are you sure to leave?</string>
+    <string name="price_over_check">over the range</string>
+    <string name="price_less_check">less than the basic</string>
+    <string name="edit_complete">Edit Complete</string>
+    <string name="event_info">Info is empty!</string>
+    <string name="event_price">Price is empty!</string>
+    <string name="event_tag">Need type!</string>
+    <string name="event_description">Description is empty!</string>
+    <string name="add_complete">Add Complete</string>
+    <string name="delete_check">Are you sure?</string>
+    <string name="delete_complete">Delete Complete</string>
+    <string name="overage_zero">Ohh no!!</string>
+    <string name="camera_permission_advice">Just for QRcode, please turn on permission</string>
+    <string name="camera_permission_set">Camera permission still turn off</string>
+
+    // label
+    <string name="percent">%</string>
+    <string name="eat_label">EAT：</string>
+    <string name="cloth_label">CLOTH：</string>
+    <string name="live_label">LIVE：</string>
+    <string name="traffic_label">TRAFFIC：</string>
+    <string name="fun_label">FUN：</string>
+    <string name="income_label">REVENUE：</string>
+
+    // week
+    <string name="monday">Mon</string>
+    <string name="tuesday">Tue</string>
+    <string name="wednesday">Wed</string>
+    <string name="thursday">Thur</string>
+    <string name="friday">Fri</string>
+    <string name="saturday">Sat</string>
+    <string name="sunday">Sun</string>
+
+    // internet
+    <string name="no_internet">No INTERNET</string>
+    <string name="internet_gained">INTERNET CONNECTED</string>
+    <string name="internet_lost">INTERNET LOST</string>
+</resources>
