@@ -8,7 +8,7 @@
 # Feature
 **農場主題**
 
-- 3種農場規格，不同規格對應不同預算範圍
+- 3 種農場規格，不同規格對應不同預算範圍
 - 每個月結餘會影響當個農場營業狀態
 
 **QRcode 掃描**
@@ -35,33 +35,31 @@
 **Design Pattern**
 
 - MVVM
-- Adapter
 - Sigleton
 - Observer
-- Retrofit2
 
-**Core functions**
+**Core Function**
 
 - Calendar
-- QRcode scan
 - Google login
 - DatePicker
 - NumberPicker
+- QRcode scan
 
 **User Interface**
 
 - Activity
 - Fragment
+- Dialog
 - RecyclerView
 - ViewPager
 - ViewPager2
 - Pie Chart
 - GIF
-- Dialog
 
 **Database**
 
-- Firebase firestore
+- Firebase Firestore
 
 **Analysis**
 
@@ -70,12 +68,12 @@
 **Unit Test**
 
 - JUnit
-- Espresso
 - Mockito
+- Espresso
 
 # Requirement
 Android 8.0+  
-Android SDK 26+  
+Android Studio 3.4.2+  
 Gradle 5.1.1+
 
 # Version
