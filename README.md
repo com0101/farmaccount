@@ -2,7 +2,7 @@
 是一款由預算作為主軸的的記帳 App 結合農場主題，每個月的結餘會影響農場經營狀況，可透過選擇不同的農場規格來擴增預算範圍，並有 QRcode 掃描及花費分析的功能。
 
 <a href="https://play.google.com/store/apps/details?id=com.snc.farmaccount">
-<img src="https://vignette2.wikia.nocookie.net/call-of-mini-infinity/images/9/9d/Android-app-on-Google-play-logo-vector-2.png/revision/latest?cb=20150705144101" alt="drawing" width="200"/>
+<img src="https://i0.hdslb.com/bfs/article/58666d256ea1a984f55b2938d820e8978c1b8d6c.png" alt="drawing" width="200"/>
 </a>
 
 # Feature
