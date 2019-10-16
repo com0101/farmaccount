@@ -39,22 +39,22 @@
 
 
     // tag
-    <string name="tag_breakfast">breakfast</string>
+    <string name="tag_breakfast">muesli</string>
     <string name="tag_lunch">lunch</string>
     <string name="tag_dinner">dinner</string>
-    <string name="tag_payment">payment</string>
-    <string name="tag_dessert">dessert</string>
+    <string name="tag_payment">salary</string>
+    <string name="tag_dessert">snack</string>
     <string name="tag_cloth">cloth</string>
     <string name="tag_live">live</string>
     <string name="tag_traffic">traffic</string>
     <string name="tag_fun">fun</string>
     <string name="tag_lottery">lottery</string>
-    <string name="catalog_eat">E</string>
-    <string name="catalog_cloth">C</string>
-    <string name="catalog_live">L</string>
-    <string name="catalog_traffic">T</string>
-    <string name="catalog_fun">F</string>
-    <string name="catalog_income">R</string>
+    <string name="catalog_eat">食</string>
+    <string name="catalog_cloth">衣</string>
+    <string name="catalog_live">住</string>
+    <string name="catalog_traffic">行</string>
+    <string name="catalog_fun">樂</string>
+    <string name="catalog_income">收入</string>
     <string name="sure_btn">OK</string>
     <string name="statistic_tag">All</string>
     <string name="no_spend">No cost or revenue</string>
@@ -90,7 +90,7 @@
     <string name="monday">Mon</string>
     <string name="tuesday">Tue</string>
     <string name="wednesday">Wed</string>
-    <string name="thursday">Thur</string>
+    <string name="thursday">Thu</string>
     <string name="friday">Fri</string>
     <string name="saturday">Sat</string>
     <string name="sunday">Sun</string>

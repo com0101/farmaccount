@@ -8,11 +8,16 @@ import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.runner.RunWith
+import org.junit.runners.JUnit4
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
 import org.mockito.runners.MockitoJUnitRunner
+import org.mockito.junit.MockitoJUnit
+import org.mockito.junit.MockitoRule
+
+
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -26,7 +31,19 @@ class ExampleUnitTest {
 
     @Mock
     lateinit var mainViewModel: MainViewModel
-    private lateinit var mockContext: Context
+
+//    @Test
+//    fun addition_isCorrect() {
+//
+//        FAKE_LONG = arrayListOf(1,3,-5,4)
+//
+//        `when`(mainViewModel.priceList)
+//            .thenReturn(FAKE_LONG)
+//
+//        var result = Mockito.spy(mainViewModel.priceList)
+//
+//        assertEquals(result.sum(), mainViewModel.getPriceSumTest())
+//    }
 
     @Test
     fun addition_isCorrect() {

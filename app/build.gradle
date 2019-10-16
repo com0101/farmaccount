@@ -21,8 +21,8 @@ android {
         applicationId "com.snc.farmaccount"
         minSdkVersion 26
         targetSdkVersion 29
-        versionCode 6
-        versionName "1.2"
+        versionCode 7
+        versionName "1.2.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     }
@@ -52,6 +52,12 @@ android {
     crashlytics {
         enableNdk true
     }
+
+    testOptions {
+        unitTests.includeAndroidResources = true
+        unitTests.returnDefaultValues = true
+    }
+
 }
 
 dependencies {
@@ -66,7 +72,13 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore:17.1.2'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test:rules:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:2.0'
+    testImplementation 'org.mockito:mockito-core:1.10.19'
+    testImplementation group: 'org.mockito', name: 'mockito-inline', version: '2.9.0'
+    testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0-RC3'
+
 
     // Drawbale
     implementation 'com.google.android.material:material:1.0.0'

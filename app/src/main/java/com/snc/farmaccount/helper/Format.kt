@@ -15,14 +15,14 @@ import java.util.*
 
 
 object Format {
-    const val DAYCODE_PATTERN = "yyyy.MM.dd EEE"
+    const val DAYCODE_PATTERN = "yyyy.MM.dd (EEE)"
     const val DATE_PATTERN = "yyyyMMdd"
     const val MONTH_PATTERN = "MM"
     private var weekName: String = ""
-    private const val DAY_OF_WEEK_PATTERN = "EEEE"
+    private const val DAY_OF_WEEK_PATTERN = "EEE"
 
     private val replace: Regex
-        get() = Regex("[^A-Za-z0-9]")
+        get() = Regex("[^0-9]")
 
     fun getCurrentDate(): String {
         val calendar = Calendar.getInstance()
@@ -53,7 +53,7 @@ object Format {
             weekName = ApplicationContext.applicationContext().getString(R.string.saturday)
         }
 
-        return "$year.${month+1}.$day $weekName"
+        return "$year.${month+1}.$day ($weekName)"
     }
 
     fun removePunctuation(text: String): String = replace.replace(text,"")

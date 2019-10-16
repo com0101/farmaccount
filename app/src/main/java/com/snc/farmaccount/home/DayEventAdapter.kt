@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.snc.farmaccount.ApplicationContext
 import com.snc.farmaccount.R
 import com.snc.farmaccount.`object`.Event
 import com.snc.farmaccount.databinding.ItemAddEventBinding
@@ -49,34 +50,34 @@ class DayEventAdapter(var onClickListener: OnClickListener,var viewModel: DayVie
             binding.event = event
             binding.viewModel = viewModel
 
-            if (event.tag == "早餐") {
+            if (event.tag == ApplicationContext.applicationContext().getString(R.string.tag_breakfast)) {
                 binding.imageTag.setImageResource(R.drawable.fried_egg)
             }
-            if (event.tag == "午餐") {
+            if (event.tag == ApplicationContext.applicationContext().getString(R.string.tag_lunch)) {
                 binding.imageTag.setImageResource(R.drawable.pig)
             }
-            if (event.tag == "晚餐") {
+            if (event.tag == ApplicationContext.applicationContext().getString(R.string.tag_dinner)) {
                 binding.imageTag.setImageResource(R.drawable.cow)
             }
-            if (event.tag == "點心") {
+            if (event.tag == ApplicationContext.applicationContext().getString(R.string.tag_dessert)) {
                 binding.imageTag.setImageResource(R.drawable.gingerbread_man)
             }
-            if (event.tag == "衣服") {
+            if (event.tag == ApplicationContext.applicationContext().getString(R.string.tag_cloth)) {
                 binding.imageTag.setImageResource(R.drawable.apron)
             }
-            if (event.tag == "生活") {
+            if (event.tag == ApplicationContext.applicationContext().getString(R.string.tag_live)) {
                 binding.imageTag.setImageResource(R.drawable.field)
             }
-            if (event.tag == "交通") {
+            if (event.tag == ApplicationContext.applicationContext().getString(R.string.tag_traffic)) {
                 binding.imageTag.setImageResource(R.drawable.tractor)
             }
-            if (event.tag == "娛樂") {
+            if (event.tag == ApplicationContext.applicationContext().getString(R.string.tag_fun)) {
                 binding.imageTag.setImageResource(R.drawable.kite)
             }
-            if (event.tag == "薪水") {
+            if (event.tag == ApplicationContext.applicationContext().getString(R.string.tag_payment)) {
                 binding.imageTag.setImageResource(R.drawable.money)
             }
-            if (event.tag == "中獎") {
+            if (event.tag == ApplicationContext.applicationContext().getString(R.string.tag_lottery)) {
                 binding.imageTag.setImageResource(R.drawable.ticket)
             }
 
