@@ -168,7 +168,7 @@ class AddEventViewModel : ViewModel() {
 
         val getDate = Date(year-1900, month, day)
         monthly.value = Format.getMonthFormat(getDate)
-        today.value = Format.getSimpleDateFormat(getDate)
+        today.value = Format.getCurrentDate()
         time.value = Format.getDateFormat(getDate).toLong()
         thisDate.value = Format.getDateFormat(getDate).toLong()
 

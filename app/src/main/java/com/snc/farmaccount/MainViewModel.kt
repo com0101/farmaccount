@@ -155,13 +155,6 @@ class MainViewModel: ViewModel() {
         updateOverage()
     }
 
-    fun getPriceSumTest(): Long { // Unit Test for summing all price
-        return when {
-            priceList.isEmpty() -> 0
-            else -> priceList.sum()
-        }
-    }
-
     private fun updateOverage() {
         db.collection(USER).document("${UserManager.userToken}")
             .collection(BUDGET)

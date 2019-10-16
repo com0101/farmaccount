@@ -120,8 +120,12 @@ class HomeFragment : Fragment() {
             goToToday()
         }
 
+        viewModel.overagePrice.observe(this, androidx.lifecycle.Observer {
+            binding.textBudget.text = viewModel.overagePrice.value
+        })
+
         mainViewModel.overagePrice.observe(this, androidx.lifecycle.Observer {
-            binding.textBudget.text = it
+            binding.textBudget.text = Format.decimalFormat(it.toDouble())
         })
 
         viewModel.postPrice.observe(this, androidx.lifecycle.Observer {
