@@ -26,6 +26,7 @@ import android.content.Intent
 import com.snc.farmaccount.MainActivity
 import com.snc.farmaccount.event.AddEventViewModel
 import com.snc.farmaccount.helper.SOPHIE
+import com.snc.farmaccount.helper.dpToFloat
 import java.util.Collections.replaceAll
 
 
@@ -75,15 +76,13 @@ class HomeFragment : Fragment() {
         binding.buttonSetting.setOnClickListener {
 
             buttonSense = if (!buttonSense) {
-                binding.buttonBudget.animate().translationY(180f).start() // move away
-                binding.buttonStatistic.animate().translationY(360f).start()
-                binding.buttonScan.animate().translationY(540f).start()
+                binding.buttonBudget.animate().translationY(55.dpToFloat()).start() // move away
+                binding.buttonStatistic.animate().translationY(110.dpToFloat()).start()
                 binding.buttonSetting.animate().rotation(360f).start()
                 true
             } else {
                 binding.buttonBudget.animate().translationY(0f).start()
                 binding.buttonStatistic.animate().translationY(0f).start()
-                binding.buttonScan.animate().translationY(0f).start()
                 binding.buttonSetting.animate().rotation(0f).start()
                 false
             }
@@ -98,11 +97,6 @@ class HomeFragment : Fragment() {
         binding.buttonStatistic.setOnClickListener {
             findNavController()
                 .navigate(R.id.action_global_statisticFragment)
-        }
-
-        binding.buttonScan.setOnClickListener {
-            findNavController()
-                .navigate(R.id.action_global_qrCodeFragment)
         }
 
         binding.imageAddEvent.setOnClickListener {

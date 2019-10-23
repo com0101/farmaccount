@@ -37,9 +37,8 @@ class MainViewModel: ViewModel() {
     private val calendar = Calendar.getInstance()
 
     init {
-        pickdate.value = 1
-        compareWithCycle()
 
+        compareWithCycle()
         UserManager.userToken?.let {
             isLogIn.value = true
             getBudget()
@@ -69,6 +68,7 @@ class MainViewModel: ViewModel() {
                 if (document != null) {
                     pickdate.value = document.data?.get(CYCLE_DAY)?.toInt()?.toLong()
                     setCurrentDate()
+                    Log.i("SOPhie", "${dayMode}")
                 }
             }
     }
@@ -216,12 +216,13 @@ class MainViewModel: ViewModel() {
         val nextMonth = Date(year-1900, month+1, pickdate.value!!.toInt())
         val lastMonth = Date(year-1900, month-1,pickdate.value!!.minus(1).toInt())
         val futureDay = Date(year-1900, month, pickdate.value!!.toInt())
+        val today = Date(year-1900, month, day)
         startTime = Format.getDateFormat(thisMonth).toLong()
         endTime = Format.getDateFormat(nextMonth).toLong()
         lastTime = Format.getDateFormat(lastMonth).toLong()
         futureTime = Format.getDateFormat(futureDay).toLong()
+        dayMode = Format.getSimpleDateFormat(today)
 
-        dayMode = Format.getCurrentDate()
         compareWithCycle()
     }
 

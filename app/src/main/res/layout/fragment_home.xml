@@ -117,16 +117,6 @@
                     app:layout_constraintEnd_toEndOf="parent"/>
 
             <Button
-                    android:id="@+id/button_scan"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginEnd="25dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/code"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
-
-            <Button
                     android:id="@+id/button_setting"
                     android:layout_width="40dp"
                     android:layout_height="40dp"

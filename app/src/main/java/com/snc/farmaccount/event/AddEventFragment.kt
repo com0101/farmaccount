@@ -131,6 +131,11 @@ class AddEventFragment : Fragment() {
 
         }
 
+        binding.buttonScan.setOnClickListener {
+            findNavController()
+                .navigate(R.id.action_global_qrCodeFragment)
+        }
+
         binding.imageBackState.setOnClickListener {
             when {
                 viewModel.priceInput.value != null -> checkEdit()
