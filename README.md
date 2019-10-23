@@ -78,6 +78,8 @@ Gradle 5.1.1+
 
 # Version
 Release Version 1.2 - 2019.10.05
+        Version 1.2.2 - 2019.10.17
+        Version 1.2.3 - 2019.10.23
 
 # Contact
 Sophie Wang  
