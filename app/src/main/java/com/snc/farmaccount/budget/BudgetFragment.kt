@@ -56,6 +56,7 @@ class BudgetFragment : Fragment() {
         binding.viewModel = viewModel
         binding.farmList.orientation = ViewPager2.ORIENTATION_HORIZONTAL
         binding.textBudget.isEnabled = false
+
         addBudget()
         unEditBudget()
         viewModel.getBudget()
@@ -77,6 +78,7 @@ class BudgetFragment : Fragment() {
             binding.farmList.setCurrentItem(it, false)
             binding.unSelectFarmList.setCurrentItem(it, false)
             binding.unSelectFarmList.isUserInputEnabled = false
+            binding.unSelectFarmList.visibility = View.VISIBLE
         })
 
         binding.imageSend.setOnClickListener {
@@ -94,7 +96,7 @@ class BudgetFragment : Fragment() {
             binding.textBudget.setTextColor(resources.getColor(R.color.money_text))
             binding.price.background = resources.getDrawable(R.drawable.money_border)
             binding.imageCoin.background = resources.getDrawable(R.drawable.money_icon)
-            binding.imageArrowRight.visibility = View.VISIBLE
+
             binding.imageArrowRight.setImageResource(R.drawable.arrow)
             binding.imageArrowLeft.setImageResource(R.drawable.arrow)
 
@@ -176,8 +178,6 @@ class BudgetFragment : Fragment() {
     }
 
     private fun numberPicker() {
-        binding.numberTitle.text = String.format(getString(R.string.overage_cycle),
-            "${mainViewModel.pickdate.value}")
 
         numberPickerDialog = Dialog(this.requireContext())
         bindingNumberPicker = DialogNumberpickBinding.inflate(layoutInflater)
@@ -186,6 +186,12 @@ class BudgetFragment : Fragment() {
         binding.numberTitle.setOnClickListener {
             numberPickerDialog.show()
         }
+        mainViewModel.getCycleDay()
+        mainViewModel.pickdate.observe(this, Observer {
+            binding.numberTitle.text = String.format(getString(R.string.overage_cycle),
+                "${mainViewModel.pickdate.value}")
+            Log.i("SOPhie", "${mainViewModel.pickdate.value}")
+        })
 
         mainViewModel.maxDay.observe(this, Observer { maxDay->
             bindingNumberPicker.numberPicker.maxValue = maxDay
@@ -255,4 +261,5 @@ class BudgetFragment : Fragment() {
         warningDialog.setContentView(bindingCheck.root)
         warningDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
     }
+
 }

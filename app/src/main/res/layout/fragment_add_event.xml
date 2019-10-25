@@ -80,6 +80,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
 
+        <Button
+                android:id="@+id/button_scan"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="60dp"
+                android:background="@drawable/qr_code"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/text_expend_title"
+                app:layout_constraintBottom_toBottomOf="@+id/text_expend_title"/>
+
         <EditText
                 android:id="@+id/edit_expand"
                 android:layout_width="0dp"

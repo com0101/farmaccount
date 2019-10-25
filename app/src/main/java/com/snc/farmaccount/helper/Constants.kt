@@ -1,6 +1,7 @@
 package com.snc.farmaccount.helper
 
 import android.util.DisplayMetrics
+import android.util.TypedValue
 import com.snc.farmaccount.ApplicationContext
 
 const val DAY_CODE = "day_code"
@@ -40,4 +41,10 @@ const val INTERNET = "android.net.conn.CONNECTIVITY_CHANGE"
 fun Number.dpToPx(): Int {
     return (this.toFloat() * (ApplicationContext.applicationContext()
         .resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)).toInt()
+}
+
+fun Number.dpToFloat(): Float {
+    return TypedValue.applyDimension( TypedValue.COMPLEX_UNIT_DIP, this.toFloat(),
+        ApplicationContext.applicationContext().resources.displayMetrics
+    )
 }
